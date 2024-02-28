@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+cmake --build debug/ --target water-management

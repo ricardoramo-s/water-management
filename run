@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+./build
+cd debug
+./water-management
