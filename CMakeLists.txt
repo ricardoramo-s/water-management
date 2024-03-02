@@ -10,7 +10,11 @@ find_package(Curses REQUIRED)
 # Create an executable target named "water-management"
 add_executable(water-management src/main.cpp
         src/Reservoir.h
-        src/Reservoir.cpp)
+        src/Reservoir.cpp
+        src/Graph.h
+        src/minHeap.h
+        src/Cities.h
+        src/Stations.h)
 
 # Link ncurses library
 target_link_libraries(water-management ${CURSES_LIBRARIES})
