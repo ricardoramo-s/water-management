@@ -29,10 +29,7 @@ void InputLabel::handle_input() {
     }
 
     keypad(get_win(), true);
-    noecho();
     int ch = wgetch(get_win());
-    mvwprintw(stdscr, 0, 0, std::to_string(ch).c_str());
-    refresh();
 
     switch (ch) {
         case BACKSPACE:  // Handle backspace (assuming 127 is the correct code)
