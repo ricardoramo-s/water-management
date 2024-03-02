@@ -1,6 +1,9 @@
 #include <ncurses.h>
 #include <string>
 
+/*!
+ * @brief main
+ */
 int main() {
   initscr();
 
