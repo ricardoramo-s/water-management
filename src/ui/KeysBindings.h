@@ -1,0 +1,16 @@
+//
+// Created by Ricardo Ramos on 02/03/2024.
+//
+
+#ifndef WATER_MANAGEMENT_KEYSBINDINGS_H
+#define WATER_MANAGEMENT_KEYSBINDINGS_H
+
+#define CTRL_U 21
+#define BACKSPACE 127
+#define ENTER 10
+#define ARROW_UP 259
+#define ARROW_DOWN 258
+#define ARROW_RIGHT 261
+#define ARROW_LEFT 260
+
+#endif //WATER_MANAGEMENT_KEYSBINDINGS_H
