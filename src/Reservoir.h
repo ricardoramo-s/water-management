@@ -13,7 +13,7 @@ public:
     std::string getMunicipality() const;
     int getID() const;
     std::string getcode() const;
-    int getCapacity() const;
+    int getMaxDelivery() const;
     struct ReservoirHash{
         int operator()(const Reservoir& Reservoir) const{
             std::string c=Reservoir.getName();
