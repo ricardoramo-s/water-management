@@ -30,7 +30,7 @@ public:
     Edge(Vertex *orig, Vertex *dest, double cap, bool direction);
 
     Vertex * getDest() const;
-    double getWeight() const;
+    double getCapacity() const;
     bool isSelected() const;
     Vertex * getOrig() const;
     Edge *getReverse() const;
@@ -45,6 +45,7 @@ public:
 protected:
     Vertex *dest; // destination vertex
     double capacity; // edge weight, can also be used for capacity
+    bool direction;
 
     // auxiliary fields
     bool selected = false;
@@ -61,24 +62,23 @@ public:
     explicit Vertex(std::string nodeTypeid);
 
     std::string getnodeTypeId() const;
-    std::vector<Edge *> getAdj() const;
+    Edge * addEdge(Vertex *d, int capacity, bool direction);
+    std::list<Edge *> getAdj() const;
     bool isVisited() const;
     double getDist() const;
-    std::vector<int> getPath() const;
+    std::vector<std::string> getPath() const;
 
     void setVisited(bool visited);
     void setDist(double dist);
-    void setPath(Edge *path);
-    Edge * addEdge(Vertex *dest, double w);
     friend class Graph;
 protected:
     std::string nodeTypeid;
-    std::list<Edge > adj;
+    std::list<Edge* > adj;
 
     // auxiliary fields
     bool visited = false;
     double dist = 0;
-    std::vector<int> parents;
+    std::vector<std::string> parents;
 
     std::vector<Edge *> incoming; // incoming edges
 
@@ -121,11 +121,92 @@ public:
      * destination vertices and the edge weight (w).
      * Returns true if successful, and false if the source or destination vertex does not exist.
      */
-    bool addEdge(const std::string &source, const std::string &dest, double w);
+    bool addEdge(const std::string &source, const std::string &dest, double capacity, bool direction);
     bool removeEdge(const std::string &source, const std::string &dest);
-    bool addBidirectionalEdge(const std::string &source, const std::string &dest, double w);
+    bool addBidirectionalEdge(const std::string &source, const std::string &dest, double capacity);
 
     int getNumVertex() const;
     std::vector<Vertex *> getVertexSet() const;
 };
+
+/************************* Vertex  **************************/
+
+Vertex::Vertex(std::string in): nodeTypeid(in) {}
+
+Edge * Vertex::addEdge(Vertex *d, int capacity, bool direction) {
+    Edge* newEdge = new Edge(this, d, capacity, direction);
+    //TODO implement if direction is 1 the node is bidirectional
+    adj.push_back(newEdge);
+    d->incoming.push_back(newEdge);
+    return newEdge;
+}
+
+std::string Vertex::getnodeTypeId() const {
+    return this->nodeTypeid;
+}
+
+std::list<Edge*> Vertex::getAdj() const {
+    return this->adj;
+}
+
+bool Vertex::isVisited() const {
+    return this->visited;
+}
+
+double Vertex::getDist() const {
+    return this->dist;
+}
+
+std::vector<std::string> Vertex::getPath() const {
+    return this->parents;
+}
+
+void Vertex::setVisited(bool visited) {
+    this->visited = visited;
+}
+
+void Vertex::setDist(double dist) {
+    this->dist = dist;
+}
+
+/********************** Edge  ****************************/
+
+Edge::Edge(Vertex* orig, Vertex* dest, double capacity, bool direction):
+                    orig(orig), dest(dest), capacity(capacity),  direction(direction){}
+
+Vertex* Edge::getDest() const {
+    return this->dest;
+}
+
+double Edge::getCapacity() const {
+    return this->capacity;
+}
+
+Vertex* Edge::getOrig() const {
+    return this->orig;
+}
+
+Edge* Edge::getReverse() const {
+    return this->reverse;
+}
+
+bool Edge::isSelected() const {
+    return this->selected;
+}
+
+double Edge::getFlow() const {
+    return flow;
+}
+
+void Edge::setSelected(bool selected) {
+    this->selected = selected;
+}
+
+void Edge::setReverse(Edge *reverse) {
+    this->reverse = reverse;
+}
+
+void Edge::setFlow(double flow) {
+    this->flow = flow;
+}
 #endif
