@@ -127,13 +127,10 @@ public:
      */
     void addReservoir(const nodeTID & nodeTypeId, Reservoir r);
     void addCity(const nodeTID & nodeTypeId, City c);
-    void addPumpinStation(const nodeTID & nodeTypeId, PumpingStations ps);
+    void addPumpingStation(const nodeTID & nodeTypeId, PumpingStations ps);
     void removeReservoir(const nodeTID & nodeTypeId, Reservoir r);
     void removeCity(const nodeTID & nodeTypeId, City c);
-    void removePumpinStation(const nodeTID & nodeTypeId, PumpingStations ps);
-
-
-    bool removeVertex(const std::string &in);
+    void removePumpingStation(const nodeTID & nodeTypeId, PumpingStations ps);
 
     /*
      * Adds an edge to a graph (this), given the contents of the source and
