@@ -1,36 +1,44 @@
 #include <ncurses.h>
-#include "ui/TextBox.h"
-#include "ui/Box.h"
-#include "ui/TextLabel.h"
-#include "ui/InputLabel.h"
+#include "ui/components/TextBox.h"
+#include "ui/components/Box.h"
+#include "ui/components/TextLabel.h"
+#include "ui/components/InputLabel.h"
+#include "ui/pallets/gruvbox.h"
+#include "ui/colors/ColorPair.h"
 #include <string>
 
 int main() {
-  initscr();
-  noecho();
-  curs_set(0);
+    initscr();
+    curs_set(0);
+    noecho();
+    start_color();
 
-  auto textLabel = new TextLabel(2, 20, "Test Label");
-  auto textLabelBox = new Box<TextLabel>(textLabel);
+    ColorPair::activate(stdscr, light0, dark0);
+    refresh();
 
-  std::string lorem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In placerat vitae dolor in aliquet. Vestibulum ac urna scelerisque, sollicitudin lorem nec, tincidunt odio. Proin euismod, neque sed pharetra consectetur, lorem diam vulputate est, quis ullamcorper est nisl at lectus. Nulla sagittis at diam vel feugiat. Morbi ac egestas elit. Nam at dignissim tortor. Fusce tempor aliquam feugiat. Suspendisse finibus massa in velit aliquet, sit amet porttitor justo congue.");
+    auto textLabel = new TextLabel(2, 20, "Test Label");
+    auto textLabelBox = new Box<TextLabel>(textLabel);
 
-  auto textBox = new TextBox(30, 5, 20, lorem);
-  auto textBoxBox = new Box<TextBox>(textBox);
+    std::string lorem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In placerat vitae dolor in aliquet. Vestibulum ac urna scelerisque, sollicitudin lorem nec, tincidunt odio. Proin euismod, neque sed pharetra consectetur, lorem diam vulputate est, quis ullamcorper est nisl at lectus. Nulla sagittis at diam vel feugiat. Morbi ac egestas elit. Nam at dignissim tortor. Fusce tempor aliquam feugiat. Suspendisse finibus massa in velit aliquet, sit amet porttitor justo congue.");
 
-  auto inputLabel = new InputLabel(15, 2, 3, "test label");
-  auto inputLabelBox = new Box<InputLabel>(inputLabel);
+    auto textBox = new TextBox(30, 5, 20, lorem);
+    auto textBoxBox = new Box<TextBox>(textBox);
 
-  do {
-      inputLabelBox->handle_input();
-      inputLabelBox->draw();
+    auto inputLabel = new InputLabel(15, 2, 3, "> ");
+    auto inputLabelBox = new Box<InputLabel>(inputLabel);
 
-      textBoxBox->draw();
-      textLabelBox->draw();
-  } while (!inputLabel->get_input_flag());
+    do {
+        inputLabelBox->handle_input();
+        inputLabelBox->draw();
 
-  clear();
+        textBoxBox->draw();
+        textLabelBox->draw();
 
-  endwin();
-  return 0;
+        doupdate();
+    } while (!inputLabel->get_input_flag());
+
+    clear();
+
+    endwin();
+    return 0;
 }

@@ -1,4 +1,6 @@
 #include "TextBox.h"
+#include "../colors/ColorPair.h"
+#include "../pallets/gruvbox.h"
 #include "sstream"
 
 TextBox::TextBox(int width, int y, int x, std::string& text) : Component(0, width, y, x) {
@@ -43,6 +45,8 @@ TextBox::TextBox(int y, int x, std::vector<std::string>& lines) : Component(0, 0
 }
 
 void TextBox::draw() {
+    ColorPair::activate(get_win(), light0, dark0);
+
     for (size_t y = 0; y < _lines.size(); y++) {
         mvwprintw(get_win(), static_cast<int>(y), 0, _lines.at(y).c_str());
     }

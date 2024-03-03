@@ -7,13 +7,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Require C++17 support by the compiler
 
 add_executable(water-management
         src/main.cpp
-        src/ui/Component.cpp
-        src/ui/TextBox.cpp
-        src/ui/Box.cpp
-        src/ui/TextLabel.cpp
-        src/ui/InputLabel.cpp
-        src/ui/InputLabel.h
-        src/ui/KeysBindings.h)
+        src/ui/components/Component.cpp
+        src/ui/components/TextBox.cpp
+        src/ui/components/Box.cpp
+        src/ui/components/TextLabel.cpp
+        src/ui/components/InputLabel.cpp
+        src/ui/components/InputLabel.h
+        src/ui/components/KeysBindings.h
+        src/ui/pallets/gruvbox.h
+        src/ui/colors/ColorPair.cpp
+        src/ui/colors/ColorPair.h
+        src/ui/colors/Color.cpp
+        src/ui/colors/Color.h)
 
 find_package(Curses REQUIRED)
 
@@ -21,4 +26,7 @@ target_link_libraries(water-management -lncurses)
 
 target_include_directories(water-management PRIVATE
         ${CURSES_INCLUDE_DIR}
-        src)
+        src
+        src/ui/components
+        src/ui/colors
+        src/ui/pallets)

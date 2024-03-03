@@ -1,6 +1,9 @@
 #include "Box.h"
 #include "TextLabel.h"
 #include "InputLabel.h"
+#include "climits"
+#include "ui/pallets/gruvbox.h"
+#include "ui/colors/ColorPair.h"
 
 template<typename T>
 Box<T>::Box(T *component) : _component(component), Component() {
@@ -15,6 +18,7 @@ T *Box<T>::get_component() {
     return _component;
 }
 
+
 template<typename T>
 void Box<T>::draw() {
     auto component = dynamic_cast<Component*>(_component);
@@ -26,8 +30,9 @@ void Box<T>::draw() {
         resizewin(component->get_height() + 2, component->get_width() + 2);
     }
 
+    ColorPair::activate(get_win(), light0, dark0);
     box(get_win(), 0, 0);
-    wrefresh(get_win());
+    refreshwin();
     component->draw();
 }
 

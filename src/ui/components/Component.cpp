@@ -1,4 +1,5 @@
 #include "Component.h"
+#include "../pallets/gruvbox.h"
 
 int Component::get_height() const {
     return  _height;
@@ -50,5 +51,5 @@ WINDOW *Component::get_win() const {
 }
 
 void Component::refreshwin() const {
-    wrefresh(_win);
+    wnoutrefresh(_win);
 }

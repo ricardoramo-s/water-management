@@ -1,11 +1,16 @@
 #include "InputLabel.h"
 #include "KeysBindings.h"
+#include "ColorPair.h"
+#include "gruvbox.h"
 
 InputLabel::InputLabel(int width, int y, int x) : Component(1, width, y, x), _input_text(std::string{}), _default_text(std::string{}) {}
 
 InputLabel::InputLabel(int width, int y, int x, std::string default_text) : Component(1, width, y, x), _input_text(std::string{}), _default_text(std::string{default_text}) {}
 
 void InputLabel::draw() {
+    ColorPair::activate(get_win(), light0, dark0);
+    wclear(get_win());
+
     if (_input_text.empty()) {
         mvwprintw(get_win(), 0, 0, _default_text.c_str());
     } else {
