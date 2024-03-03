@@ -12,13 +12,8 @@ add_executable(water-management
         src/ui/components/Box.cpp
         src/ui/components/TextLabel.cpp
         src/ui/components/InputLabel.cpp
-        src/ui/components/InputLabel.h
-        src/ui/components/KeysBindings.h
-        src/ui/pallets/gruvbox.h
         src/ui/colors/ColorPair.cpp
-        src/ui/colors/ColorPair.h
-        src/ui/colors/Color.cpp
-        src/ui/colors/Color.h)
+        src/ui/colors/Color.cpp)
 
 find_package(Curses REQUIRED)
 
@@ -27,6 +22,4 @@ target_link_libraries(water-management -lncurses)
 target_include_directories(water-management PRIVATE
         ${CURSES_INCLUDE_DIR}
         src
-        src/ui/components
-        src/ui/colors
-        src/ui/pallets)
+        src/ui)

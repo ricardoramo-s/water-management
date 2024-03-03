@@ -9,12 +9,12 @@ ColorPair::ColorPair(Color* foreground, Color* background) : _id(_last_pair++), 
     _pairs.push_back(this);
 }
 
-void ColorPair::activate(WINDOW* win, short fr, short fg, short fb, short br, short bg, short bb) {
+short ColorPair::get(short fr, short fg, short fb, short br, short bg, short bb) {
     short id = -1;
 
     for (auto& pair : _pairs) {
         if (pair->_foreground->_r == fr && pair->_foreground->_g == fg && pair->_foreground->_b == fb &&
-        pair->_background->_r == br && pair->_background->_g == bg && pair->_background->_b == bb) {
+            pair->_background->_r == br && pair->_background->_g == bg && pair->_background->_b == bb) {
             id = pair->_id;
         }
     }
@@ -27,6 +27,17 @@ void ColorPair::activate(WINDOW* win, short fr, short fg, short fb, short br, sh
         id = colorPair->_id;
     }
 
+    return id;
+}
+
+short ColorPair::activate(WINDOW *win, short id) {
     wattron(win, COLOR_PAIR(id));
     wbkgd(win, COLOR_PAIR(id));
+
+    return id;
+}
+
+short ColorPair::apply(WINDOW *win, short fr, short fg, short fb, short br, short bg, short bb) {
+    short id = get(fr, fg, fb, br, bg, bb);
+    return activate(win, id);
 }

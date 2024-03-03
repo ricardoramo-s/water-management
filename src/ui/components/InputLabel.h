@@ -10,9 +10,6 @@ private:
     std::string _input_text;
     std::string _default_text;
 
-    int current_x = 0;
-    int current_y = 0;
-
     bool _input_flag = true;
 
 public:

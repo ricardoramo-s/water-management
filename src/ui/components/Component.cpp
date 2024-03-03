@@ -1,5 +1,4 @@
 #include "Component.h"
-#include "../pallets/gruvbox.h"
 
 int Component::get_height() const {
     return  _height;

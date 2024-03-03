@@ -1,25 +1,25 @@
 #include "InputLabel.h"
 #include "KeysBindings.h"
-#include "ColorPair.h"
-#include "gruvbox.h"
+#include "colors/ColorPair.h"
+#include "pallets/gruvbox.h"
 
 InputLabel::InputLabel(int width, int y, int x) : Component(1, width, y, x), _input_text(std::string{}), _default_text(std::string{}) {}
 
 InputLabel::InputLabel(int width, int y, int x, std::string default_text) : Component(1, width, y, x), _input_text(std::string{}), _default_text(std::string{default_text}) {}
 
 void InputLabel::draw() {
-    ColorPair::activate(get_win(), light0, dark0);
+    ColorPair::apply(get_win(), light0, dark0);
     wclear(get_win());
 
     if (_input_text.empty()) {
         mvwprintw(get_win(), 0, 0, _default_text.c_str());
     } else {
-        if (_input_text.length() <= get_width() - 2) {
+        if (_input_text.length() <= static_cast<size_t>(get_width()) - 2) {
             mvwprintw(get_win(), 0, 0, "> ");
             wprintw(get_win(), _input_text.c_str());
         }
         else {
-            int start = get_width() - 2 + ((_input_text.size() - (get_width() - 1)) / get_width()) * get_width();
+            int start = static_cast<int>(get_width()) - 2 + ((_input_text.size() - (get_width() - 1)) / get_width()) * get_width();
             mvwprintw(get_win(), 0, 0, _input_text.substr(start, get_width()).c_str());
         }
     }

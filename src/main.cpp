@@ -13,7 +13,7 @@ int main() {
     noecho();
     start_color();
 
-    ColorPair::activate(stdscr, light0, dark0);
+    ColorPair::apply(stdscr, light0, dark0);
     refresh();
 
     auto textLabel = new TextLabel(2, 20, "Test Label");
@@ -22,7 +22,7 @@ int main() {
     std::string lorem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In placerat vitae dolor in aliquet. Vestibulum ac urna scelerisque, sollicitudin lorem nec, tincidunt odio. Proin euismod, neque sed pharetra consectetur, lorem diam vulputate est, quis ullamcorper est nisl at lectus. Nulla sagittis at diam vel feugiat. Morbi ac egestas elit. Nam at dignissim tortor. Fusce tempor aliquam feugiat. Suspendisse finibus massa in velit aliquet, sit amet porttitor justo congue.");
 
     auto textBox = new TextBox(30, 5, 20, lorem);
-    auto textBoxBox = new Box<TextBox>(textBox);
+    auto textBoxBox = new Box<TextBox>(textBox, "Lorem ipsum");
 
     auto inputLabel = new InputLabel(15, 2, 3, "> ");
     auto inputLabelBox = new Box<InputLabel>(inputLabel);

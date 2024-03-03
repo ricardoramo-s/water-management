@@ -1,12 +1,19 @@
 #include "Box.h"
 #include "TextLabel.h"
 #include "InputLabel.h"
-#include "climits"
-#include "ui/pallets/gruvbox.h"
-#include "ui/colors/ColorPair.h"
+#include "colors/ColorPair.h"
+#include "pallets/gruvbox.h"
 
 template<typename T>
-Box<T>::Box(T *component) : _component(component), Component() {
+Box<T>::Box(T *component) : Component(), _component(component), _header(std::string()) {
+    auto comp = dynamic_cast<Component*>(component);
+
+    movewin(comp->get_y(), comp->get_x());
+    resizewin(comp->get_height(), comp->get_width());
+}
+
+template<typename T>
+Box<T>::Box(T *component, std::string header) : Component(), _component(component), _header(header) {
     auto comp = dynamic_cast<Component*>(component);
 
     movewin(comp->get_y(), comp->get_x());
@@ -16,6 +23,11 @@ Box<T>::Box(T *component) : _component(component), Component() {
 template<typename T>
 T *Box<T>::get_component() {
     return _component;
+}
+
+template<typename T>
+void Box<T>::set_header(std::string header) {
+    _header = header;
 }
 
 
@@ -30,8 +42,11 @@ void Box<T>::draw() {
         resizewin(component->get_height() + 2, component->get_width() + 2);
     }
 
-    ColorPair::activate(get_win(), light0, dark0);
+    ColorPair::apply(get_win(), light0, dark0);
     box(get_win(), 0, 0);
+
+    if (!_header.empty()) mvwprintw(get_win(), 0, (get_width() - _header.size()) / 2 - 1, (" " + _header + " ").c_str());
+
     refreshwin();
     component->draw();
 }

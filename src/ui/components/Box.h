@@ -12,11 +12,14 @@ class Box : public Component {
 
 private:
     T* _component;
+    std::string _header;
 
 public:
     explicit Box(T* component);
+    Box(T* component, std::string header);
 
     T* get_component();
+    void set_header(std::string header);
 
     void draw() override;
     void handle_input() override;

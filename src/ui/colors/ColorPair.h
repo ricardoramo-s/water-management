@@ -19,7 +19,10 @@ private:
 
     ColorPair(Color* foreground, Color* background);
 public:
-    static void activate(WINDOW* win, short fr, short fg, short fb, short br, short bg, short bb);
+    static short apply(WINDOW* win, short fr, short fg, short fb, short br, short bg, short bb);
+
+    static short get(short fr, short fg, short fb, short br, short bg, short bb);
+    static short activate(WINDOW* win, short id);
 };
 
 #endif //WATER_MANAGEMENT_COLORPAIR_H
