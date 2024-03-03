@@ -1,5 +1,7 @@
 #include "Graph.h"
 
+#include <utility>
+
 int Graph::getNumVertex() const
 {
     return (int)vertexSet.size();
@@ -26,37 +28,9 @@ Vertex * Graph::findVertex(const nodeTID &nodeTypeid) const
 }
 
 
-//TODO add diferent types of nodes
+//TODO remove Edge & vertex
 
-/*
- *  Removes a vertex with a given content (in) from a graph (this), and
- *  all outgoing and incoming edges.
- *  Returns true if successful, and false if such vertex does not exist.
- */
-template <class T>
-bool Graph<T>::removeVertex(const T &in) {
-    for (auto it = vertexSet.begin(); it != vertexSet.end(); it++) {
-        if ((*it)->getInfo() == in) {
-            auto v = *it;
-            v->removeOutgoingEdges();
-            for (auto u : vertexSet) {
-                u->removeEdge(v->getInfo());
-            }
-            vertexSet.erase(it);
-            delete v;
-            return true;
-        }
-    }
-    return false;
-}
-
-/*
- * Adds an edge to a graph (this), given the contents of the source and
- * destination vertices and the edge weight (w).
- * Returns true if successful, and false if the source or destination vertex does not exist.
- */
-template <class T>
-bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
+bool Graph::addEdge(const nodeTID &sourc, const nodeTID &dest, double w) {
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
     if (v1 == nullptr || v2 == nullptr)
@@ -65,19 +39,19 @@ bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
     return true;
 }
 
-bool Graph::addBidirectionalEdge(const T &sourc, const T &dest, double w) {
+bool Graph::addBidirectionalEdge(const nodeTID &sourc, const nodeTID &dest, double capacity) {
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
     if (v1 == nullptr || v2 == nullptr)
         return false;
-    auto e1 = v1->addEdge(v2, w);
-    auto e2 = v2->addEdge(v1, w);
+    auto e1 = v1->addEdge(v2, capacity);
+    auto e2 = v2->addEdge(v1, capacity);
     e1->setReverse(e2);
     e2->setReverse(e1);
     return true;
 }
 
-void Graph::addReservoir(const std::tuple<const std::string, const int> &nodeTypeId, Reservoir r)
+void Graph::addReservoir(const nodeTID &nodeTypeId, Reservoir r)
 {
     auto [type, id] = nodeTypeId;
     auto *v = new Vertex(nodeTypeId);
@@ -85,30 +59,33 @@ void Graph::addReservoir(const std::tuple<const std::string, const int> &nodeTyp
     vertexSet[nodes.at(type)].push_back(v);
 }
 
-void Graph::addCity(const std::tuple<const std::string, const int> &nodeTypeId, City c)
+void Graph::addCity(const nodeTID &nodeTypeId, City c)
 {
     auto [type, id] = nodeTypeId;
     auto *v = new Vertex(nodeTypeId);
-    v->setReservoir(std::move(r));
+    v->setCity(std::move(c));
     vertexSet[nodes.at(type)].push_back(v);
 }
 
-void Graph::addPumpinStation(const std::tuple<const std::string, const int> &nodeTypeId, PumpingStations ps)
+void Graph::addPumpinStation(const nodeTID &nodeTypeId, PumpingStations ps)
 {
     auto [type, id] = nodeTypeId;
     auto *v = new Vertex(nodeTypeId);
-    v->setReservoir(std::move(r));
+    v->setPStation(std::move(ps));
     vertexSet[nodes.at(type)].push_back(v);
 }
 
-void Graph::removeReservoir(const std::tuple<const std::string, const int> &nodeTypeId, Reservoir r) {
+void Graph::removeReservoir(const std::tuple<const std::string, const int> &nodeTypeId, Reservoir r)
+{
 
 }
 
-void Graph::removeCity(const std::tuple<const std::string, const int> &nodeTypeId, City c) {
+void Graph::removeCity(const std::tuple<const std::string, const int> &nodeTypeId, City c)
+{
 
 }
 
-void Graph::removePumpinStation(const std::tuple<const std::string, const int> &nodeTypeId, PumpingStations ps) {
+void Graph::removePumpinStation(const std::tuple<const std::string, const int> &nodeTypeId, PumpingStations ps)
+{
 
 }

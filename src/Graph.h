@@ -36,10 +36,10 @@ private:
 class Edge;
 class Vertex;
 class Graph;
-
+//!Edge direction 1 -> bidirected, 2 -> directed
 class Edge {
 public:
-    Edge(Vertex *orig, Vertex *dest, double cap, bool direction);
+    Edge(Vertex *orig, Vertex *dest, double cap);
 
     Vertex * getDest() const;
     double getCapacity() const;
@@ -51,13 +51,12 @@ public:
     void setSelected(bool selected);
     void setReverse(Edge *reverse);
     void setFlow(double flow);
-    double residual;
+    double residual{};
     friend class Graph;
     friend class Vertex;
 protected:
     Vertex *dest; // destination vertex
     double capacity; // edge weight, can also be used for capacity
-    bool direction;
 
     // auxiliary fields
     bool selected = false;
@@ -66,7 +65,7 @@ protected:
     Vertex *orig;
     Edge *reverse = nullptr;
 
-    double flow; // for flow-related problems
+    double flow{}; // for flow-related problems
 
 };
 class Vertex {
@@ -75,7 +74,7 @@ public:
     explicit Vertex(nodeTID nodeTypeId);
 
     [[nodiscard]] nodeTID getnodeTypeId() const;
-    Edge* addEdge(Vertex *d, int capacity, bool direction);
+    Edge* addEdge(Vertex *d, double capacity);
     std::list<Edge *> getAdj() const;
     bool isVisited() const;
     double getDist() const;
@@ -141,9 +140,9 @@ public:
      * destination vertices and the edge weight (w).
      * Returns true if successful, and false if the source or destination vertex does not exist.
      */
-    bool addEdge(const std::string &source, const std::string &dest, double capacity, bool direction);
+    bool addEdge(const nodeTID &source, const nodeTID &dest, double capacity);
     bool removeEdge(const std::string &source, const std::string &dest);
-    bool addBidirectionalEdge(const std::string &source, const std::string &dest, double capacity);
+    bool addBidirectionalEdge(const nodeTID &source, const nodeTID &dest, double capacity);
 
     int getNumVertex() const;
     std::vector<std::vector<Vertex *>> getVertexSet() const;
@@ -153,9 +152,9 @@ public:
 
 Vertex::Vertex(nodeTID nodeTypeId): nodeTypeId(std::move(nodeTypeId)) {}
 
-Edge * Vertex::addEdge(Vertex *d, int capacity, bool direction)
+Edge * Vertex::addEdge(Vertex *d, double capacity)
 {
-    Edge* newEdge = new Edge(this, d, capacity, direction);
+    Edge* newEdge = new Edge(this, d, capacity);
     adj.push_back(newEdge);
     return newEdge;
 }
@@ -206,8 +205,8 @@ void Vertex::setReservoir(Reservoir r)
 
 /********************** Edge  ****************************/
 
-Edge::Edge(Vertex* orig, Vertex* dest, double capacity, bool direction):
-                    orig(orig), dest(dest), capacity(capacity),  direction(direction){}
+Edge::Edge(Vertex* orig, Vertex* dest, double capacity):
+                    orig(orig), dest(dest), capacity(capacity){}
 
 Vertex* Edge::getDest() const {
     return this->dest;
