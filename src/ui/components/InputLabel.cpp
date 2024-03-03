@@ -3,24 +3,24 @@
 #include "colors/ColorPair.h"
 #include "pallets/gruvbox.h"
 
-InputLabel::InputLabel(int width, int y, int x) : Component(1, width, y, x), _input_text(std::string{}), _default_text(std::string{}) {}
+InputLabel::InputLabel(int width, int y, int x) : Component(1, width, y, x), input_text_(std::string{}), default_text_(std::string{}) {}
 
-InputLabel::InputLabel(int width, int y, int x, std::string default_text) : Component(1, width, y, x), _input_text(std::string{}), _default_text(std::string{default_text}) {}
+InputLabel::InputLabel(int width, int y, int x, std::string default_text) : Component(1, width, y, x), input_text_(std::string{}), default_text_(std::string{default_text}) {}
 
 void InputLabel::draw() {
     ColorPair::apply(get_win(), light0, dark0);
     wclear(get_win());
 
-    if (_input_text.empty()) {
-        mvwprintw(get_win(), 0, 0, _default_text.c_str());
+    if (input_text_.empty()) {
+        mvwprintw(get_win(), 0, 0, default_text_.c_str());
     } else {
-        if (_input_text.length() <= static_cast<size_t>(get_width()) - 2) {
+        if (input_text_.length() <= static_cast<size_t>(get_width()) - 2) {
             mvwprintw(get_win(), 0, 0, "> ");
-            wprintw(get_win(), _input_text.c_str());
+            wprintw(get_win(), input_text_.c_str());
         }
         else {
-            int start = static_cast<int>(get_width()) - 2 + ((_input_text.size() - (get_width() - 1)) / get_width()) * get_width();
-            mvwprintw(get_win(), 0, 0, _input_text.substr(start, get_width()).c_str());
+            int start = static_cast<int>(get_width()) - 2 + ((input_text_.size() - (get_width() - 1)) / get_width()) * get_width();
+            mvwprintw(get_win(), 0, 0, input_text_.substr(start, get_width()).c_str());
         }
     }
 
@@ -28,8 +28,8 @@ void InputLabel::draw() {
 }
 
 void InputLabel::handle_input() {
-    if (_input_flag) {
-        _input_flag = false;
+    if (input_flag_) {
+        input_flag_ = false;
         wmove(get_win(), 0, 0);
     }
 
@@ -37,9 +37,9 @@ void InputLabel::handle_input() {
     int ch = wgetch(get_win());
 
     switch (ch) {
-        case BACKSPACE:  // Handle backspace (assuming 127 is the correct code)
-            if (!_input_text.empty()) {
-                _input_text.pop_back();
+        case BACKSPACE:
+            if (!input_text_.empty()) {
+                input_text_.pop_back();
             }
             break;
         case KEY_LEFT:  // Example: Handle left arrow key
@@ -49,15 +49,15 @@ void InputLabel::handle_input() {
             // ... TODO Implement right arrow handling ...
             break;
         case CTRL_U:
-            _input_text.clear();
+            input_text_.clear();
             break;
         case ENTER:
-            _input_flag = true;
+            input_flag_ = true;
             break;
             // ... other arrow keys, special keys if needed ...
         default:  // Handle regular characters
             if (isprint(ch)) {
-                _input_text += ch;
+                input_text_ += ch;
             }
     }
 
@@ -65,5 +65,5 @@ void InputLabel::handle_input() {
 }
 
 bool InputLabel::get_input_flag() const {
-    return  _input_flag;
+    return  input_flag_;
 }

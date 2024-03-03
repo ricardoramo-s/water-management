@@ -11,8 +11,8 @@ class Box : public Component {
     static_assert(std::is_base_of<Component, T>::value, "T must inherit from Component");
 
 private:
-    T* _component;
-    std::string _header;
+    T* component_;
+    std::string header_;
 
 public:
     explicit Box(T* component);

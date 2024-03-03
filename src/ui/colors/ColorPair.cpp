@@ -1,20 +1,20 @@
 #include "ColorPair.h"
 
-short ColorPair::_last_pair = 1;
+short ColorPair::last_pair_ = 1;
 
-std::vector<ColorPair*> ColorPair::_pairs = std::vector<ColorPair*>();
+std::vector<ColorPair*> ColorPair::pairs_ = std::vector<ColorPair*>();
 
-ColorPair::ColorPair(Color* foreground, Color* background) : _id(_last_pair++), _foreground(foreground), _background(background) {
-    init_pair(_id, _foreground->_id, _background->_id);
-    _pairs.push_back(this);
+ColorPair::ColorPair(Color* foreground, Color* background) : _id(last_pair_++), _foreground(foreground), _background(background) {
+    init_pair(_id, _foreground->id_, _background->id_);
+    pairs_.push_back(this);
 }
 
 short ColorPair::get(short fr, short fg, short fb, short br, short bg, short bb) {
     short id = -1;
 
-    for (auto& pair : _pairs) {
-        if (pair->_foreground->_r == fr && pair->_foreground->_g == fg && pair->_foreground->_b == fb &&
-            pair->_background->_r == br && pair->_background->_g == bg && pair->_background->_b == bb) {
+    for (auto& pair : pairs_) {
+        if (pair->_foreground->_r == fr && pair->_foreground->g_ == fg && pair->_foreground->b_ == fb &&
+            pair->_background->_r == br && pair->_background->g_ == bg && pair->_background->b_ == bb) {
             id = pair->_id;
         }
     }
@@ -32,7 +32,13 @@ short ColorPair::get(short fr, short fg, short fb, short br, short bg, short bb)
 
 short ColorPair::activate(WINDOW *win, short id) {
     wattron(win, COLOR_PAIR(id));
-    wbkgd(win, COLOR_PAIR(id));
+    wbkgdset(win, COLOR_PAIR(id));
+
+    return id;
+}
+
+short ColorPair::deactivate(WINDOW *win, short id) {
+    wattroff(win, COLOR_PAIR(id));
 
     return id;
 }

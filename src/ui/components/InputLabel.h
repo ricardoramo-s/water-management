@@ -7,10 +7,10 @@
 
 class InputLabel : public Component {
 private:
-    std::string _input_text;
-    std::string _default_text;
+    std::string input_text_;
+    std::string default_text_;
 
-    bool _input_flag = true;
+    bool input_flag_ = true;
 
 public:
     InputLabel(int width, int y, int x);

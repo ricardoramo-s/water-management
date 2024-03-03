@@ -5,7 +5,7 @@
 #include "pallets/gruvbox.h"
 
 template<typename T>
-Box<T>::Box(T *component) : Component(), _component(component), _header(std::string()) {
+Box<T>::Box(T *component) : Component(), component_(component), header_(std::string()) {
     auto comp = dynamic_cast<Component*>(component);
 
     movewin(comp->get_y(), comp->get_x());
@@ -13,7 +13,7 @@ Box<T>::Box(T *component) : Component(), _component(component), _header(std::str
 }
 
 template<typename T>
-Box<T>::Box(T *component, std::string header) : Component(), _component(component), _header(header) {
+Box<T>::Box(T *component, std::string header) : Component(), component_(component), header_(header) {
     auto comp = dynamic_cast<Component*>(component);
 
     movewin(comp->get_y(), comp->get_x());
@@ -22,18 +22,18 @@ Box<T>::Box(T *component, std::string header) : Component(), _component(componen
 
 template<typename T>
 T *Box<T>::get_component() {
-    return _component;
+    return component_;
 }
 
 template<typename T>
 void Box<T>::set_header(std::string header) {
-    _header = header;
+    header_ = std::move(header);
 }
 
 
 template<typename T>
 void Box<T>::draw() {
-    auto component = dynamic_cast<Component*>(_component);
+    auto component = dynamic_cast<Component*>(component_);
 
     if (this->get_x() != component->get_x() - 1 || this->get_y() != component->get_y() - 1) {
         movewin(component->get_y() - 1, component->get_x() - 1);
@@ -45,7 +45,7 @@ void Box<T>::draw() {
     ColorPair::apply(get_win(), light0, dark0);
     box(get_win(), 0, 0);
 
-    if (!_header.empty()) mvwprintw(get_win(), 0, (get_width() - _header.size()) / 2 - 1, (" " + _header + " ").c_str());
+    if (!header_.empty()) mvwprintw(get_win(), 0, (get_width() - header_.size()) / 2 - 1, (" " + header_ + " ").c_str());
 
     refreshwin();
     component->draw();
@@ -53,18 +53,18 @@ void Box<T>::draw() {
 
 template<typename T>
 void Box<T>::handle_input() {
-    auto component = dynamic_cast<Component*>(_component);
+    auto component = dynamic_cast<Component*>(component_);
     component->handle_input();
 }
 
 template<typename T>
 Box<T>::~Box() {
-    delete _component;
+    delete component_;
 }
 
 template<typename T>
 void Box<T>::move_with_component(int y, int x) {
-    auto component = dynamic_cast<Component*>(_component);
+    auto component = dynamic_cast<Component*>(component_);
 
     component->movewin(y, x);
     movewin(y, x);
@@ -72,7 +72,7 @@ void Box<T>::move_with_component(int y, int x) {
 
 template<typename T>
 void Box<T>::resize_with_component(int height, int width) {
-    auto component = dynamic_cast<Component*>(_component);
+    auto component = dynamic_cast<Component*>(component_);
 
     component->resizewin(height, width);
     resizewin(height, width);

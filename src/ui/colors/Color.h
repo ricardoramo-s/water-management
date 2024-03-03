@@ -8,9 +8,9 @@
 
 class Color {
 private:
-    short _r, _g, _b, _id;
-    static short _last_color;
-    static std::vector<Color*> _colors;
+    short _r, g_, b_, id_;
+    static short last_color_;
+    static std::vector<Color*> colors_;
 
     Color(short r, short g, short b);
 public:

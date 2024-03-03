@@ -6,11 +6,15 @@
 
 class TextBox : public Component {
 private:
-    std::vector<std::string> _lines;
+    std::vector<std::string> lines_;
+
+    int selected_ = -1, max_ = 0, min_ = 0;
+    bool reversed_ = false;
 
 public:
     TextBox(int width, int y, int x, std::string& text);
     TextBox(int y, int x, std::vector<std::string>& lines);
+    TextBox(int height, int width, int y, int x, std::vector<std::string>& lines, bool reversed);
 
 
     void draw() override;

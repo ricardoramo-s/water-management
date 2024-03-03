@@ -7,8 +7,8 @@
 
 class Component {
 private:
-    int _x, _y, _width, _height;
-    WINDOW *_win;
+    int x_, y_, width_, height_;
+    WINDOW *win_;
 
 protected:
     Component(int height, int width, int y, int x);

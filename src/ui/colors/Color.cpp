@@ -1,16 +1,16 @@
 #include "Color.h"
 
-short Color::_last_color = 1;
-auto Color::_colors = std::vector<Color*>();
+short Color::last_color_ = 1;
+auto Color::colors_ = std::vector<Color*>();
 
-Color::Color(short r, short g, short b) : _r(r), _g(g), _b(b), _id(_last_color++) {
-    init_color(_id, r, g, b);
-    _colors.push_back(this);
+Color::Color(short r, short g, short b) : _r(r), g_(g), b_(b), id_(last_color_++) {
+    init_color(id_, r, g, b);
+    colors_.push_back(this);
 }
 
 Color* Color::get(short red, short green, short blue) {
-    for (auto& color : _colors) {
-        if (color->_r == red && color->_g == green && color->_b == blue) {
+    for (auto& color : colors_) {
+        if (color->_r == red && color->g_ == green && color->b_ == blue) {
             return color;
         }
     }

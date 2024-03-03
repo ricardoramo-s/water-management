@@ -14,8 +14,8 @@ private:
     short _id;
     Color* _foreground, *_background;
 
-    static short _last_pair;
-    static std::vector<ColorPair*> _pairs;
+    static short last_pair_;
+    static std::vector<ColorPair*> pairs_;
 
     ColorPair(Color* foreground, Color* background);
 public:
@@ -23,6 +23,7 @@ public:
 
     static short get(short fr, short fg, short fb, short br, short bg, short bb);
     static short activate(WINDOW* win, short id);
+    static short deactivate(WINDOW* win, short id);
 };
 
 #endif //WATER_MANAGEMENT_COLORPAIR_H

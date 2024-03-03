@@ -7,7 +7,7 @@
 
 class TextLabel : public Component {
 private:
-    std::string _text;
+    std::string text_;
 
 public:
     TextLabel(int y, int x, std::string text);
