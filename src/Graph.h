@@ -2,6 +2,7 @@
 #define WATER_MANAGEMENT_GRAPH_H
 
 #include <string>
+#include <utility>
 #include <vector>
 #include <unordered_set>
 #include <list>
@@ -16,73 +17,10 @@
 #include <climits>
 #include <utility>
 #include <immintrin.h>
-#include "Cities.h"
+#include "City.h"
 #include "Reservoir.h"
 
-#define nodeinfo std::pair<int, std::string>
-
-class Edge;
-class Vertex;
-class Graph;
-
-class Edge {
-public:
-    Edge(Vertex *orig, Vertex *dest, double cap, bool direction);
-
-    Vertex * getDest() const;
-    double getCapacity() const;
-    bool isSelected() const;
-    Vertex * getOrig() const;
-    Edge *getReverse() const;
-    double getFlow() const;
-
-    void setSelected(bool selected);
-    void setReverse(Edge *reverse);
-    void setFlow(double flow);
-    double residual;
-    friend class Graph;
-    friend class Vertex;
-protected:
-    Vertex *dest; // destination vertex
-    double capacity; // edge weight, can also be used for capacity
-    bool direction;
-
-    // auxiliary fields
-    bool selected = false;
-
-    // used for bidirectional edges
-    Vertex *orig;
-    Edge *reverse = nullptr;
-
-    double flow; // for flow-related problems
-
-};
-class Vertex {
-public:
-    explicit Vertex(std::string nodeTypeid);
-
-    std::string getnodeTypeId() const;
-    Edge * addEdge(Vertex *d, int capacity, bool direction);
-    std::list<Edge *> getAdj() const;
-    bool isVisited() const;
-    double getDist() const;
-    std::vector<std::string> getPath() const;
-
-    void setVisited(bool visited);
-    void setDist(double dist);
-    friend class Graph;
-protected:
-    std::string nodeTypeid;
-    std::list<Edge* > adj;
-
-    // auxiliary fields
-    bool visited = false;
-    double dist = 0;
-    std::vector<std::string> parents;
-
-    std::vector<Edge *> incoming; // incoming edges
-
-};
+#define nodeTID std::tuple<const std::string, const int>
 
 class PumpingStations{
 public:
@@ -95,25 +33,106 @@ private:
     std::string code;
 };
 
+class Edge;
+class Vertex;
+class Graph;
+//!Edge direction 1 -> bidirected, 2 -> directed
+class Edge {
+public:
+    Edge(Vertex *orig, Vertex *dest, double cap);
+
+    Vertex * getDest() const;
+    double getCapacity() const;
+    bool isSelected() const;
+    Vertex * getOrig() const;
+    Edge *getReverse() const;
+    double getFlow() const;
+
+    void setSelected(bool selected);
+    void setReverse(Edge *reverse);
+    void setFlow(double flow);
+    double residual{};
+    friend class Graph;
+    friend class Vertex;
+protected:
+    Vertex *dest; // destination vertex
+    double capacity; // edge weight, can also be used for capacity
+
+    // auxiliary fields
+    bool selected = false;
+
+    // used for bidirectional edges
+    Vertex *orig;
+    Edge *reverse = nullptr;
+
+    double flow{}; // for flow-related problems
+
+};
+class Vertex {
+public:
+    enum class Type { PumpingStations, Reservoir, City };
+    explicit Vertex(nodeTID nodeTypeId);
+
+    [[nodiscard]] nodeTID getnodeTypeId() const;
+    Edge* addEdge(Vertex *d, double capacity);
+    std::list<Edge *> getAdj() const;
+    bool isVisited() const;
+    double getDist() const;
+    std::vector<std::string> getPath() const;
+
+    void setPStation(PumpingStations ps);
+    void setCity(City c);
+    void setReservoir(Reservoir r);
+    void setVisited(bool visited);
+    void setDist(double dist);
+    int queueIndex = 0;
+    friend class Graph;
+protected:
+    nodeTID nodeTypeId;
+    std::list<Edge* > adj;
+
+    // auxiliary fields
+    bool visited = false;
+    double dist = 0;
+    std::vector<std::string> parents;
+    std::vector<Edge *> incoming; // incoming edges
+    PumpingStations ps = PumpingStations(0, "");
+    Reservoir r = Reservoir("");
+    City c = City("");
+
+};
+
 /*!
  * @note As the data is organized by id and the code contains the id
  * the string of the code as the node type in the start of the string and the id, separated by '_'
  */
 
 class Graph {
-
-    std::vector<Vertex *> vertexSet;    // vertex set
+    // vertex set 3 types of nodes,
+    //index 0 represents R -> Reservoir
+    //index 1 represents Ps -> PumpingStation
+    //index 2 represents C -> City
+    std::unordered_map<std::string, int> nodes = {{"C", 0}, {"R", 1}, {"PS", 2}};
+    std::vector<std::vector<Vertex *>> vertexSet;
 public:
 
+    std::tuple<int, int> getNodeTypeId(const std::string &nodeTypeId) const;
     /*
     * Auxiliary function to find a vertex with a given the content.
     */
-    Vertex *findVertex(const std::string &in) const;
+    Vertex *findVertex(const nodeTID & nodeTypeId) const;
     /*
      *  Adds a vertex with a given content or info (in) to a graph (this).
      *  Returns true if successful, and false if a vertex with that content already exists.
      */
-    bool addVertex(const std::string &in);
+    void addReservoir(const nodeTID & nodeTypeId, Reservoir r);
+    void addCity(const nodeTID & nodeTypeId, City c);
+    void addPumpinStation(const nodeTID & nodeTypeId, PumpingStations ps);
+    void removeReservoir(const nodeTID & nodeTypeId, Reservoir r);
+    void removeCity(const nodeTID & nodeTypeId, City c);
+    void removePumpinStation(const nodeTID & nodeTypeId, PumpingStations ps);
+
+
     bool removeVertex(const std::string &in);
 
     /*
@@ -121,28 +140,28 @@ public:
      * destination vertices and the edge weight (w).
      * Returns true if successful, and false if the source or destination vertex does not exist.
      */
-    bool addEdge(const std::string &source, const std::string &dest, double capacity, bool direction);
+    bool addEdge(const nodeTID &source, const nodeTID &dest, double capacity);
     bool removeEdge(const std::string &source, const std::string &dest);
-    bool addBidirectionalEdge(const std::string &source, const std::string &dest, double capacity);
+    bool addBidirectionalEdge(const nodeTID &source, const nodeTID &dest, double capacity);
 
     int getNumVertex() const;
-    std::vector<Vertex *> getVertexSet() const;
+    std::vector<std::vector<Vertex *>> getVertexSet() const;
 };
 
 /************************* Vertex  **************************/
 
-Vertex::Vertex(std::string in): nodeTypeid(in) {}
+Vertex::Vertex(nodeTID nodeTypeId): nodeTypeId(std::move(nodeTypeId)) {}
 
-Edge * Vertex::addEdge(Vertex *d, int capacity, bool direction) {
-    Edge* newEdge = new Edge(this, d, capacity, direction);
-    //TODO implement if direction is 1 the node is bidirectional
+Edge * Vertex::addEdge(Vertex *d, double capacity)
+{
+    Edge* newEdge = new Edge(this, d, capacity);
     adj.push_back(newEdge);
-    d->incoming.push_back(newEdge);
     return newEdge;
 }
 
-std::string Vertex::getnodeTypeId() const {
-    return this->nodeTypeid;
+nodeTID Vertex::getnodeTypeId() const
+{
+    return this->nodeTypeId;
 }
 
 std::list<Edge*> Vertex::getAdj() const {
@@ -169,10 +188,25 @@ void Vertex::setDist(double dist) {
     this->dist = dist;
 }
 
+void Vertex::setPStation(PumpingStations ps)
+{
+    this->ps = std::move(ps);
+}
+
+void Vertex::setCity(City c)
+{
+    this->c = std::move(c);
+}
+
+void Vertex::setReservoir(Reservoir r)
+{
+    this->r = std::move(r);
+}
+
 /********************** Edge  ****************************/
 
-Edge::Edge(Vertex* orig, Vertex* dest, double capacity, bool direction):
-                    orig(orig), dest(dest), capacity(capacity),  direction(direction){}
+Edge::Edge(Vertex* orig, Vertex* dest, double capacity):
+                    orig(orig), dest(dest), capacity(capacity){}
 
 Vertex* Edge::getDest() const {
     return this->dest;
