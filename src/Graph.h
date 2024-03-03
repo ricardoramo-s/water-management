@@ -16,10 +16,21 @@
 #include <climits>
 #include <utility>
 #include <immintrin.h>
-#include "Cities.h"
+#include "City.h"
 #include "Reservoir.h"
 
-#define nodeinfo std::pair<int, std::string>
+#define nodeTID std::tuple<const std::string, const int>
+
+class PumpingStations{
+public:
+    PumpingStations(const int &id, const std::string& code) : id(id), code(code) {};
+    int getId() const {return this->id;}
+    std::string getcode() const {return this->code;}
+    typedef std::vector<std::string> PumpingStationsH;
+private:
+    int id;
+    std::string code;
+};
 
 class Edge;
 class Vertex;
@@ -59,10 +70,11 @@ protected:
 };
 class Vertex {
 public:
-    explicit Vertex(std::string nodeTypeid);
+    enum class Type { PumpingStations, Reservoir, City };
+    explicit Vertex(nodeTID nodeTypeId);
 
-    std::string getnodeTypeId() const;
-    Edge * addEdge(Vertex *d, int capacity, bool direction);
+    [[nodiscard]] nodeTID getnodeTypeId() const;
+    Edge* addEdge(Vertex *d, int capacity, bool direction);
     std::list<Edge *> getAdj() const;
     bool isVisited() const;
     double getDist() const;
@@ -70,9 +82,10 @@ public:
 
     void setVisited(bool visited);
     void setDist(double dist);
+    int queueIndex = 0;
     friend class Graph;
 protected:
-    std::string nodeTypeid;
+    nodeTID nodeTypeId;
     std::list<Edge* > adj;
 
     // auxiliary fields
@@ -84,36 +97,30 @@ protected:
 
 };
 
-class PumpingStations{
-public:
-    PumpingStations(const int &id, const std::string& code) : id(id), code(code) {};
-    int getId() const {return this->id;}
-    std::string getcode() const {return this->code;}
-    typedef std::vector<std::string> PumpingStationsH;
-private:
-    int id;
-    std::string code;
-};
-
 /*!
  * @note As the data is organized by id and the code contains the id
  * the string of the code as the node type in the start of the string and the id, separated by '_'
  */
 
 class Graph {
-
-    std::vector<Vertex *> vertexSet;    // vertex set
+    // vertex set 3 types of nodes,
+    //index 0 represents R -> Reservoir
+    //index 1 represents Ps -> PumpingStation
+    //index 2 represents C -> City
+    std::unordered_map<std::string, int> nodes = {{"C", 0}, {"R", 1}, {"PS", 2}};
+    std::vector<std::vector<Vertex *>> vertexSet;
 public:
 
+    std::tuple<int, int> getNodeTypeId(const std::string &nodeTypeId) const;
     /*
     * Auxiliary function to find a vertex with a given the content.
     */
-    Vertex *findVertex(const std::string &in) const;
+    Vertex *findVertex(const nodeTID & nodeTypeId) const;
     /*
      *  Adds a vertex with a given content or info (in) to a graph (this).
      *  Returns true if successful, and false if a vertex with that content already exists.
      */
-    bool addVertex(const std::string &in);
+    bool addVertex(const nodeTID & nodeTypeId);
     bool removeVertex(const std::string &in);
 
     /*
@@ -126,23 +133,23 @@ public:
     bool addBidirectionalEdge(const std::string &source, const std::string &dest, double capacity);
 
     int getNumVertex() const;
-    std::vector<Vertex *> getVertexSet() const;
+    std::vector<std::vector<Vertex *>> getVertexSet() const;
 };
 
 /************************* Vertex  **************************/
 
-Vertex::Vertex(std::string in): nodeTypeid(in) {}
+Vertex::Vertex(nodeTID nodeTypeId): nodeTypeId(std::move(nodeTypeId)) {}
 
-Edge * Vertex::addEdge(Vertex *d, int capacity, bool direction) {
+Edge * Vertex::addEdge(Vertex *d, int capacity, bool direction)
+{
     Edge* newEdge = new Edge(this, d, capacity, direction);
-    //TODO implement if direction is 1 the node is bidirectional
     adj.push_back(newEdge);
-    d->incoming.push_back(newEdge);
     return newEdge;
 }
 
-std::string Vertex::getnodeTypeId() const {
-    return this->nodeTypeid;
+nodeTID Vertex::getnodeTypeId() const
+{
+    return this->nodeTypeId;
 }
 
 std::list<Edge*> Vertex::getAdj() const {
