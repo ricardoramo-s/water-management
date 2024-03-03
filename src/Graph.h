@@ -22,12 +22,12 @@
 
 #define nodeTID std::tuple<const std::string, const int>
 
-class PumpingStations{
+class PumpingStation{
 public:
-    PumpingStations(const int &id, const std::string& code) : id(id), code(code) {};
+    PumpingStation(const int &id, const std::string& code) : id(id), code(code) {};
     int getId() const {return this->id;}
     std::string getcode() const {return this->code;}
-    typedef std::vector<std::string> PumpingStationsH;
+    typedef std::vector<PumpingStation> PumpingStationsH;
 private:
     int id;
     std::string code;
@@ -80,7 +80,7 @@ public:
     double getDist() const;
     std::vector<std::string> getPath() const;
 
-    void setPStation(PumpingStations ps);
+    void setPStation(PumpingStation ps);
     void setCity(City c);
     void setReservoir(Reservoir r);
     void setVisited(bool visited);
@@ -96,7 +96,7 @@ protected:
     double dist = 0;
     std::vector<std::string> parents;
     std::vector<Edge *> incoming; // incoming edges
-    PumpingStations ps = PumpingStations(0, "");
+    PumpingStation ps = PumpingStation(0, "");
     Reservoir r = Reservoir("");
     City c = City("");
 
@@ -127,13 +127,10 @@ public:
      */
     void addReservoir(const nodeTID & nodeTypeId, Reservoir r);
     void addCity(const nodeTID & nodeTypeId, City c);
-    void addPumpinStation(const nodeTID & nodeTypeId, PumpingStations ps);
+    void addPumpingStation(const nodeTID & nodeTypeId, PumpingStation ps);
     void removeReservoir(const nodeTID & nodeTypeId, Reservoir r);
     void removeCity(const nodeTID & nodeTypeId, City c);
-    void removePumpinStation(const nodeTID & nodeTypeId, PumpingStations ps);
-
-
-    bool removeVertex(const std::string &in);
+    void removePumpingStation(const nodeTID & nodeTypeId, PumpingStation ps);
 
     /*
      * Adds an edge to a graph (this), given the contents of the source and
@@ -188,7 +185,7 @@ void Vertex::setDist(double dist) {
     this->dist = dist;
 }
 
-void Vertex::setPStation(PumpingStations ps)
+void Vertex::setPStation(PumpingStation ps)
 {
     this->ps = std::move(ps);
 }

@@ -67,7 +67,7 @@ void Graph::addCity(const nodeTID &nodeTypeId, City c)
     vertexSet[nodes.at(type)].push_back(v);
 }
 
-void Graph::addPumpinStation(const nodeTID &nodeTypeId, PumpingStations ps)
+void Graph::addPumpingStation(const nodeTID &nodeTypeId, PumpingStation ps)
 {
     auto [type, id] = nodeTypeId;
     auto *v = new Vertex(nodeTypeId);
@@ -75,17 +75,17 @@ void Graph::addPumpinStation(const nodeTID &nodeTypeId, PumpingStations ps)
     vertexSet[nodes.at(type)].push_back(v);
 }
 
-void Graph::removeReservoir(const std::tuple<const std::string, const int> &nodeTypeId, Reservoir r)
+void Graph::removeReservoir(const nodeTID &nodeTypeId, Reservoir r)
 {
 
 }
 
-void Graph::removeCity(const std::tuple<const std::string, const int> &nodeTypeId, City c)
+void Graph::removeCity(const nodeTID &nodeTypeId, City c)
 {
 
 }
 
-void Graph::removePumpinStation(const std::tuple<const std::string, const int> &nodeTypeId, PumpingStations ps)
+void Graph::removePumpingStation(const nodeTID &nodeTypeId, PumpingStation ps)
 {
 
 }

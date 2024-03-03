@@ -16,7 +16,9 @@ add_executable(water-management src/main.cpp
         src/minHeap.h
         src/City.h
         src/City.cpp
-        )
+        src/DataProcessor.h
+        src/DataProcessor.cpp
+)
 
 # Link ncurses library
 target_link_libraries(water-management ${CURSES_LIBRARIES})
