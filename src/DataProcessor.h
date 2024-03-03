@@ -17,7 +17,7 @@ public:
     DataProcessor();
 
     //getters
-    PumpingStations::PumpingStationsH getPStations() const;
+    PumpingStation::PumpingStationsH getPStations() const;
     std::unordered_map<std::string, int> getId() const;
     Graph getGraph() const;
     Graph getSubGraph() const;
@@ -33,7 +33,7 @@ public:
 
     Graph subgraph(const std::unordered_set<std::string>& failedLines);
     Graph subgraph(const std::vector<std::pair<std::string, std::string>>& failedSegments);
-    Graph subgraph(const PumpingStations::PumpingStationsH& failedStations);
+    Graph subgraph(const PumpingStation::PumpingStationsH& failedStations);
 
     std::vector<std::pair<std::string, int>> maxConnectedStations(int type);
 
@@ -48,12 +48,14 @@ public:
 private:
 
     void createStations();
+    void createReservoir();
+    void createCities();
     void stationsFlow();
 
     //graph variants
-    void createSuperSource(int id, PumpingStations::PumpingStationsH targetStations);
-    void createSuperSink(int id, PumpingStations::PumpingStationsH targetStations);
-    void createSuperGraph(bool type, const Graph& graph, const PumpingStations::PumpingStationsH& targetStations);
+    void createSuperSource(int id, PumpingStation::PumpingStationsH targetStations);
+    void createSuperSink(int id, PumpingStation::PumpingStationsH targetStations);
+    void createSuperGraph(bool type, const Graph& graph, const PumpingStation::PumpingStationsH& targetStations);
     void createSuperSourceGraph(bool type, const Graph& graph, int target);
 
     static void checkField(std::istringstream &iss, std::string &field);
@@ -63,10 +65,9 @@ private:
 
     static bool segmentFailure(const std::vector<std::pair<std::string, std::string>>& failedSegments, const std::string& source, const std::string& target);
     bool lineFailure(std::unordered_set<std::string> failedLines, const std::string &source, const std::string &target);
-    static bool stationFailure(PumpingStations::PumpingStationsH failedStations, const std::string &source, const std::string &target);
+    static bool stationFailure(PumpingStation::PumpingStationsH failedStations, const std::string &source, const std::string &target);
 
-    PumpingStations::PumpingStationsH stations;
-    std::unordered_map<std::string, int> PStations;
+    PumpingStation::PumpingStationsH stations;
 
     std::unordered_map<std::string, Reservoir::ReservoirH> Reservoirs;
     std::unordered_map<std::string, City::CitiesH> Cities;

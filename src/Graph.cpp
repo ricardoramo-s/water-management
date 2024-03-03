@@ -67,7 +67,7 @@ void Graph::addCity(const nodeTID &nodeTypeId, City c)
     vertexSet[nodes.at(type)].push_back(v);
 }
 
-void Graph::addPumpingStation(const nodeTID &nodeTypeId, PumpingStations ps)
+void Graph::addPumpingStation(const nodeTID &nodeTypeId, PumpingStation ps)
 {
     auto [type, id] = nodeTypeId;
     auto *v = new Vertex(nodeTypeId);
@@ -85,7 +85,7 @@ void Graph::removeCity(const nodeTID &nodeTypeId, City c)
 
 }
 
-void Graph::removePumpingStation(const nodeTID &nodeTypeId, PumpingStations ps)
+void Graph::removePumpingStation(const nodeTID &nodeTypeId, PumpingStation ps)
 {
 
 }
