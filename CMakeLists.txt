@@ -13,7 +13,8 @@ add_executable(water-management
         src/ui/components/TextLabel.cpp
         src/ui/components/InputLabel.cpp
         src/ui/colors/ColorPair.cpp
-        src/ui/colors/Color.cpp)
+        src/ui/colors/Color.cpp
+        src/ui/components/SearchBox.cpp)
 
 find_package(Curses REQUIRED)
 

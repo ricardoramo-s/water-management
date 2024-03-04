@@ -28,12 +28,17 @@ void InputLabel::draw() {
 }
 
 void InputLabel::handle_input() {
+    int ch = wgetch(get_win());
+
+    handle_input(ch);
+}
+
+
+void InputLabel::handle_input(int ch) {
     if (input_flag_) {
         input_flag_ = false;
         wmove(get_win(), 0, 0);
     }
-
-    int ch = wgetch(get_win());
 
     switch (ch) {
         case BACKSPACE:
@@ -65,4 +70,8 @@ void InputLabel::handle_input() {
 
 bool InputLabel::get_input_flag() const {
     return  input_flag_;
+}
+
+std::string InputLabel::get_input_text() const {
+    return input_text_;
 }

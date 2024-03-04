@@ -21,9 +21,19 @@ public:
     TextBox(int y, int x, std::vector<std::string>& lines);
     TextBox(int height, int width, int y, int x, std::vector<std::string>& lines, bool reversed);
 
+    std::vector<std::string>& get_lines_();
+    void set_lines_(std::vector<std::string>& lines);
+
+    std::string get_selected_string() const;
+    int get_selected() const;
+
+    void select(int i);
+    void select(std::string& text);
+
 
     void draw() override;
     void handle_input() override;
+    void handle_input(int ch);
 };
 
 

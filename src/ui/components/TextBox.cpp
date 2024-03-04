@@ -51,7 +51,46 @@ TextBox::TextBox(int height, int width, int y, int x, std::vector<std::string> &
     max_ = std::min(height, static_cast<int>(lines.size()));
 }
 
+std::vector<std::string> &TextBox::get_lines_() {
+    return lines_;
+}
+
+void TextBox::set_lines_(std::vector<std::string> &lines) {
+    lines_ = std::move(lines);
+}
+
+int TextBox::get_selected() const {
+    return selected_;
+}
+
+std::string TextBox::get_selected_string() const {
+    return lines_.at(selected_);
+}
+
+void TextBox::select(int i) {
+    if (i < -1 || i >= lines_.size()) return;
+    else selected_ = i;
+}
+
+void TextBox::select(std::string &text) {
+    // Find the iterator pointing to the element
+    auto it = std::find(lines_.begin(), lines_.end(), text);
+
+    // Check if the string was found
+    if (it != lines_.end()) {
+        // Calculate the index (distance from the beginning)
+        selected_ = std::distance(lines_.begin(), it);
+    }
+}
+
 void TextBox::draw() {
+    if (lines_.empty()) {
+        selected_ = -1;
+    }
+    else if (selected_ >= (int)lines_.size()) {
+        selected_ = (int)lines_.size() - 1;
+    }
+
     short selected_id = ColorPair::get(dark0, light0);
     short default_id = ColorPair::get(light0, dark0);
 
@@ -64,9 +103,11 @@ void TextBox::draw() {
         wmove(get_win(), static_cast<int>(relative_y), 0);
         wclrtoeol(get_win());
 
-        mvwaddch(get_win(), static_cast<int>(relative_y), 0, ' ');
-        mvwprintw(get_win(), static_cast<int>(relative_y), 1, lines_.at(index).c_str());
-        mvwaddch(get_win(), static_cast<int>(relative_y), get_width() - 1, ' ');
+        if (index >= 0 && index < lines_.size()) {
+            mvwaddch(get_win(), static_cast<int>(relative_y), 0, ' ');
+            mvwprintw(get_win(), static_cast<int>(relative_y), 1, lines_.at(index).c_str());
+            mvwaddch(get_win(), static_cast<int>(relative_y), get_width() - 1, ' ');
+        }
 
         relative_y += (reversed_) ? -1 : 1;
     }
@@ -75,14 +116,12 @@ void TextBox::draw() {
 }
 
 void TextBox::handle_input() {
-    mvprintw(0, 0, ("selected_: " + std::to_string(selected_)).c_str());
-    mvprintw(1, 0, ("min_: " + std::to_string(min_)).c_str());
-    mvprintw(2, 0, ("max_: " + std::to_string(max_)).c_str());
-    refresh();
-
     int ch = wgetch(get_win());
-    mvprintw(3, 0, ("Pressed key: " + std::to_string(ch)).c_str());
-    
+
+    handle_input(ch);
+}
+
+void TextBox::handle_input(int ch) {
     if (selected_ == -1) { // not selected
         switch (ch) {
             case ARROW_UP:

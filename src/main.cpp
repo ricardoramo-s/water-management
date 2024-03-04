@@ -3,6 +3,7 @@
 #include "components/Box.h"
 #include "components/TextLabel.h"
 #include "components/InputLabel.h"
+#include "components/SearchBox.h"
 #include "pallets/gruvbox.h"
 #include "colors/ColorPair.h"
 #include <string>
@@ -17,25 +18,14 @@ int main() {
     clear();
     refresh();
 
-    auto textLabel = new TextLabel(2, 20, "Test Label");
-    auto textLabelBox = new Box<TextLabel>(textLabel);
-
-    //std::string lorem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In placerat vitae dolor in aliquet. Vestibulum ac urna scelerisque, sollicitudin lorem nec, tincidunt odio. Proin euismod, neque sed pharetra consectetur, lorem diam vulputate est, quis ullamcorper est nisl at lectus. Nulla sagittis at diam vel feugiat. Morbi ac egestas elit. Nam at dignissim tortor. Fusce tempor aliquam feugiat. Suspendisse finibus massa in velit aliquet, sit amet porttitor justo congue.");
-
-    auto strings = std::vector<std::string>({"RicardoAaaaaaaaaaaaaaaaaaaaaaa", "Alexandre", "Alves", "Ramos", "OLASDASDASD", "Airlines", "Supa kika", "LCD", "BOM DIA SENHOR PROFESSOR REI"});
-    auto textBox = new TextBox(6, 30, 5, 20, strings, true);
-    auto textBoxBox = new Box<TextBox>(textBox, "Lorem ipsum");
-
-    auto inputLabel = new InputLabel(15, 2, 3, "> ");
-    auto inputLabelBox = new Box<InputLabel>(inputLabel);
+    std::vector<std::string> northMunicipalities = {"Alijó","Amares","Arcos de Valdevez","Barcelos","Boticas","Braga","Bragança","Cabeceiras de Basto","Caminha","Celorico de Basto","Chaves","Espinho","Esposende","Fafe","Felgueiras","Guimarães","Lamego","Lousada","Maia","Marco de Canaveses","Matosinhos","Melgaço","Mesão Frio","Mirandela","Mogadouro","Monção","Montalegre","Murça","Oliveira de Azeméis","Paços de Ferreira","Paredes","Paredes de Coura","Penafiel","Peso da Régua","Ponte da Barca","Ponte de Lima","Póvoa de Lanhoso","Póvoa de Varzim","Ribeira de Pena","Sabrosa","Santa Maria da Feira","Santo Tirso","São João da Madeira","Terras de Bouro","Trofa","Valença","Valongo","Valpaços","Viana do Castelo","Vieira do Minho","Vila do Conde","Vila Flor","Vila Nova de Cerveira","Vila Nova de Famalicão","Vila Nova de Foz Côa","Vila Nova de Gaia","Vila Nova de Paiva","Vila Pouca de Aguiar","Vila Real","Vimioso"};
+    auto search_box = new SearchBox(20, 50, 5, 10, northMunicipalities);
 
     do {
-        inputLabelBox->draw();
-        textBoxBox->draw();
-        textLabelBox->draw();
+        search_box->draw();
         doupdate();
 
-        textBoxBox->handle_input();
+        search_box->handle_input();
     } while (true);
 
     clear();

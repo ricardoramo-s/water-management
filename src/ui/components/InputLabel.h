@@ -18,8 +18,10 @@ public:
 
     void draw() override;
     void handle_input() override;
+    void handle_input(int ch);
 
     bool get_input_flag() const;
+    std::string get_input_text() const;
 
 };
 
