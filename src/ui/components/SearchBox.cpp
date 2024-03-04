@@ -46,10 +46,12 @@ void SearchBox::handle_input() {
         case ARROW_UP:
         case ARROW_DOWN:
             search_text_->get_component()->handle_input(ch);
+            break;
         default:
             search_bar_->get_component()->handle_input(ch);
-    }
 
-    auto lines = findMatchingStrings(options_, search_bar_->get_component()->get_input_text());
-    search_text_->get_component()->set_lines_(lines);
+            auto lines = findMatchingStrings(options_, search_bar_->get_component()->get_input_text());
+            search_text_->get_component()->set_lines_(lines);
+            break;
+    }
 }

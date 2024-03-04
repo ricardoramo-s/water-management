@@ -51,12 +51,15 @@ TextBox::TextBox(int height, int width, int y, int x, std::vector<std::string> &
     max_ = std::min(height, static_cast<int>(lines.size()));
 }
 
-std::vector<std::string> &TextBox::get_lines_() {
+std::vector<std::string> TextBox::get_lines_() {
     return lines_;
 }
 
 void TextBox::set_lines_(std::vector<std::string> &lines) {
     lines_ = std::move(lines);
+
+    if (lines_.empty()) selected_ = -1;
+    else selected_ = 0;
 }
 
 int TextBox::get_selected() const {
@@ -84,13 +87,6 @@ void TextBox::select(std::string &text) {
 }
 
 void TextBox::draw() {
-    if (lines_.empty()) {
-        selected_ = -1;
-    }
-    else if (selected_ >= (int)lines_.size()) {
-        selected_ = (int)lines_.size() - 1;
-    }
-
     short selected_id = ColorPair::get(dark0, light0);
     short default_id = ColorPair::get(light0, dark0);
 
@@ -161,6 +157,17 @@ void TextBox::handle_input(int ch) {
     }
 }
 
+void TextBox::check_bounds() {
+    if (lines_.empty()) {
+        selected_ = -1;
+    }
+    else if (selected_ >= (int)lines_.size()) {
+        selected_ = (int)lines_.size() - 1;
+    }
+    if (selected_ >= max_) set_max_(selected_ - 1);
+    else if (selected_ < min_) set_min_(selected_);
+}
+
 void TextBox::set_min_(int min) {
     if (min < 0 || min + get_height() > static_cast<int>(lines_.size())) return;
 
@@ -190,4 +197,3 @@ void TextBox::shift_window_down() {
         max_--;
     }
 }
-
