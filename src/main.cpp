@@ -12,6 +12,7 @@ int main() {
     initscr();
     curs_set(0);
     noecho();
+    ESCDELAY = 1;
     start_color();
 
     ColorPair::apply(stdscr, light0, dark0);

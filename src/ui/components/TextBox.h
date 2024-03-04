@@ -11,12 +11,12 @@ private:
     int selected_ = -1, max_ = 0, min_ = 0;
     bool reversed_ = false;
 
-    void check_bounds();
-
     void set_min_(int min);
     void set_max_(int max);
     void shift_window_down();
     void shift_window_up();
+    void shift_selected_up();
+    void shift_selected_down();
 
 public:
     TextBox(int width, int y, int x, std::string& text);
@@ -31,7 +31,6 @@ public:
 
     void select(int i);
     void select(std::string& text);
-
 
     void draw() override;
     void handle_input() override;

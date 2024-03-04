@@ -51,6 +51,56 @@ TextBox::TextBox(int height, int width, int y, int x, std::vector<std::string> &
     max_ = std::min(height, static_cast<int>(lines.size()));
 }
 
+void TextBox::set_min_(int min) {
+    if (min < 0) return;
+
+    min_ = min;
+    max_ = min + get_height();
+}
+
+void TextBox::set_max_(int max) {
+    if (max > static_cast<int>(lines_.size())) return;
+
+    min_ = max - get_height();
+    max_ = max;
+}
+
+void TextBox::shift_window_up() {
+    if (max_ >= lines_.size()) return;
+    else {
+        min_++;
+        max_++;
+    }
+}
+
+void TextBox::shift_window_down() {
+    if (min_ <= 0) return;
+    else {
+        min_--;
+        max_--;
+    }
+}
+
+void TextBox::shift_selected_up() {
+    selected_++;
+    if (selected_ == max_) shift_window_up();
+
+    if (selected_ == static_cast<int>(lines_.size())) {
+        selected_ = 0;
+        set_min_(0);
+    }
+}
+
+void TextBox::shift_selected_down() {
+    selected_--;
+    if (selected_ == min_ - 1) shift_window_down();
+
+    if (selected_ == -1) {
+        selected_ = lines_.size() - 1;
+        set_max_(lines_.size());
+    }
+}
+
 std::vector<std::string> TextBox::get_lines_() {
     return lines_;
 }
@@ -58,8 +108,8 @@ std::vector<std::string> TextBox::get_lines_() {
 void TextBox::set_lines_(std::vector<std::string> &lines) {
     lines_ = std::move(lines);
 
-    if (lines_.empty()) selected_ = -1;
-    else selected_ = 0;
+    if (lines_.empty()) select(-1);
+    else select(0);
 }
 
 int TextBox::get_selected() const {
@@ -71,8 +121,16 @@ std::string TextBox::get_selected_string() const {
 }
 
 void TextBox::select(int i) {
-    if (i < -1 || i >= lines_.size()) return;
-    else selected_ = i;
+    if (i < -1 || i >= (int) lines_.size()) return;
+
+    if (i == -1) {
+        set_min_(0);
+    }
+    else {
+        set_min_(i);
+    }
+
+    selected_ = i;
 }
 
 void TextBox::select(std::string &text) {
@@ -122,6 +180,8 @@ void TextBox::handle_input(int ch) {
         switch (ch) {
             case ARROW_UP:
             case ARROW_DOWN:
+                if (lines_.empty()) break;
+
                 selected_ = 0;
                 set_min_(0);
                 break;
@@ -132,68 +192,20 @@ void TextBox::handle_input(int ch) {
     else { // selected
         switch (ch) {
             case ARROW_UP:
-                selected_ += (reversed_) ? 1 : -1;
+                if (reversed_) shift_selected_up();
+                else shift_selected_down();
                 break;
             case ARROW_DOWN:
-                selected_ += (reversed_) ? -1 : 1;
+                if (reversed_) shift_selected_down();
+                else shift_selected_up();
                 break;
             case ENTER:
                 // TODO selecting
                 break;
+            case ESC:
+                selected_ = -1;
             default:
                 return;
         }
-
-        if (selected_ == -1) {
-            selected_ = lines_.size() - 1;
-            set_max_(lines_.size());
-        }
-        else if (selected_ == static_cast<int>(lines_.size())) {
-            selected_ = 0;
-            set_min_(0);
-        }
-        else if (selected_ == max_) shift_window_up();
-        else if (selected_ == min_ - 1) shift_window_down();
-    }
-}
-
-void TextBox::check_bounds() {
-    if (lines_.empty()) {
-        selected_ = -1;
-    }
-    else if (selected_ >= (int)lines_.size()) {
-        selected_ = (int)lines_.size() - 1;
-    }
-    if (selected_ >= max_) set_max_(selected_ - 1);
-    else if (selected_ < min_) set_min_(selected_);
-}
-
-void TextBox::set_min_(int min) {
-    if (min < 0 || min + get_height() > static_cast<int>(lines_.size())) return;
-
-    min_ = min;
-    max_ = min + get_height();
-}
-
-void TextBox::set_max_(int max) {
-    if (max - get_height() < 0 || max > static_cast<int>(lines_.size())) return;
-
-    min_ = max - get_height();
-    max_ = max;
-}
-
-void TextBox::shift_window_up() {
-    if (max_ + 1 > lines_.size()) return;
-    else {
-        min_++;
-        max_++;
-    }
-}
-
-void TextBox::shift_window_down() {
-    if (max_ < 0) return;
-    else {
-        min_--;
-        max_--;
     }
 }

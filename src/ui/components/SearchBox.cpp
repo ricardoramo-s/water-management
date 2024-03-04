@@ -43,6 +43,7 @@ void SearchBox::handle_input() {
     int ch = wgetch(get_win());
 
     switch (ch) {
+        case ESC:
         case ARROW_UP:
         case ARROW_DOWN:
             search_text_->get_component()->handle_input(ch);
