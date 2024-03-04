@@ -23,7 +23,7 @@ int main() {
     //std::string lorem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In placerat vitae dolor in aliquet. Vestibulum ac urna scelerisque, sollicitudin lorem nec, tincidunt odio. Proin euismod, neque sed pharetra consectetur, lorem diam vulputate est, quis ullamcorper est nisl at lectus. Nulla sagittis at diam vel feugiat. Morbi ac egestas elit. Nam at dignissim tortor. Fusce tempor aliquam feugiat. Suspendisse finibus massa in velit aliquet, sit amet porttitor justo congue.");
 
     auto strings = std::vector<std::string>({"RicardoAaaaaaaaaaaaaaaaaaaaaaa", "Alexandre", "Alves", "Ramos", "OLASDASDASD", "Airlines", "Supa kika", "LCD", "BOM DIA SENHOR PROFESSOR REI"});
-    auto textBox = new TextBox(6, 30, 5, 20, strings, false);
+    auto textBox = new TextBox(6, 30, 5, 20, strings, true);
     auto textBoxBox = new Box<TextBox>(textBox, "Lorem ipsum");
 
     auto inputLabel = new InputLabel(15, 2, 3, "> ");
@@ -36,7 +36,7 @@ int main() {
         doupdate();
 
         textBoxBox->handle_input();
-    } while (!inputLabel->get_input_flag());
+    } while (true);
 
     clear();
 

@@ -11,6 +11,11 @@ private:
     int selected_ = -1, max_ = 0, min_ = 0;
     bool reversed_ = false;
 
+    void set_min_(int min);
+    void set_max_(int max);
+    void shift_window_down();
+    void shift_window_up();
+
 public:
     TextBox(int width, int y, int x, std::string& text);
     TextBox(int y, int x, std::vector<std::string>& lines);

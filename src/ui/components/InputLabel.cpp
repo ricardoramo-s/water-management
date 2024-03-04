@@ -33,7 +33,6 @@ void InputLabel::handle_input() {
         wmove(get_win(), 0, 0);
     }
 
-    keypad(get_win(), true);
     int ch = wgetch(get_win());
 
     switch (ch) {
@@ -53,8 +52,8 @@ void InputLabel::handle_input() {
             break;
         case ENTER:
             input_flag_ = true;
+            // TODO Event handler system ...
             break;
-            // ... other arrow keys, special keys if needed ...
         default:  // Handle regular characters
             if (isprint(ch)) {
                 input_text_ += ch;

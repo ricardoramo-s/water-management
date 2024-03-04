@@ -23,6 +23,7 @@ Component::Component(int height, int width, int y, int x) {
     width_ = width;
 
     win_ = newwin(height, width, y, x);
+    keypad(win_, true);
 }
 
 Component::Component() : x_(0), y_(0), width_(0), height_(0), win_(newwin(0, 0, 0, 0)) {}
