@@ -62,15 +62,14 @@ public:
     TextBox(int y, int x, std::vector<std::string>& lines);
 
     /**
-     * @brief Constructs a TextBox with specified dimensions, lines, and display ordering.
+     * @brief Constructs a TextBox with specified dimensions and display ordering.
      * @param height Height of the TextBox (in characters).
      * @param width Width of the TextBox (in characters).
      * @param y Vertical position (in characters).
      * @param x Horizontal position (in characters).
-     * @param lines Vector of strings, with each string representing a line.
      * @param reversed If true, lines are displayed in bottom-to-top order.
      */
-    TextBox(int height, int width, int y, int x, std::vector<std::string> &lines, bool reversed);
+    TextBox(int height, int width, int y, int x, bool reversed);
 
     /**
      * @brief Gets all the lines currently displayed in the TextBox.

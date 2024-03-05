@@ -45,10 +45,10 @@ TextBox::TextBox(int y, int x, std::vector<std::string>& lines) : Component(0, 0
     resizewin(static_cast<int>(lines_.size()), static_cast<int>(max_width));
 }
 
-TextBox::TextBox(int height, int width, int y, int x, std::vector<std::string> &lines, bool reversed)
-    : Component(height, width, y, x), lines_(lines), reversed_(reversed) {
+TextBox::TextBox(int height, int width, int y, int x, bool reversed)
+    : Component(height, width, y, x), lines_(std::vector<std::string>()), reversed_(reversed) {
     min_ = 0;
-    max_ = std::min(height, static_cast<int>(lines.size()));
+    max_ = height;
 }
 
 void TextBox::set_min_(int min) {

@@ -13,7 +13,7 @@ class SearchBox : public Component {
     std::vector<std::string> matches_;
 
 public:
-    SearchBox(int height, int width, int y, int x, std::vector<std::string>& options);
+    SearchBox(int height, int width, int y, int x);
 
     void draw() override;
     void handle_input(int ch) override;

@@ -15,7 +15,13 @@ add_executable(water-management
         src/ui/colors/ColorPair.cpp
         src/ui/colors/Color.cpp
         src/ui/components/SearchBox.cpp
-        src/ui/components/OptionMenu.cpp)
+        src/ui/components/OptionMenu.cpp
+        src/ui/menus/Menu.cpp
+        src/ui/menus/Menu.h
+        src/ui/menus/ReservoirMenu.cpp
+        src/ui/menus/ReservoirMenu.h
+        src/ui/components/MultiComponent.cpp
+        src/ui/components/MultiComponent.h)
 
 find_package(Curses REQUIRED)
 

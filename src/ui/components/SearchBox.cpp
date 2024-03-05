@@ -1,15 +1,12 @@
 #include "SearchBox.h"
 #include "KeysBindings.h"
 
-SearchBox::SearchBox(int height, int width, int y, int x, std::vector<std::string> &options) : Component(y, x) {
-    options_ = std::move(options);
-    matches_ = std::vector<std::string>();
-
-
+SearchBox::SearchBox(int height, int width, int y, int x) : Component(y, x), options_(std::vector<std::string>()), matches_(std::vector<std::string>()) {
     auto search_bar = new InputLabel(width, y + height - 2, x, "> ");
     search_bar_ = new Box<InputLabel>(search_bar, "Search");
 
-    auto search_text = new TextBox(height - 4, width, y, x, options_, true);
+    auto search_text = new TextBox(height - 4, width, y, x, true);
+    search_text->set_lines_({options_});
     search_text_ = new Box<TextBox>(search_text, "Results");
 }
 
