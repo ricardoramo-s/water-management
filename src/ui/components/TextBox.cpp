@@ -66,7 +66,7 @@ void TextBox::set_max_(int max) {
 }
 
 void TextBox::shift_window_up() {
-    if (max_ >= lines_.size()) return;
+    if (max_ >= static_cast<int>(lines_.size())) return;
     else {
         min_++;
         max_++;
@@ -140,7 +140,7 @@ void TextBox::select(std::string &text) {
     // Check if the string was found
     if (it != lines_.end()) {
         // Calculate the index (distance from the beginning)
-        selected_ = std::distance(lines_.begin(), it);
+        selected_ = static_cast<int>(std::distance(lines_.begin(), it));
     }
 }
 
@@ -157,7 +157,7 @@ void TextBox::draw() {
         wmove(get_win(), static_cast<int>(relative_y), 0);
         wclrtoeol(get_win());
 
-        if (index >= 0 && index < lines_.size()) {
+        if (index >= 0 && index < static_cast<int>(lines_.size())) {
             mvwaddch(get_win(), static_cast<int>(relative_y), 0, ' ');
             mvwprintw(get_win(), static_cast<int>(relative_y), 1, lines_.at(index).c_str());
             mvwaddch(get_win(), static_cast<int>(relative_y), get_width() - 1, ' ');

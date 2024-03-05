@@ -34,6 +34,8 @@ protected:
      */
     Component(int height, int width, int y, int x);
 
+    Component(int y, int x);
+
     /** @brief Default constructor. */
     Component();
 
@@ -42,6 +44,8 @@ protected:
      * @return Pointer to the underlying WINDOW object.
      */
     WINDOW* get_win() const;
+
+    void set_win(WINDOW* win);
 
 public:
     /**

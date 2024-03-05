@@ -7,10 +7,13 @@ TextLabel::TextLabel(int y, int x, std::string text) : Component(1, static_cast<
 TextLabel::~TextLabel() = default;
 
 void TextLabel::draw() {
-    ColorPair::apply(get_win(), light0, dark0);
-
     mvwprintw(get_win(), 0, 0, text_.c_str());
     refreshwin();
+}
+
+void TextLabel::draw(short color_pair_id) {
+    ColorPair::activate(get_win(), color_pair_id);
+    draw();
 }
 
 void TextLabel::handle_input() {

@@ -7,17 +7,13 @@
 template<typename T>
 Box<T>::Box(T *component) : Component(), component_(component), header_(std::string()) {
     auto comp = dynamic_cast<Component*>(component);
-
-    movewin(comp->get_y(), comp->get_x());
-    resizewin(comp->get_height(), comp->get_width());
+    set_win(newwin(comp->get_height(), comp->get_width(), comp->get_y(), comp->get_x()));
 }
 
 template<typename T>
 Box<T>::Box(T *component, std::string header) : Component(), component_(component), header_(header) {
     auto comp = dynamic_cast<Component*>(component);
-
-    movewin(comp->get_y(), comp->get_x());
-    resizewin(comp->get_height(), comp->get_width());
+    set_win(newwin(comp->get_height(), comp->get_width(), comp->get_y(), comp->get_x()));
 }
 
 template<typename T>

@@ -26,13 +26,17 @@ Component::Component(int height, int width, int y, int x) {
     keypad(win_, true);
 }
 
-Component::Component() : x_(0), y_(0), width_(0), height_(0), win_(newwin(0, 0, 0, 0)) {}
+Component::Component() : x_(0), y_(0), width_(0), height_(0), win_(nullptr) {}
+
+Component::Component(int y, int x) : x_(x), y_(y), width_(0), height_(0), win_(nullptr) {}
 
 Component::~Component() {
     delwin(win_);
 }
 
 void Component::movewin(int y, int x) {
+    if (win_ == nullptr) return;
+
     mvwin(win_, y, x);
 
     y_ = y;
@@ -40,6 +44,8 @@ void Component::movewin(int y, int x) {
 }
 
 void Component::resizewin(int height, int width) {
+    if (win_ == nullptr) return;
+
     wresize(win_, height, width);
 
     width_ = width;
@@ -50,6 +56,12 @@ WINDOW *Component::get_win() const {
     return win_;
 }
 
+void Component::set_win(WINDOW *win) {
+    win_ = win;
+}
+
 void Component::refreshwin() const {
+    if (win_ == nullptr) return;
+
     wnoutrefresh(win_);
 }

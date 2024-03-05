@@ -3,6 +3,7 @@
 
 
 #include "Component.h"
+#include "colors/ColorPair.h"
 #include "string"
 
 /**
@@ -28,6 +29,7 @@ public:
      * @brief Renders the TextLabel's content to the screen.
      */
     void draw() override;
+    void draw(short color_pair_id);
 
     /**
      * @brief Overrides the Component::handle_input function (currently no-op).

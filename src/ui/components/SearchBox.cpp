@@ -1,7 +1,7 @@
 #include "SearchBox.h"
 #include "KeysBindings.h"
 
-SearchBox::SearchBox(int height, int width, int y, int x, std::vector<std::string> &options) : Component(height, width, y, x) {
+SearchBox::SearchBox(int height, int width, int y, int x, std::vector<std::string> &options) : Component(y, x) {
     options_ = std::move(options);
     matches_ = std::vector<std::string>();
 
@@ -14,7 +14,6 @@ SearchBox::SearchBox(int height, int width, int y, int x, std::vector<std::strin
 }
 
 void SearchBox::draw() {
-    refreshwin();
     search_text_->draw();
     search_bar_->draw();
 }
@@ -40,7 +39,7 @@ std::vector<std::string> findMatchingStrings(const std::vector<std::string>& dat
 }
 
 void SearchBox::handle_input() {
-    int ch = wgetch(get_win());
+    int ch = getch();
 
     switch (ch) {
         case ESC:

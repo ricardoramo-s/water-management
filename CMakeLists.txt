@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(water-management)
 
-set (CMAKE_CXX_FLAGS "-Wall -Wextra -Wunused-variable -Wpedantic")
+set (CMAKE_CXX_FLAGS "-Wall -Wextra -Wunused-variable -Wpedantic -Werror")
 set(CMAKE_CXX_STANDARD 17) # Enable C++17
 set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Require C++17 support by the compiler
 
@@ -14,7 +14,8 @@ add_executable(water-management
         src/ui/components/InputLabel.cpp
         src/ui/colors/ColorPair.cpp
         src/ui/colors/Color.cpp
-        src/ui/components/SearchBox.cpp)
+        src/ui/components/SearchBox.cpp
+        src/ui/components/OptionMenu.cpp)
 
 find_package(Curses REQUIRED)
 
