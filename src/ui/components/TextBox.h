@@ -114,15 +114,10 @@ public:
     void draw() override;
 
     /**
-     * @brief Overrides Component::handle_input() for keyboard interaction (TODO - implement more).
-     */
-    void handle_input() override;
-
-    /**
      * @brief Handles keyboard input - processes a single key press.
      * @param ch The code of the pressed key.
      */
-    void handle_input(int ch);
+    void handle_input(int ch) override;
 
 };
 

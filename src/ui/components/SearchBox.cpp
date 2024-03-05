@@ -9,7 +9,7 @@ SearchBox::SearchBox(int height, int width, int y, int x, std::vector<std::strin
     auto search_bar = new InputLabel(width, y + height - 2, x, "> ");
     search_bar_ = new Box<InputLabel>(search_bar, "Search");
 
-    auto search_text = new TextBox(height - 4, width, y, x, options_, true);
+    auto search_text = new TextBox(height - 4, width, y, x, options_, false);
     search_text_ = new Box<TextBox>(search_text, "Results");
 }
 
@@ -38,9 +38,7 @@ std::vector<std::string> findMatchingStrings(const std::vector<std::string>& dat
     return results;
 }
 
-void SearchBox::handle_input() {
-    int ch = getch();
-
+void SearchBox::handle_input(int ch) {
     switch (ch) {
         case ESC:
         case ARROW_UP:

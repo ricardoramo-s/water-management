@@ -27,7 +27,7 @@ public:
     void add_option(int y, std::string text);
 
     void draw() override;
-    void handle_input() override;
+    void handle_input(int ch) override;
 };
 
 

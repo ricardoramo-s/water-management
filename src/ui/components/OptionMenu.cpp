@@ -37,9 +37,7 @@ void OptionMenu::draw() {
     }
 }
 
-void OptionMenu::handle_input() {
-    int ch = getch();
-
+void OptionMenu::handle_input(int ch) {
     switch (ch) {
         case ESC:
             selected_ = -1;

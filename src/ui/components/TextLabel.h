@@ -31,10 +31,7 @@ public:
     void draw() override;
     void draw(short color_pair_id);
 
-    /**
-     * @brief Overrides the Component::handle_input function (currently no-op).
-     */
-    void handle_input() override;
+    void handle_input(int ch) override;
 
     /** @brief Destructor for the TextLabel class */
     ~TextLabel();

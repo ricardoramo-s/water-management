@@ -27,13 +27,6 @@ void InputLabel::draw() {
     refreshwin();
 }
 
-void InputLabel::handle_input() {
-    int ch = wgetch(get_win());
-
-    handle_input(ch);
-}
-
-
 void InputLabel::handle_input(int ch) {
     if (input_flag_) {
         input_flag_ = false;

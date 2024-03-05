@@ -53,10 +53,7 @@ public:
      */
     void draw() override;
 
-    /**
-     * @brief Overrides the Component::handle_input() function (implementation dependent on contained component).
-     */
-    void handle_input() override;
+    void handle_input(int ch) override;
 
     /**
      * @brief Adjusts the box and the contained component position.

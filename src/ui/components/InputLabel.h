@@ -44,15 +44,10 @@ public:
     void draw() override;
 
     /**
-     * @brief Handles keyboard input - awaits a single character press.
-     */
-    void handle_input() override;
-
-    /**
      * @brief Handles keyboard input - processes a single key press.
      * @param ch The code of the pressed key.
      */
-    void handle_input(int ch);
+    void handle_input(int ch) override;
 
     /**
      * @brief Gets the input flag status (for input control).

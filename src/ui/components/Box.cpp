@@ -48,9 +48,9 @@ void Box<T>::draw() {
 }
 
 template<typename T>
-void Box<T>::handle_input() {
+void Box<T>::handle_input(int ch) {
     auto component = dynamic_cast<Component*>(component_);
-    component->handle_input();
+    component->handle_input(ch);
 }
 
 template<typename T>

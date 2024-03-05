@@ -9,6 +9,7 @@
 #define BACKSPACE 127
 #define ENTER 10
 #define ESC 27
+#define TAB 9
 #define ARROW_UP 259
 #define ARROW_DOWN 258
 #define ARROW_RIGHT 261

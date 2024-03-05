@@ -16,7 +16,7 @@ public:
     SearchBox(int height, int width, int y, int x, std::vector<std::string>& options);
 
     void draw() override;
-    void handle_input() override;
+    void handle_input(int ch) override;
 
 };
 

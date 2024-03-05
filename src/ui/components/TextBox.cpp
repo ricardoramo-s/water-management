@@ -55,13 +55,13 @@ void TextBox::set_min_(int min) {
     if (min < 0) return;
 
     min_ = min;
-    max_ = min + get_height();
+    max_ = std::min(get_height(), min + get_height());
 }
 
 void TextBox::set_max_(int max) {
     if (max > static_cast<int>(lines_.size())) return;
 
-    min_ = max - get_height();
+    min_ = std::max(0, max - get_height());
     max_ = max;
 }
 
@@ -87,6 +87,7 @@ void TextBox::shift_selected_up() {
 
     if (selected_ == static_cast<int>(lines_.size())) {
         selected_ = 0;
+
         set_min_(0);
     }
 }
@@ -96,8 +97,9 @@ void TextBox::shift_selected_down() {
     if (selected_ == min_ - 1) shift_window_down();
 
     if (selected_ == -1) {
-        selected_ = lines_.size() - 1;
-        set_max_(lines_.size());
+        selected_ = static_cast<int>(lines_.size()) - 1;
+
+        set_max_(static_cast<int>(lines_.size()));
     }
 }
 
@@ -150,7 +152,7 @@ void TextBox::draw() {
 
     int relative_y = (reversed_) ? get_height() - 1 : 0;
 
-    for (int index = min_; index < max_; index++) {
+    for (int index = min_; index < min_ + get_height(); index++) {
         if (index == selected_) ColorPair::activate(get_win(), selected_id);
         else ColorPair::activate(get_win(), default_id);
 
@@ -163,16 +165,16 @@ void TextBox::draw() {
             mvwaddch(get_win(), static_cast<int>(relative_y), get_width() - 1, ' ');
         }
 
+        clear();
+        mvprintw(0,0,("min_: " + std::to_string(min_)).c_str());
+        mvprintw(1,0,("max_: " + std::to_string(max_)).c_str());
+        mvprintw(2,0,("selected_: " + std::to_string(selected_)).c_str());
+        refresh();
+
         relative_y += (reversed_) ? -1 : 1;
     }
 
     refreshwin();
-}
-
-void TextBox::handle_input() {
-    int ch = wgetch(get_win());
-
-    handle_input(ch);
 }
 
 void TextBox::handle_input(int ch) {

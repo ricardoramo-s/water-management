@@ -16,6 +16,6 @@ void TextLabel::draw(short color_pair_id) {
     draw();
 }
 
-void TextLabel::handle_input() {
-
+void TextLabel::handle_input(int ch) {
+    ch = 0;
 }

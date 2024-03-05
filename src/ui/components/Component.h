@@ -56,7 +56,7 @@ public:
     /**
      * @brief Handles input events (must be implemented by derived classes).
      */
-    virtual void handle_input() = 0;
+    virtual void handle_input(int ch) = 0;
 
     /** @brief Gets the height of the component's window (in characters). */
     int get_height() const;
