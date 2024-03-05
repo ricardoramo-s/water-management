@@ -165,12 +165,6 @@ void TextBox::draw() {
             mvwaddch(get_win(), static_cast<int>(relative_y), get_width() - 1, ' ');
         }
 
-        clear();
-        mvprintw(0,0,("min_: " + std::to_string(min_)).c_str());
-        mvprintw(1,0,("max_: " + std::to_string(max_)).c_str());
-        mvprintw(2,0,("selected_: " + std::to_string(selected_)).c_str());
-        refresh();
-
         relative_y += (reversed_) ? -1 : 1;
     }
 

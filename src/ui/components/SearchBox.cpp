@@ -9,7 +9,7 @@ SearchBox::SearchBox(int height, int width, int y, int x, std::vector<std::strin
     auto search_bar = new InputLabel(width, y + height - 2, x, "> ");
     search_bar_ = new Box<InputLabel>(search_bar, "Search");
 
-    auto search_text = new TextBox(height - 4, width, y, x, options_, false);
+    auto search_text = new TextBox(height - 4, width, y, x, options_, true);
     search_text_ = new Box<TextBox>(search_text, "Results");
 }
 
@@ -46,6 +46,7 @@ void SearchBox::handle_input(int ch) {
             search_text_->get_component()->handle_input(ch);
             break;
         default:
+            if(!isprint(ch)) break;
             search_bar_->get_component()->handle_input(ch);
 
             auto lines = findMatchingStrings(options_, search_bar_->get_component()->get_input_text());
