@@ -2,18 +2,20 @@
 #define WATER_MANAGEMENT_SEARCHBOX_H
 
 #include "TextBox.h"
-#include "InputLabel.h"
+#include "InputBox.h"
 #include "Box.h"
 #include "vector"
+#include "components/MultiComponent.h"
 
 class SearchBox : public Component {
-    Box<TextBox>* search_text_;
-    Box<InputLabel>* search_bar_;
-    std::vector<std::string> options_;
-    std::vector<std::string> matches_;
+    MultiComponent<TextBox>* multi_text_box_;
+    InputBox* input_box_;
 
+    std::vector<std::vector<std::string>> options_;
 public:
     SearchBox(int height, int width, int y, int x);
+
+    void add_options(std::vector<std::string>& options, std::string header);
 
     void draw() override;
     void handle_input(int ch) override;

@@ -13,6 +13,8 @@ private:
     /** @brief Vector of text lines displayed by the TextBox */
     std::vector<std::string> lines_;
 
+    std::string header_{};
+
     /** @brief Index of the currently selected line (-1 indicates no selection) */
     int selected_ = -1;
 
@@ -45,23 +47,6 @@ private:
 
 public:
     /**
-     * @brief Constructs a TextBox from a single text string, performing word wrapping.
-     * @param width Width of the TextBox (in characters).
-     * @param y Vertical position (in characters).
-     * @param x Horizontal position (in characters).
-     * @param text The text to be formatted and displayed.
-     */
-    TextBox(int width, int y, int x, std::string& text);
-
-    /**
-     * @brief Constructs a TextBox from a pre-existing vector of lines.
-     * @param y Vertical position (in characters).
-     * @param x Horizontal position (in characters).
-     * @param lines Vector of strings, with each string representing a line.
-     */
-    TextBox(int y, int x, std::vector<std::string>& lines);
-
-    /**
      * @brief Constructs a TextBox with specified dimensions and display ordering.
      * @param height Height of the TextBox (in characters).
      * @param width Width of the TextBox (in characters).
@@ -82,6 +67,8 @@ public:
      * @param lines A vector of strings to be displayed.
      */
     void set_lines_(std::vector<std::string>& lines);
+
+    void set_header_(std::string header);
 
     /**
      * @brief Gets the text content of the currently selected line.

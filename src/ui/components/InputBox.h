@@ -1,15 +1,15 @@
-#ifndef WATER_MANAGEMENT_INPUTLABEL_H
-#define WATER_MANAGEMENT_INPUTLABEL_H
+#ifndef WATER_MANAGEMENT_INPUTBOX_H
+#define WATER_MANAGEMENT_INPUTBOX_H
 
 
 #include "Component.h"
 #include "string"
 
 /**
- * @class InputLabel
+ * @class InputBox
  * @brief A Component subclass providing a labeled field for user text input.
  */
-class InputLabel : public Component {
+class InputBox : public Component {
 private:
     /** @brief The currently entered input text. */
     std::string input_text_;
@@ -20,26 +20,28 @@ private:
     /** @brief Tracks if active user input is allowed. */
     bool input_flag_ = true;
 
+    std::string header_;
+
 public:
     /**
-     * @brief Constructs an InputLabel with specified width and position.
+     * @brief Constructs an InputBox with specified width and position.
      * @param width Width of the input field (in characters).
      * @param y Vertical position (in characters).
      * @param x Horizontal position (in characters).
      */
-    InputLabel(int width, int y, int x);
+    InputBox(int width, int y, int x);
 
     /**
-     * @brief Constructs an InputLabel with specified dimensions, position, and default text.
+     * @brief Constructs an InputBox with specified dimensions, position, and default text.
      * @param width Width of the input field (in characters).
      * @param y Vertical position (in characters).
      * @param x Horizontal position (in characters).
      * @param default_text Text displayed when the input field is empty.
      */
-    InputLabel(int width, int y, int x, std::string default_text);
+    InputBox(int width, int y, int x, std::string default_text);
 
     /**
-     * @brief Renders the InputLabel with label and current input.
+     * @brief Renders the InputBox with label and current input.
      */
     void draw() override;
 
@@ -60,7 +62,9 @@ public:
      * @return The input text string.
      */
     std::string get_input_text() const;
+
+    void set_header_(std::string header);
 };
 
 
-#endif //WATER_MANAGEMENT_INPUTLABEL_H
+#endif //WATER_MANAGEMENT_INPUTBOX_H

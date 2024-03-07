@@ -5,7 +5,7 @@
 #ifndef WATER_MANAGEMENT_MULTICOMPONENT_H
 #define WATER_MANAGEMENT_MULTICOMPONENT_H
 
-#include "TextBox.h"
+#include "ui/components/TextBox.h"
 
 template<typename T>
 class MultiComponent : public Component {
@@ -22,6 +22,10 @@ public:
     MultiComponent();
 
     void add_component(T* component);
+
+    int get_selected() const;
+    T* get_selected_component() const;
+
     void draw() override;
     void handle_input(int ch) override;
 };

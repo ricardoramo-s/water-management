@@ -4,64 +4,23 @@
 #include "colors/ColorPair.h"
 #include "pallets/gruvbox.h"
 
-TextBox::TextBox(int width, int y, int x, std::string& text) : Component(0, width, y, x) {
-    std::string current_line;
-    std::istringstream iss(text);
-    std::string word;
-    int current_height = 0;
-
-    while (iss >> word) {
-        if (current_line.empty()) {
-            current_line += word;
-            continue;
-        }
-        if (current_line.length() + word.length() <= static_cast<size_t>(width) - 2) {
-            current_line += " " + word;
-        } else {
-            // Line is full, add current line and start a new one
-            if (current_line.back() == ' ') lines_.push_back(current_line.substr(1)); // Remove leading space
-            else lines_.push_back(current_line); // Word is bigger than width
-            current_height ++;
-
-            current_line = word; // Start new line with current word
-        }
-    }
-
-    // Add the last line (or partial line)
-    if (!current_line.empty()) {
-        lines_.push_back(current_line.substr(1));
-    }
-
-    this->resizewin(current_height, width);
-}
-
-TextBox::TextBox(int y, int x, std::vector<std::string>& lines) : Component(0, 0, y, x), lines_(std::move(lines)) {
-    size_t max_width;
-
-    for (const auto& str : lines_) {
-        max_width = std::max(max_width, str.size());
-    }
-
-    resizewin(static_cast<int>(lines_.size()), static_cast<int>(max_width));
-}
-
 TextBox::TextBox(int height, int width, int y, int x, bool reversed)
     : Component(height, width, y, x), lines_(std::vector<std::string>()), reversed_(reversed) {
     min_ = 0;
-    max_ = height;
+    max_ = height - 2;
 }
 
 void TextBox::set_min_(int min) {
     if (min < 0) return;
 
     min_ = min;
-    max_ = std::min(get_height(), min + get_height());
+    max_ = std::min(get_height() - 2, min + get_height() - 2);
 }
 
 void TextBox::set_max_(int max) {
     if (max > static_cast<int>(lines_.size())) return;
 
-    min_ = std::max(0, max - get_height());
+    min_ = std::max(0, max - (get_height() - 2));
     max_ = max;
 }
 
@@ -114,6 +73,10 @@ void TextBox::set_lines_(std::vector<std::string> &lines) {
     else select(0);
 }
 
+void TextBox::set_header_(std::string header) {
+    header_ = std::move(header);
+}
+
 int TextBox::get_selected() const {
     return selected_;
 }
@@ -147,39 +110,47 @@ void TextBox::select(std::string &text) {
 }
 
 void TextBox::draw() {
-    short selected_id = ColorPair::get(dark0, light0);
-    short default_id = ColorPair::get(light0, dark0);
+    short selected_id = ColorPair::get(dark0, light0); // highlighted color id
+    short default_id = ColorPair::get(light0, dark0); // default color id
 
-    int relative_y = (reversed_) ? get_height() - 1 : 0;
+    wclear(get_win());
+    ColorPair::activate(get_win(), default_id);
+    box(get_win(), 0, 0);
+    if (!header_.empty()) mvwprintw(get_win(), 0, (get_width() - header_.size()) / 2 - 1, (" " + header_ + " ").c_str());
 
-    for (int index = min_; index < min_ + get_height(); index++) {
-        if (index == selected_) ColorPair::activate(get_win(), selected_id);
+    int relative_y = (reversed_) ? get_height() - 2 : 1; // starting point based on orientation
+
+    for (int index = min_; index < min_ + get_height() - 2; index++) {
+        if (index == selected_) {
+            ColorPair::activate(get_win(), selected_id);
+            wmove(get_win(), relative_y, 1);
+            // wclrtoeol(get_win()); // clearing the line to update the background
+        }
         else ColorPair::activate(get_win(), default_id);
 
-        wmove(get_win(), static_cast<int>(relative_y), 0);
-        wclrtoeol(get_win());
+        mvwprintw(get_win(), relative_y, 1, "%s", std::string(get_width() - 2, ' ').c_str());
+
 
         if (index >= 0 && index < static_cast<int>(lines_.size())) {
-            mvwaddch(get_win(), static_cast<int>(relative_y), 0, ' ');
-            mvwprintw(get_win(), static_cast<int>(relative_y), 1, lines_.at(index).c_str());
-            mvwaddch(get_win(), static_cast<int>(relative_y), get_width() - 1, ' ');
+            mvwaddch(get_win(), relative_y, 1, ' ');
+            mvwprintw(get_win(), relative_y, 2, "%s", lines_.at(index).substr(0, get_width() - 3).c_str());
+            mvwaddch(get_win(), relative_y, get_width() - 2, ' ');
         }
 
-        relative_y += (reversed_) ? -1 : 1;
+        relative_y += (reversed_) ? -1 : 1; // incrementing or decrementing based on orientation
     }
 
     refreshwin();
 }
 
 void TextBox::handle_input(int ch) {
+    if (lines_.empty()) return;
+
     if (selected_ == -1) { // not selected
         switch (ch) {
             case ARROW_UP:
             case ARROW_DOWN:
-                if (lines_.empty()) break;
-
-                selected_ = 0;
-                set_min_(0);
+                shift_selected_up();
                 break;
             default:
                 return;

@@ -5,29 +5,28 @@ set (CMAKE_CXX_FLAGS "-Wall -Wextra -Wunused-variable -Wpedantic")
 set(CMAKE_CXX_STANDARD 17) # Enable C++17
 set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Require C++17 support by the compiler
 
+add_definitions(-D_DARWIN_C_SOURCE -DNCURSES_WIDECHAR)
+
 add_executable(water-management
         src/main.cpp
         src/ui/components/Component.cpp
         src/ui/components/TextBox.cpp
         src/ui/components/Box.cpp
         src/ui/components/TextLabel.cpp
-        src/ui/components/InputLabel.cpp
+        src/ui/components/InputBox.cpp
         src/ui/colors/ColorPair.cpp
         src/ui/colors/Color.cpp
         src/ui/components/SearchBox.cpp
         src/ui/components/OptionMenu.cpp
-        src/ui/menus/Menu.cpp
-        src/ui/menus/Menu.h
-        src/ui/menus/ReservoirMenu.cpp
-        src/ui/menus/ReservoirMenu.h
         src/ui/components/MultiComponent.cpp
-        src/ui/components/MultiComponent.h)
+        src/ui/menus/Menu.cpp
+        src/ui/menus/ReservoirMenu.cpp)
 
 find_package(Curses REQUIRED)
-
 target_link_libraries(water-management -lncurses)
 
 target_include_directories(water-management PRIVATE
-        ${CURSES_INCLUDE_DIR}
+        /usr/local/include/ncursesw
+        /usr/local/include
         src
         src/ui)

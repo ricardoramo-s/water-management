@@ -1,7 +1,7 @@
 #include "MultiComponent.h"
-#include "KeysBindings.h"
-#include "Box.h"
-#include "SearchBox.h"
+#include "ui/components/KeysBindings.h"
+#include "ui/components/Box.h"
+#include "ui/components/SearchBox.h"
 
 template<typename T>
 MultiComponent<T>::MultiComponent() : Component() {}
@@ -29,6 +29,17 @@ void MultiComponent<T>::add_component(T *component) {
 }
 
 template<typename T>
+int MultiComponent<T>::get_selected() const {
+    return selected_;
+}
+
+template<typename T>
+T *MultiComponent<T>::get_selected_component() const {
+    if (selected_ == -1) return nullptr;
+    else return components_.at(selected_);
+}
+
+template<typename T>
 void MultiComponent<T>::draw() {
     if (selected_ == -1) return;
 
@@ -38,6 +49,9 @@ void MultiComponent<T>::draw() {
 
 template<typename T>
 void MultiComponent<T>::handle_input(int ch) {
+    if (components_.empty()) return;
+    else if (selected_ == -1) selected_ = 0;
+
     switch (ch) {
         case ARROW_LEFT:
             previous_component();
@@ -52,6 +66,4 @@ void MultiComponent<T>::handle_input(int ch) {
 }
 
 // Instantiate the template at the end of Box.cpp
-template class MultiComponent<Box<TextBox>>;
-template class MultiComponent<SearchBox>;
-template class MultiComponent<InputLabel>;
+template class MultiComponent<TextBox>;

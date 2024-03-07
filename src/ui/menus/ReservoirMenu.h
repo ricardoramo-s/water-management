@@ -8,12 +8,12 @@
 #include "Menu.h"
 #include "components/SearchBox.h"
 #include "components/Box.h"
-#include "components/MultiComponent.h"
+#include "ui/components/MultiComponent.h"
 
 class ReservoirMenu : public Menu {
 private:
     SearchBox* searchBox;
-    MultiComponent<Box<TextBox>>* multiTextBox;
+    MultiComponent<TextBox>* multiTextBox;
 
 public:
     ReservoirMenu();

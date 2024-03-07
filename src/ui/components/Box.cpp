@@ -1,6 +1,6 @@
 #include "Box.h"
 #include "TextLabel.h"
-#include "InputLabel.h"
+#include "InputBox.h"
 #include "colors/ColorPair.h"
 #include "pallets/gruvbox.h"
 
@@ -77,4 +77,4 @@ void Box<T>::resize_with_component(int height, int width) {
 // Instantiate the template at the end of Box.cpp
 template class Box<TextBox>;
 template class Box<TextLabel>;
-template class Box<InputLabel>;
+template class Box<InputBox>;
