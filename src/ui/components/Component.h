@@ -24,6 +24,10 @@ private:
     /** @brief The underlying ncurses window object. */
     WINDOW *win_;
 
+    PANEL *panel_;
+
+    short color_id_ = 0;
+
 protected:
     /**
      * @brief Constructor for component initialization.
@@ -45,7 +49,7 @@ protected:
      */
     WINDOW* get_win() const;
 
-    void set_win(WINDOW* win);
+    PANEL* get_panel() const;
 
 public:
     /**
@@ -69,6 +73,10 @@ public:
 
     /** @brief Gets the vertical position of the component (in characters). */
     int get_y() const;
+
+    void set_color(short id);
+
+    short get_color() const;
 
     /**
      * @brief Moves the component's window.

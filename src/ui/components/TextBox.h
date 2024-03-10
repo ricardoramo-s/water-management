@@ -27,6 +27,12 @@ private:
     /** @brief Controls whether lines are displayed in standard or reversed order */
     bool reversed_ = false;
 
+    short box_color_ = 0;
+    short highlighted_color_ = 0;
+
+    std::function<void()> on_select_ = []() -> void {};
+    std::function<void()> on_cancel_ = []() -> void {};
+
     /** @brief Updates the minimum line index, changing the maximum line index accordingly. */
     void set_min_(int min);
 
@@ -93,6 +99,12 @@ public:
      * @param text Text of the line to be selected.
      */
     void select(std::string& text);
+
+    void set_box_color(short id);
+    void set_highlighted_color(short id);
+
+    void on_cancel(std::function<void()> callback_function);
+    void on_select(std::function<void()> callback_function);
 
     /**
      * @brief Overrides Component::draw() to render the TextBox content.

@@ -1,4 +1,10 @@
 #include "Component.h"
+#include "panel.h"
+#include "colors/ColorPair.h"
+
+PANEL *Component::get_panel() const {
+    return panel_;
+}
 
 int Component::get_height() const {
     return  height_;
@@ -23,6 +29,8 @@ Component::Component(int height, int width, int y, int x) {
     width_ = width;
 
     win_ = newwin(height, width, y, x);
+    panel_ = new_panel(win_);
+
     keypad(win_, true);
 }
 
@@ -32,6 +40,14 @@ Component::Component(int y, int x) : x_(x), y_(y), width_(0), height_(0), win_(n
 
 Component::~Component() {
     delwin(win_);
+}
+
+void Component::set_color(short id) {
+    color_id_ = id;
+}
+
+short Component::get_color() const {
+    return color_id_;
 }
 
 void Component::movewin(int y, int x) {
@@ -54,10 +70,6 @@ void Component::resizewin(int height, int width) {
 
 WINDOW *Component::get_win() const {
     return win_;
-}
-
-void Component::set_win(WINDOW *win) {
-    win_ = win;
 }
 
 void Component::refreshwin() const {

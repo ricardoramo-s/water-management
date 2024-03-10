@@ -1,6 +1,5 @@
 #include "MultiComponent.h"
 #include "ui/components/KeysBindings.h"
-#include "ui/components/Box.h"
 #include "ui/components/SearchBox.h"
 
 template<typename T>
@@ -44,6 +43,7 @@ void MultiComponent<T>::draw() {
     if (selected_ == -1) return;
 
     auto comp = dynamic_cast<Component*>(components_.at(selected_));
+    comp->set_color(get_color());
     comp->draw();
 }
 

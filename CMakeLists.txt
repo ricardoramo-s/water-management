@@ -11,7 +11,6 @@ add_executable(water-management
         src/main.cpp
         src/ui/components/Component.cpp
         src/ui/components/TextBox.cpp
-        src/ui/components/Box.cpp
         src/ui/components/TextLabel.cpp
         src/ui/components/InputBox.cpp
         src/ui/colors/ColorPair.cpp
@@ -23,7 +22,7 @@ add_executable(water-management
         src/ui/menus/ReservoirMenu.cpp)
 
 find_package(Curses REQUIRED)
-target_link_libraries(water-management -lncurses)
+target_link_libraries(water-management -lncurses -lpanel)
 
 target_include_directories(water-management PRIVATE
         /usr/local/include/ncursesw

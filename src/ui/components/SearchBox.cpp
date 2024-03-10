@@ -4,27 +4,42 @@
 #include "pallets/gruvbox.h"
 
 SearchBox::SearchBox(int height, int width, int y, int x) : Component(height, width, y, x), options_(std::vector<std::vector<std::string>>()) {
-    input_box_ = new InputBox(width, y + height - 3, x, "❯ ");
+    input_box_ = new InputBox(width,y + height -3, x,"❯ ");
     input_box_->set_header_("Search");
+    input_box_->set_color(ColorPair::get(light0, dark0));
+    input_box_->set_box_color_(ColorPair::get(light0, dark0));
 
     multi_text_box_ = new MultiComponent<TextBox>();
+    multi_text_box_->set_color(ColorPair::get(light0, dark0));
 }
 
 void SearchBox::add_options(std::vector<std::string> &options, std::string header) {
     auto search_text = new TextBox(get_height() - 3, get_width(), get_y(), get_x(), true);
     search_text->set_header_(std::move(header));
-    auto options_copy = std::vector<std::string>(options);
 
+    auto options_copy = std::vector<std::string>(options);
     search_text->set_lines_(options_copy);
 
     multi_text_box_->add_component(search_text);
     options_.push_back(std::move(options));
 }
 
-void SearchBox::draw() {
-    ColorPair::apply(get_win(), light0, dark0);
+void SearchBox::set_box_color(short id) {
+    box_color_id_ = id;
+}
 
+void SearchBox::set_highlighted_color(short id) {
+    highlighted_color_id_ = id;
+}
+
+void SearchBox::draw() {
+    multi_text_box_->set_color(get_color());
+    multi_text_box_->get_selected_component()->set_box_color(box_color_id_);
+    multi_text_box_->get_selected_component()->set_highlighted_color(highlighted_color_id_);
     multi_text_box_->draw();
+
+    input_box_->set_box_color_(box_color_id_);
+    input_box_->set_color(get_color());
     input_box_->draw();
 }
 
@@ -55,14 +70,14 @@ void SearchBox::handle_input(int ch) {
         case ARROW_LEFT:
         case ARROW_RIGHT:
             request_update = true;
-        case ESC:
         case ARROW_UP:
         case ARROW_DOWN:
+        case ESC:
             multi_text_box_->handle_input(ch);
             break;
         default:
             input_box_->handle_input(ch);
-            request_update = true;
+            request_update = input_box_->get_input_flag();
             break;
     }
 

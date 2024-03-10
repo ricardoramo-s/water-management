@@ -109,27 +109,36 @@ void TextBox::select(std::string &text) {
     }
 }
 
-void TextBox::draw() {
-    short selected_id = ColorPair::get(dark0, light0); // highlighted color id
-    short default_id = ColorPair::get(light0, dark0); // default color id
+void TextBox::set_box_color(short id) {
+    box_color_ = id;
+}
 
+void TextBox::set_highlighted_color(short id) {
+    highlighted_color_ = id;
+}
+
+void TextBox::on_cancel(std::function<void()> callback_function) {
+    on_cancel_ = std::move(callback_function);
+}
+
+void TextBox::on_select(std::function<void()> callback_function) {
+    on_select_ = std::move(callback_function);
+}
+
+void TextBox::draw() {
     wclear(get_win());
-    ColorPair::activate(get_win(), default_id);
+
+    ColorPair::activate(get_win(), box_color_);
     box(get_win(), 0, 0);
     if (!header_.empty()) mvwprintw(get_win(), 0, (get_width() - header_.size()) / 2 - 1, (" " + header_ + " ").c_str());
 
     int relative_y = (reversed_) ? get_height() - 2 : 1; // starting point based on orientation
 
     for (int index = min_; index < min_ + get_height() - 2; index++) {
-        if (index == selected_) {
-            ColorPair::activate(get_win(), selected_id);
-            wmove(get_win(), relative_y, 1);
-            // wclrtoeol(get_win()); // clearing the line to update the background
-        }
-        else ColorPair::activate(get_win(), default_id);
+        if (index == selected_) ColorPair::activate(get_win(), highlighted_color_);
+        else ColorPair::activate(get_win(), get_color());
 
         mvwprintw(get_win(), relative_y, 1, "%s", std::string(get_width() - 2, ' ').c_str());
-
 
         if (index >= 0 && index < static_cast<int>(lines_.size())) {
             mvwaddch(get_win(), relative_y, 1, ' ');
@@ -167,9 +176,10 @@ void TextBox::handle_input(int ch) {
                 else shift_selected_up();
                 break;
             case ENTER:
-                // TODO selecting
+                on_select_();
                 break;
             case ESC:
+                on_cancel_();
                 selected_ = -1;
             default:
                 return;

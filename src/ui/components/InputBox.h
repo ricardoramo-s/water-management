@@ -17,20 +17,17 @@ private:
     /** @brief Default text displayed when input is empty. */
     std::string default_text_;
 
-    /** @brief Tracks if active user input is allowed. */
+    /** @brief Tracks if the user inputted text. */
     bool input_flag_ = true;
 
     std::string header_;
 
-public:
-    /**
-     * @brief Constructs an InputBox with specified width and position.
-     * @param width Width of the input field (in characters).
-     * @param y Vertical position (in characters).
-     * @param x Horizontal position (in characters).
-     */
-    InputBox(int width, int y, int x);
+    short box_color_id_ = 0;
 
+    std::function<void()> on_cancel_ = []() -> void {};
+    std::function<void()> on_select_ = []() -> void {};
+
+public:
     /**
      * @brief Constructs an InputBox with specified dimensions, position, and default text.
      * @param width Width of the input field (in characters).
@@ -39,6 +36,8 @@ public:
      * @param default_text Text displayed when the input field is empty.
      */
     InputBox(int width, int y, int x, std::string default_text);
+
+    InputBox(int width, int y, int x, std::string default_text, std::string header, short text_color_id, short box_color_id, std::function<void()> on_select, std::function<void()> on_cancel);
 
     /**
      * @brief Renders the InputBox with label and current input.
@@ -51,10 +50,6 @@ public:
      */
     void handle_input(int ch) override;
 
-    /**
-     * @brief Gets the input flag status (for input control).
-     * @return true if the component is accepting input, false otherwise.
-     */
     bool get_input_flag() const;
 
     /**
@@ -64,6 +59,11 @@ public:
     std::string get_input_text() const;
 
     void set_header_(std::string header);
+
+    void set_box_color_(short id);
+
+    void on_select(std::function<void()> callback_function);
+    void on_cancel(std::function<void()> callback_function);
 };
 
 
