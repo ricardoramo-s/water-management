@@ -27,7 +27,6 @@ private:
     /** @brief Controls whether lines are displayed in standard or reversed order */
     bool reversed_ = false;
 
-    short box_color_ = 0;
     short highlighted_color_ = 0;
 
     std::function<void()> on_select_ = []() -> void {};
@@ -100,7 +99,6 @@ public:
      */
     void select(std::string& text);
 
-    void set_box_color(short id);
     void set_highlighted_color(short id);
 
     void on_cancel(std::function<void()> callback_function);

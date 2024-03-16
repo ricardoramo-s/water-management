@@ -27,6 +27,7 @@ private:
     PANEL *panel_;
 
     short color_id_ = 0;
+    short box_color_id = 0;
 
 protected:
     /**
@@ -75,8 +76,10 @@ public:
     int get_y() const;
 
     void set_color(short id);
-
     short get_color() const;
+
+    void set_box_color(short id);
+    short get_box_color() const;
 
     /**
      * @brief Moves the component's window.
@@ -94,6 +97,15 @@ public:
      * @param width New window width (in characters).
      */
     virtual void resizewin(int height, int width);
+
+    virtual void hide() const;
+    virtual void show() const;
+
+    virtual void to_front() const;
+    virtual void to_back() const;
+
+    const void* get_userptr() const;
+    void set_userptr(const void* ptr) const;
 
     /** @brief Virtual destructor (ensures cleanup when using inheritance). */
     virtual ~Component();

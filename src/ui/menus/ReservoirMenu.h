@@ -3,18 +3,18 @@
 
 #include "Menu.h"
 #include "components/SearchBox.h"
+#include "components/Cmdline.h"
 #include "ui/components/MultiComponent.h"
 
 class ReservoirMenu : public Menu {
 private:
     SearchBox *search_box_, *connected_box_;
-    InputBox *input_box_;
 
 public:
-    ReservoirMenu();
+    explicit ReservoirMenu(Cmdline* cmdline);
 
     void draw() override;
-    void handle_input(int ch);
+    void handle_input(int ch) override;
 };
 
 

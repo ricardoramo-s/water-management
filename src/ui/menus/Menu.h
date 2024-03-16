@@ -2,16 +2,30 @@
 #define WATER_MANAGEMENT_MENU_H
 
 #include "vector"
+#include "unordered_map"
+#include "string"
 #include "components/Component.h"
+#include "components/Cmdline.h"
 
-class Menu {
+class Cmdline;
+
+class Menu : public Component {
 protected:
-    int height_, width_;
+    Cmdline* cmdline_;
+
+    std::unordered_map<std::string, std::function<void()>> commands_ = std::unordered_map<std::string, std::function<void()>>();
+    Component *currently_selected_component_ = nullptr, *previously_selected_component_ = nullptr;
 
 public:
-    Menu();
+    explicit Menu(Cmdline* cmdline);
+    Menu(int height, int width, int y, int x, Cmdline* cmdline);
 
-    virtual void draw() = 0;
+    void select_component(Component* component);
+    void swap_selected_component();
+    void select_previous_component();
+
+    bool call_command(std::string command);
+    void add_command(std::string command, std::function<void()> function);
 };
 
 

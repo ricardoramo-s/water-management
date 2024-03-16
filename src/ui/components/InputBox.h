@@ -10,7 +10,7 @@
  * @brief A Component subclass providing a labeled field for user text input.
  */
 class InputBox : public Component {
-private:
+protected:
     /** @brief The currently entered input text. */
     std::string input_text_;
 
@@ -21,8 +21,6 @@ private:
     bool input_flag_ = true;
 
     std::string header_;
-
-    short box_color_id_ = 0;
 
     std::function<void()> on_cancel_ = []() -> void {};
     std::function<void()> on_select_ = []() -> void {};
@@ -60,7 +58,7 @@ public:
 
     void set_header_(std::string header);
 
-    void set_box_color_(short id);
+    void clear();
 
     void on_select(std::function<void()> callback_function);
     void on_cancel(std::function<void()> callback_function);

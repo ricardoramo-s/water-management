@@ -12,13 +12,12 @@ InputBox::InputBox(int width, int y, int x, std::string default_text, std::strin
     default_text_ = std::move(default_text);
     header_ = std::move(header);
     set_color(text_color_id);
-    box_color_id_ = box_color_id;
     on_select_ = std::move(on_select);
     on_cancel_ = std::move(on_cancel);
 }
 
 void InputBox::draw() {
-    ColorPair::activate(get_win(), box_color_id_);
+    ColorPair::activate(get_win(), get_box_color());
     wclear(get_win());
     box(get_win(), 0, 0);
     if (!header_.empty()) mvwprintw(get_win(), 0, (get_width() - static_cast<int>(header_.size())) / 2 - 1, "%s", (" " + header_ + " ").c_str());
@@ -58,7 +57,7 @@ void InputBox::handle_input(int ch) {
             on_cancel_();
             break;
         case CTRL_U:
-            input_text_.clear();
+            clear();
             break;
         case ENTER:
             on_select_();
@@ -85,8 +84,8 @@ void InputBox::set_header_(std::string header) {
     header_ = std::move(header);
 }
 
-void InputBox::set_box_color_(short id) {
-    box_color_id_ = id;
+void InputBox::clear() {
+    input_text_.clear();
 }
 
 void InputBox::on_select(std::function<void()> callback_function) {

@@ -19,7 +19,8 @@ add_executable(water-management
         src/ui/components/OptionMenu.cpp
         src/ui/components/MultiComponent.cpp
         src/ui/menus/Menu.cpp
-        src/ui/menus/ReservoirMenu.cpp)
+        src/ui/menus/ReservoirMenu.cpp
+        src/ui/components/Cmdline.cpp)
 
 find_package(Curses REQUIRED)
 target_link_libraries(water-management -lncurses -lpanel)

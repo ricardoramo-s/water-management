@@ -67,10 +67,11 @@ std::vector<std::string> TextBox::get_lines_() {
 }
 
 void TextBox::set_lines_(std::vector<std::string> &lines) {
+    bool is_diferent_ = lines.size() != lines_.size();
     lines_ = std::move(lines);
 
     if (lines_.empty()) select(-1);
-    else select(0);
+    else if (is_diferent_) select(0);
 }
 
 void TextBox::set_header_(std::string header) {
@@ -109,10 +110,6 @@ void TextBox::select(std::string &text) {
     }
 }
 
-void TextBox::set_box_color(short id) {
-    box_color_ = id;
-}
-
 void TextBox::set_highlighted_color(short id) {
     highlighted_color_ = id;
 }
@@ -128,7 +125,7 @@ void TextBox::on_select(std::function<void()> callback_function) {
 void TextBox::draw() {
     wclear(get_win());
 
-    ColorPair::activate(get_win(), box_color_);
+    ColorPair::activate(get_win(), get_box_color());
     box(get_win(), 0, 0);
     if (!header_.empty()) mvwprintw(get_win(), 0, (get_width() - header_.size()) / 2 - 1, (" " + header_ + " ").c_str());
 

@@ -50,6 +50,14 @@ short Component::get_color() const {
     return color_id_;
 }
 
+void Component::set_box_color(short id) {
+    box_color_id = id;
+}
+
+short Component::get_box_color() const {
+    return box_color_id;
+}
+
 void Component::movewin(int y, int x) {
     if (win_ == nullptr) return;
 
@@ -76,4 +84,28 @@ void Component::refreshwin() const {
     if (win_ == nullptr) return;
 
     wnoutrefresh(win_);
+}
+
+void Component::hide() const {
+    hide_panel(panel_);
+}
+
+void Component::show() const {
+    show_panel(panel_);
+}
+
+void Component::to_back() const {
+    bottom_panel(panel_);
+}
+
+void Component::to_front() const {
+    top_panel(panel_);
+}
+
+void Component::set_userptr(const void* ptr) const {
+    set_panel_userptr(panel_, ptr);
+}
+
+const void *Component::get_userptr() const {
+    return panel_userptr(panel_);
 }

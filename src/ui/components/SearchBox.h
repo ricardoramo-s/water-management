@@ -11,14 +11,12 @@ class SearchBox : public Component {
     InputBox* input_box_;
 
     std::vector<std::vector<std::string>> options_;
-    short box_color_id_ = 0;
     short highlighted_color_id_ = 0;
 
 public:
     SearchBox(int height, int width, int y, int x);
 
     void add_options(std::vector<std::string>& options, std::string header);
-    void set_box_color(short id);
     void set_highlighted_color(short id);
 
     void draw() override;
