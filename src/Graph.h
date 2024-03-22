@@ -17,8 +17,8 @@
 #include <climits>
 #include <utility>
 #include <immintrin.h>
-#include "City.h"
-#include "Reservoir.h"
+#include "base classes/City.h"
+#include "base classes/Reservoir.h"
 
 #define nodeTID std::tuple<const std::string, const int>
 

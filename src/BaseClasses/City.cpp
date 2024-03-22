@@ -1,10 +1,5 @@
 #include "City.h"
 
-City::City(const std::string &name)
-{
-    this->name = name;
-}
-
 City::City(const std::string &name, const int &id,
            const std::string &code, const int &demand, const int &population)
 {

@@ -7,24 +7,21 @@
 
 class Reservoir{
 public:
-    Reservoir(const std::string& name);
     Reservoir(const std::string&, const std::string&, const int&, const std::string&, const int&);
     std::string getName() const;
     std::string getMunicipality() const;
     int getID() const;
     std::string getcode() const;
     int getMaxDelivery() const;
+
     struct ReservoirHash{
-        int operator()(const Reservoir& Reservoir) const{
-            std::string c=Reservoir.getName();
-            int v=0;
-            for(char i:c){
-                v=37*v+i;
-            }
-            return v;
+        size_t operator()(const Reservoir& reservoir) const
+        {
+            return std::hash<int>()(reservoir.getID());
         }
-        bool operator()(const Reservoir& Reservoir1,const Reservoir& Reservoir2) const{
-            return Reservoir1.getName() == Reservoir2.getName();
+        bool operator()(const Reservoir& reservoir1,const Reservoir& reservoir2) const
+        {
+            return reservoir1.getID() == reservoir2.getID();
         }
     };
     typedef std::unordered_set<Reservoir, Reservoir::ReservoirHash, Reservoir::ReservoirHash> ReservoirH;

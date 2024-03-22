@@ -7,7 +7,6 @@
 
 class City{
 public:
-    City(const std::string& name);
     City(const std::string&, const int&, const std::string&, const int&, const int&);
     std::string getName() const;
     int getID() const;
@@ -16,17 +15,13 @@ public:
     int getPopulation() const;
 
     struct CitiesHash{
-        int operator()(const City& Cities) const
+        size_t operator()(const City& city) const
         {
-            std::string c=Cities.getName();
-            int v=0;
-            for(char i:c)
-                v=37*v+i;
-            return v;
+            return std::hash<int>()(city.getID());
         }
-        bool operator()(const City& Cities1, const City& Cities2) const
+        bool operator()(const City& city1, const City& city2) const
         {
-            return Cities1.getName() == Cities2.getName();
+            return city1.getID() == city2.getID();
         }
     };
     typedef std::unordered_set<City, City::CitiesHash, City::CitiesHash> CitiesH;

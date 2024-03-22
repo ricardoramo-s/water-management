@@ -1,9 +1,5 @@
 #include "Reservoir.h"
 
-Reservoir::Reservoir(const std::string &name)
-{
-    this->name = name;
-}
 
 Reservoir::Reservoir(const std::string &name, const std::string &municipality,
                      const int &id, const std::string &code, const int &maxDelivery)
