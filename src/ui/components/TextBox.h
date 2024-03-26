@@ -2,6 +2,8 @@
 #define WATER_MANAGEMENT_TEXTBOX_H
 
 #include "Component.h"
+#include "functional"
+#include "vector"
 #include "string"
 
 /**

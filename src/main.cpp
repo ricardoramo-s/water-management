@@ -8,7 +8,7 @@
 #include "components/Cmdline.h"
 #include "pallets/gruvbox.h"
 #include "colors/ColorPair.h"
-#include "menus/ReservoirMenu.h"
+#include "menus/ReservoirBuffer.h"
 #include "clocale"
 #include <string>
 
@@ -31,7 +31,7 @@ int main() {
     std::vector<std::string> northReservoirs = {"Alto Rabagão", "Albufeira da Aguieira", "Albufeira do Azibo", "Albufeira da Baga", "Albufeira do Bemposta", "Albufeira do Cabril", "Albufeira do Carrapatelo", "Albufeira do Castelo de Bode", "Albufeira da Coa", "Albufeira do Douro Internacional", "Albufeira do Feiticeiro", "Albufeira da Foz Tua", "Albufeira do Fratel", "Albufeira da Grama", "Albufeira da Guadiana", "Albufeira do Lindoso", "Albufeira do Maranhão", "Albufeira do Miranda", "Albufeira do Monte da Rocha", "Albufeira do Ocreza", "Albufeira da Paradela", "Albufeira do Picote", "Albufeira do Pinhão", "Albufeira do Pocinho", "Albufeira da Ponte da Barca", "Albufeira da Salamonde", "Albufeira do Sabor", "Albufeira do São João da Pesqueira", "Albufeira do Torrão", "Albufeira do Vilarinho das Furnas", "Albufeira do Vírgenes"};
 
     auto cmdline = new Cmdline();
-    auto menu = new ReservoirMenu(cmdline);
+    auto menu = new ReservoirBuffer(cmdline);
     cmdline->set_current_menu(menu);
 
     while (true) {

@@ -1,5 +1,5 @@
-#ifndef WATER_MANAGEMENT_MENU_H
-#define WATER_MANAGEMENT_MENU_H
+#ifndef WATER_MANAGEMENT_BUFFER_H
+#define WATER_MANAGEMENT_BUFFER_H
 
 #include "vector"
 #include "unordered_map"
@@ -9,7 +9,7 @@
 
 class Cmdline;
 
-class Menu : public Component {
+class Buffer : public Component {
 protected:
     Cmdline* cmdline_;
 
@@ -17,8 +17,8 @@ protected:
     Component *currently_selected_component_ = nullptr, *previously_selected_component_ = nullptr;
 
 public:
-    explicit Menu(Cmdline* cmdline);
-    Menu(int height, int width, int y, int x, Cmdline* cmdline);
+    explicit Buffer(Cmdline* cmdline);
+    Buffer(int height, int width, int y, int x, Cmdline* cmdline);
 
     void select_component(Component* component);
     void swap_selected_component();
@@ -29,4 +29,4 @@ public:
 };
 
 
-#endif //WATER_MANAGEMENT_MENU_H
+#endif //WATER_MANAGEMENT_BUFFER_H

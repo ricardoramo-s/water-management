@@ -27,6 +27,6 @@ Cmdline::Cmdline() : InputBox(60, 5, (getmaxx(stdscr) - 60) / 2, "❯ ") {
     hide();
 }
 
-void Cmdline::set_current_menu(Menu *menu) {
+void Cmdline::set_current_menu(Buffer *menu) {
     current_menu_ = menu;
 }

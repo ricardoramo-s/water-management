@@ -1,9 +1,9 @@
-#include "ReservoirMenu.h"
+#include "ReservoirBuffer.h"
 #include "components/KeysBindings.h"
 #include "colors/ColorPair.h"
 #include "pallets/gruvbox.h"
 
-ReservoirMenu::ReservoirMenu(Cmdline* cmdline) : Menu(cmdline) {
+ReservoirBuffer::ReservoirBuffer(Cmdline* cmdline) : Buffer(cmdline) {
     bool even_height = get_height() % 2 == 0;
     bool even_width = get_width() % 2 == 0;
 
@@ -30,13 +30,13 @@ ReservoirMenu::ReservoirMenu(Cmdline* cmdline) : Menu(cmdline) {
     previously_selected_component_ = search_box_;
 }
 
-void ReservoirMenu::draw() {
+void ReservoirBuffer::draw() {
     search_box_->draw();
     connected_box_->draw();
     cmdline_->draw();
 }
 
-void ReservoirMenu::handle_input(int ch) {
+void ReservoirBuffer::handle_input(int ch) {
     switch (ch) {
         case ':':
             select_component(cmdline_);

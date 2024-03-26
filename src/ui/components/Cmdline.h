@@ -6,18 +6,18 @@
 #define WATER_MANAGEMENT_CMDLINE_H
 
 #include "InputBox.h"
-#include "menus/Menu.h"
+#include "menus/Buffer.h"
 
-class Menu;
+class Buffer;
 
 class Cmdline : public InputBox {
 private:
-    Menu* current_menu_ = nullptr;
+    Buffer* current_menu_ = nullptr;
 
 public:
     Cmdline();
 
-    void set_current_menu(Menu* menu);
+    void set_current_menu(Buffer* menu);
 };
 
 

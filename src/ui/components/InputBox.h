@@ -3,6 +3,7 @@
 
 
 #include "Component.h"
+#include "functional"
 #include "string"
 
 /**

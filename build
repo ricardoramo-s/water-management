@@ -1,3 +1,3 @@
 #!/bin/zsh
 
-cmake --build debug/ --target water-management
+/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake --build /Users/ricardoramos/CLionProjects/water-management/cmake-build-debug --target water-management -j 6

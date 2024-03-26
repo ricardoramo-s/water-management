@@ -18,8 +18,8 @@ add_executable(water-management
         src/ui/components/SearchBox.cpp
         src/ui/components/OptionMenu.cpp
         src/ui/components/MultiComponent.cpp
-        src/ui/menus/Menu.cpp
-        src/ui/menus/ReservoirMenu.cpp
+        src/ui/menus/Buffer.cpp
+        src/ui/menus/ReservoirBuffer.cpp
         src/ui/components/Cmdline.cpp)
 
 find_package(Curses REQUIRED)
