@@ -1,0 +1,5 @@
+# ninja log v5
+29	755	7332680458944822	CMakeFiles/water-management.dir/src/BaseClasses/Pipe.cpp.obj	de4c595ba5b9ae72
+15	757	7332680458954838	CMakeFiles/water-management.dir/src/BaseClasses/Pump.cpp.obj	4d5ba228e239177f
+0	757	7332680458954838	CMakeFiles/water-management.dir/src/BaseClasses/Reservoir.cpp.obj	9e01ca90ce23d57c
+12	758	7332680458980006	CMakeFiles/water-management.dir/src/BaseClasses/City.cpp.obj	906198b8df5dcac0

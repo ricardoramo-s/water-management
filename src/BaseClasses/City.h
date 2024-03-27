@@ -3,34 +3,35 @@
 
 #include <string>
 #include <unordered_map>
-#include <unordered_set>
 
 class City{
 public:
-    City(const std::string&, const int&, const std::string&, const int&, const int&);
+
+    typedef std::unordered_map<int, City*> CitiesMap;
+
+    City() = default;
+    City(const std::string& name, const int& id, const std::string& code,
+         const int& demand, const std::string& population);
+
     std::string getName() const;
-    int getID() const;
+    int getId() const;
     std::string getcode() const;
     int getDemand() const;
-    int getPopulation() const;
+    std::string getPopulation() const;
 
-    struct CitiesHash{
-        size_t operator()(const City& city) const
-        {
-            return std::hash<int>()(city.getID());
-        }
-        bool operator()(const City& city1, const City& city2) const
-        {
-            return city1.getID() == city2.getID();
-        }
-    };
-    typedef std::unordered_set<City, City::CitiesHash, City::CitiesHash> CitiesH;
+    static void addCity(City*);
+    static City* getCity(int id);
+
 private:
+
+    static CitiesMap citiesMap;
+
     std::string name;
     int id;
     std::string code;
     int demand;
-    int population;
+    std::string population;
+
 };
 
 #endif

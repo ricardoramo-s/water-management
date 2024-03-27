@@ -11,16 +11,22 @@ project(water-management)
 add_executable(water-management src/main.cpp
         "src/BaseClasses/Reservoir.h"
         "src/BaseClasses/Reservoir.cpp"
-        src/Graph.h
-        src/Graph.cpp
         src/minHeap.h
         "src/BaseClasses/City.h"
         "src/BaseClasses/City.cpp"
         src/DataProcessor.h
         src/DataProcessor.cpp
-        "src/BaseClasses/Station.h"
+        "src/BaseClasses/Pump.h"
         "src/BaseClasses/Pipe.h"
-        "src/BaseClasses/Station.cpp"
+        "src/BaseClasses/Pump.cpp"
+        src/GraphClasses/Vertex.h
+        src/GraphClasses/Vertex.cpp
+        src/GraphClasses/Edge.cpp
+        src/GraphClasses/Graph.h
+        src/GraphClasses/Graph.cpp
+        src/BaseClasses/Pipe.cpp
+        src/DataManagement/DataReader.h
+        src/DataManagement/DataReader.cpp
 )
 
 # Link ncurses library
