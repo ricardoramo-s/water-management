@@ -1,53 +1,57 @@
-//
-// Created by bruno on 22/03/2024.
-//
-
 #ifndef WATER_MANAGEMENT_VERTEX_H
 #define WATER_MANAGEMENT_VERTEX_H
 
 #include <vector>
+#include <string>
+#include <utility>
+#include <algorithm>
+#include "Edge.h"
 
-template <class T>
+class Edge;
+
 class Vertex {
 public:
-    Vertex(T in);
 
-    T getInfo() const;
-    std::vector<Edge<T> *> getAdj() const;
+    explicit Vertex(std::string code);
+    ~Vertex();
+
+    Edge* addEdge(Vertex* dest, double w);
+    bool removeEdge(Vertex* dest);
+    void removeOutgoingEdges();
+    void removeIncomingEdges();
+
+    std::vector<Edge*> getAdj() const;
+    std::vector<Edge*> getIncoming() const;
+
+    double getDist() const;
+    Edge* getPath() const;
+    void setDist(double dist);
+    void setPath(Edge* path);
+
+    std::string getCode() const;
     bool isVisited() const;
     bool isProcessing() const;
-    unsigned int getIndegree() const;
-    double getDist() const;
-    Edge<T> *getPath() const;
-    std::vector<Edge<T> *> getIncoming() const;
-
-    void setInfo(T info);
+    void setCode(std::string code);
     void setVisited(bool visited);
-    void setProcesssing(bool processing);
-    void setIndegree(unsigned int indegree);
-    void setDist(double dist);
-    void setPath(Edge<T> *path);
-    Edge<T> * addEdge(Vertex<T> *dest, double w);
-    bool removeEdge(T in);
-    void removeOutgoingEdges();
+    void setProcessing(bool processing);
 
+    void setIndegree(unsigned int indegree);
+    unsigned int getIndegree() const;
 
 protected:
 
+    void deleteEdge(Edge* edge);
 
-    T info;
-    std::vector<Edge<T> *> adj;
-
+    std::string code;
+    std::vector<Edge*> adj;
+    std::vector<Edge*> incoming;
+    Edge* path = nullptr;
 
     bool visited = false;
     bool processing = false;
-    unsigned int indegree;
-    double dist = 0;
-    Edge<T> *path = nullptr;
+    unsigned int indegree = NULL;
+    double dist = NULL;
 
-    std::vector<Edge<T> *> incoming;
-
-    void deleteEdge(Edge<T> *edge);
 };
 
 

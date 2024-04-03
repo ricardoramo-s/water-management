@@ -1,40 +1,69 @@
 #include "City.h"
+#include <utility>
 
-City::City(const std::string &name, const int &id, const std::string &code,
-           const int &demand, const std::string &population)
-{
-    this->name = name;
-    this->id = id;
-    this->code = code;
-    this->demand = demand;
-    this->population = population;
+City::CitiesMap City::citiesMap;
+
+City::City(std::string name, int id, std::string code, int demand,
+           std::string population) :
+           name(std::move(name)), id(id), code(std::move(code)), demand(demand),
+           population(std::move(population)) {
+
+    addCity(this);
 }
 
-std::string City::getName() const
-{
+//TODO
+City::~City() = default;
+
+bool City::addCity(City* city) {
+
+    if (citiesMap.find(city->code) != citiesMap.end()) {
+        return false;
+    }
+
+    citiesMap.emplace(city->code, city);
+    return true;
+}
+
+//TODO
+bool City::removeCity(City *city) {
+    delete city;
+    return true;
+}
+
+City* City::getCity(const std::string& code) {
+
+    auto it = citiesMap.find(code);
+
+    if (it == citiesMap.end()) return nullptr;
+
+    return it->second;
+}
+
+
+std::string City::getName() const {
     return this->name;
 }
 
-int City::getId() const
-{
+int City::getId() const {
     return this->id;
 }
 
-std::string City::getcode() const
-{
+std::string City::getcode() const {
     return this->code;
 }
 
-int City::getDemand() const
-{
+int City::getDemand() const {
     return this->demand;
 }
 
-std::string City::getPopulation() const
-{
+std::string City::getPopulation() const {
     return this->population;
 }
 
-void City::addCity(City *) {
 
-}
+
+
+
+
+
+

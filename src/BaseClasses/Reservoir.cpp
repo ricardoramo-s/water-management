@@ -1,14 +1,42 @@
 #include "Reservoir.h"
+#include <utility>
+
+Reservoir::ReservoirsMap Reservoir::reservoirsMap;
+
+Reservoir::Reservoir(std::string name, std::string municipality, int id, std::string code, int maxDelivery) :
+                     name(std::move(name)), municipality(std::move(municipality)), id(id),
+                     code(std::move(code)), maxDelivery(maxDelivery) {
+
+    addReservoir(this);
+}
 
 
-Reservoir::Reservoir(const std::string &name, const std::string &municipality,
-                     const int &id, const std::string &code, const int &maxDelivery)
-{
-    this->name = name;
-    this->municipality = municipality;
-    this->id = id;
-    this->code = code;
-    this->maxDelivery = maxDelivery;
+//TODO
+Reservoir::~Reservoir() = default;
+
+bool Reservoir::addReservoir(Reservoir* reservoir) {
+
+    if (reservoirsMap.find(reservoir->code) != reservoirsMap.end()) {
+        return false;
+    }
+
+    reservoirsMap.emplace(reservoir->code, reservoir);
+    return true;
+}
+
+//TODO
+bool Reservoir::removeReservoir(Reservoir *reservoir) {
+    delete reservoir;
+    return true;
+}
+
+Reservoir* Reservoir::getReservoir(const std::string &code) {
+
+    auto it = reservoirsMap.find(code);
+
+    if (it == reservoirsMap.end()) return nullptr;
+
+    return it->second;
 }
 
 std::string Reservoir::getName() const
@@ -35,3 +63,5 @@ int Reservoir::getMaxDelivery() const
 {
     return this->maxDelivery;
 }
+
+

@@ -1,37 +1,38 @@
-//
-// Created by bruno on 22/03/2024.
-//
-
 #ifndef WATER_MANAGEMENT_EDGE_H
 #define WATER_MANAGEMENT_EDGE_H
 
+#include"Vertex.h"
 
-template <class T>
+class Vertex;
+
 class Edge {
 public:
-    Edge(Vertex<T> *orig, Vertex<T> *dest, double w);
 
-    Vertex<T> * getDest() const;
+    Edge(Vertex *orig, Vertex *dest, double w);
+
+    Vertex* getOrig() const;
+    Vertex* getDest() const;
+
     double getWeight() const;
-    bool isSelected() const;
-    Vertex<T> * getOrig() const;
-    Edge<T> *getReverse() const;
+    void setFlow(double flow);
     double getFlow() const;
 
     void setSelected(bool selected);
-    void setReverse(Edge<T> *reverse);
-    void setFlow(double flow);
-protected:
-    Vertex<T> * dest;
-    double weight;
+    bool isSelected() const;
 
+    void setReverse(Edge* reverse);
+    Edge* getReverse() const;
+
+protected:
+
+    Vertex* dest;
+    Vertex* orig;
+    Edge* reverse = nullptr;
+
+    double weight;
+    double flow = 0;
     bool selected = false;
 
-
-    Vertex<T> *orig;
-    Edge<T> *reverse = nullptr;
-
-    double flow;
 };
 
 

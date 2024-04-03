@@ -7,11 +7,12 @@
 class City{
 public:
 
-    typedef std::unordered_map<int, City*> CitiesMap;
+    typedef std::unordered_map<std::string, City*> CitiesMap; // code -> city
 
     City() = default;
-    City(const std::string& name, const int& id, const std::string& code,
-         const int& demand, const std::string& population);
+    City(std::string name, int id, std::string code,
+         int demand, std::string population);
+    ~City();
 
     std::string getName() const;
     int getId() const;
@@ -19,17 +20,18 @@ public:
     int getDemand() const;
     std::string getPopulation() const;
 
-    static void addCity(City*);
-    static City* getCity(int id);
+    static bool addCity(City* city);
+    static bool removeCity(City* city);
+    static City* getCity(const std::string& code);
 
 private:
 
     static CitiesMap citiesMap;
 
     std::string name;
-    int id;
+    int id = NULL;
     std::string code;
-    int demand;
+    int demand = NULL;
     std::string population;
 
 };

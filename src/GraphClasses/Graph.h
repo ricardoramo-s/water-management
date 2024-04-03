@@ -1,38 +1,47 @@
 #ifndef WATER_MANAGEMENT_GRAPH_H
 #define WATER_MANAGEMENT_GRAPH_H
 
+#include <vector>
+#include "Vertex.h"
 
-template <class T>
+class Edge;
+class Vertex;
+
 class Graph {
 public:
+    Graph();
     ~Graph();
 
-    Vertex<T> *findVertex(const T &in) const;
+    Vertex* findVertex(const std::string &code) const;
+    Vertex* getSuperSource() const;
+    Vertex* getSuperSink() const;
 
-    bool addVertex(const T &in);
-    bool removeVertex(const T &in);
+    bool addVertex(const std::string &code);
+    bool removeVertex(const std::string &code);
 
+    bool addEdge(const std::string &src, const std::string &dest, double w);
+    bool removeEdge(const std::string &src, const std::string &dest);
+    bool addBidirectionalEdge(const std::string &src, const std::string &dest, double w);
 
-    bool addEdge(const T &sourc, const T &dest, double w);
-    bool removeEdge(const T &source, const T &dest);
-    bool addBidirectionalEdge(const T &sourc, const T &dest, double w);
+    bool addSource(const std::string &code);
+    bool removeSource(const std::string &code);
+    bool addSink(const std::string &code);
+    bool removeSink(const std::string &code);
 
     int getNumVertex() const;
-    std::vector<Vertex<T> *> getVertexSet() const;
 
-    std:: vector<T> dfs() const;
-    std:: vector<T> dfs(const T & source) const;
-    void dfsVisit(Vertex<T> *v,  std::vector<T> & res) const;
-    std::vector<T> bfs(const T & source) const;
+    std::vector<Vertex*> getVertexSet() const;
 
-    bool isDAG() const;
-    bool dfsIsDAG(Vertex<T> *v) const;
-    std::vector<T> topsort() const;
 
 private:
-    std::vector<Vertex<T>*> vertexSet;    // vertex set
 
-    int findVertexIdx(const T &in) const;
+    std::vector<Vertex*> vertexSet;
+
+    std::vector<Vertex*> sourceSet;
+    std::vector<Vertex*> sinkSet;
+
+    Vertex* superSource;
+    Vertex* superSink;
 };
 
 

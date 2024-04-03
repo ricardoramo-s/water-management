@@ -2,31 +2,30 @@
 #define WATER_MANAGEMENT_PUMP_H
 
 #include <string>
-#include <unordered_set>
+#include <unordered_map>
 
 class Pump {
 
 public:
-    Pump(const int &id, const std::string &code);
+
+    typedef std::unordered_map<std::string, Pump*> PumpsMap; //code -> pump
+
+    Pump() = default;
+    Pump(int id, std::string code);
+    ~Pump();
+
     int getID() const;
     std::string getCode() const;
 
-    struct StationHash{
-        size_t operator()(const Pump& station) const
-        {
-            return std::hash<int>()(station.getID());
-        }
-        bool operator()(const Pump& station1, const Pump& station2) const
-        {
-            return station1.getID() == station2.getID();
-        }
-    };
-    typedef std::unordered_set<Pump, Pump::StationHash, Pump::StationHash> PumpH;
-
-
+    static bool addPump(Pump* pump);
+    static bool removePump(Pump* pump);
+    static Pump* getPump(const std::string& code);
 
 private:
-    int id;
+
+    static PumpsMap pumpsMap;
+
+    int id = NULL;
     std::string code;
 };
 
