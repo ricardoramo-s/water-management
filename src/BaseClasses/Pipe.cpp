@@ -13,20 +13,20 @@ bool Pipe::PipesMultiMap::addRtPPipe(Pipe* pipe) {
 }
 
 bool Pipe::PipesMultiMap::addPtPPipe(Pipe* pipe) {
-    if (RtPMap.find(makeKey(pipe)) != RtPMap.end()) {
+    if (PtPMap.find(makeKey(pipe)) != PtPMap.end()) {
         return false;
     }
 
-    RtPMap.emplace(makeKey(pipe), pipe);
+    PtPMap.emplace(makeKey(pipe), pipe);
     return true;
 }
 
 bool Pipe::PipesMultiMap::addPtCPipe(Pipe* pipe) {
-    if (RtPMap.find(makeKey(pipe)) != RtPMap.end()) {
+    if (PtCMap.find(makeKey(pipe)) != PtCMap.end()) {
         return false;
     }
 
-    RtPMap.emplace(makeKey(pipe), pipe);
+    PtCMap.emplace(makeKey(pipe), pipe);
     return true;
 }
 
@@ -58,7 +58,7 @@ bool Pipe::addPipe(Pipe* pipe) {
 
     int n = 0;
 
-    if (~selectMap(makeKey(pipe), n)) return false;
+    if (!selectMap(makeKey(pipe), n)) return false;
 
     switch (n) {
 
@@ -80,7 +80,7 @@ Pipe* Pipe::getPipe(Pipe::Key key) {
 
     int n = 0;
 
-    if (~selectMap(key, n)) return nullptr;
+    if (!selectMap(key, n)) return nullptr;
 
     switch (n) {
 
@@ -126,17 +126,17 @@ Pipe::PipesMultiMap Pipe::getPipesMultiMap() {
 
 bool Pipe::selectMap(Pipe::Key key, int &n) {
 
-    if (key.first == "R_") {
+    if (key.first.substr(0, 2) == "R_") {
         n = 0;
         return true;
     }
 
-    if (key.first == "PS_" && key.second == "PS_") {
+    if (key.first.substr(0, 3) == "PS_" && key.second.substr(0, 3) == "PS_") {
         n = 1;
         return true;
     }
 
-    if (key.second == "C_") {
+    if (key.second.substr(0, 2) == "C_") {
         n = 2;
         return true;
     }
