@@ -5,8 +5,6 @@ Pump::PumpsMap Pump::pumpsMap;
 
 Pump::Pump(int id, std::string code) :
         id(id), code(std::move(code)) {
-
-    addPump(this);
 }
 
 
@@ -44,6 +42,10 @@ int Pump::getID() const {
 
 std::string Pump::getCode() const {
     return code;
+}
+
+Pump::PumpsMap Pump::getPumpsMap() {
+    return pumpsMap;
 }
 
 

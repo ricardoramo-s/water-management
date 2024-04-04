@@ -1,14 +1,9 @@
 #include "DataReader.h"
 
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <utility>
 
 DataReader::DataReader(std::string path, std::string name) {
 
-    this->path = std::move(path);
+    this->path = std::move(path) += "\\";
     this->name = std::move(name);
 
     readCities();
@@ -73,6 +68,8 @@ void DataReader::readCities() {
             n++;
         }
 
+        City* newCity = new City(city, id, code, demand, population);
+        City::addCity(newCity);
 
     }
 
@@ -130,7 +127,8 @@ void DataReader::readPipes() {
             n++;
         }
 
-
+        Pipe* newPipe = new Pipe(org, dest, capacity, direction);
+        Pipe::addPipe(newPipe);
     }
 
     file.close();
@@ -156,6 +154,7 @@ void DataReader::readReservoirs() {
         std::string reservoir;
         std::string municipality;
         int id;
+        std::string code;
         double maxDelivery;
         int n = 0;    // the n word in the line
 
@@ -177,6 +176,10 @@ void DataReader::readReservoirs() {
                     break;
 
                 case 3:
+                    code = word;
+                    break;
+
+                case 4:
                     maxDelivery = stod(word);
                     break;
 
@@ -187,6 +190,8 @@ void DataReader::readReservoirs() {
             n++;
         }
 
+        Reservoir* newReservoir = new Reservoir(reservoir, municipality, id, code, maxDelivery);
+        Reservoir::addReservoir(newReservoir);
 
     }
 
@@ -195,7 +200,7 @@ void DataReader::readReservoirs() {
 
 void DataReader::readStations() {
 
-    std::string filePath = path + "Cities" + name + ".csv";
+    std::string filePath = path + "Stations" + name + ".csv";
 
     std::ifstream file(filePath);
 
@@ -234,8 +239,8 @@ void DataReader::readStations() {
             n++;
         }
 
-
+        Pump* newPump = new Pump(id, code);
+        Pump::addPump(newPump);
     }
-
     file.close();
 }

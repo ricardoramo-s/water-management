@@ -20,6 +20,7 @@ public:
     static bool addPump(Pump* pump);
     static bool removePump(Pump* pump);
     static Pump* getPump(const std::string& code);
+    static PumpsMap getPumpsMap();
 
 private:
 

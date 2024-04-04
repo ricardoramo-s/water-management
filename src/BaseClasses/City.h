@@ -11,18 +11,19 @@ public:
 
     City() = default;
     City(std::string name, int id, std::string code,
-         int demand, std::string population);
+         double demand, std::string population);
     ~City();
 
     std::string getName() const;
     int getId() const;
     std::string getcode() const;
-    int getDemand() const;
+    double getDemand() const;
     std::string getPopulation() const;
 
     static bool addCity(City* city);
     static bool removeCity(City* city);
     static City* getCity(const std::string& code);
+    static CitiesMap getCitiesMap();
 
 private:
 
@@ -31,7 +32,7 @@ private:
     std::string name;
     int id = NULL;
     std::string code;
-    int demand = NULL;
+    double demand = NULL;
     std::string population;
 
 };

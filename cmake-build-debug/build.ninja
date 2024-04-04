@@ -70,13 +70,6 @@ build CMakeFiles/water-management.dir/src/BaseClasses/City.cpp.obj: CXX_COMPILER
   OBJECT_DIR = CMakeFiles\water-management.dir
   OBJECT_FILE_DIR = CMakeFiles\water-management.dir\src\BaseClasses
 
-build CMakeFiles/water-management.dir/src/DataProcessor.cpp.obj: CXX_COMPILER__water-management_unscanned_Debug C$:/Users/bruno/Ambiente$ de$ Trabalho/Projects/water-management/src/DataProcessor.cpp || cmake_object_order_depends_target_water-management
-  DEP_FILE = CMakeFiles\water-management.dir\src\DataProcessor.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I"C:/Users/bruno/Ambiente de Trabalho/Projects/water-management/src"
-  OBJECT_DIR = CMakeFiles\water-management.dir
-  OBJECT_FILE_DIR = CMakeFiles\water-management.dir\src
-
 build CMakeFiles/water-management.dir/src/BaseClasses/Pump.cpp.obj: CXX_COMPILER__water-management_unscanned_Debug C$:/Users/bruno/Ambiente$ de$ Trabalho/Projects/water-management/src/BaseClasses/Pump.cpp || cmake_object_order_depends_target_water-management
   DEP_FILE = CMakeFiles\water-management.dir\src\BaseClasses\Pump.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
@@ -119,6 +112,13 @@ build CMakeFiles/water-management.dir/src/DataManagement/DataReader.cpp.obj: CXX
   OBJECT_DIR = CMakeFiles\water-management.dir
   OBJECT_FILE_DIR = CMakeFiles\water-management.dir\src\DataManagement
 
+build CMakeFiles/water-management.dir/src/DataManagement/DataManager.cpp.obj: CXX_COMPILER__water-management_unscanned_Debug C$:/Users/bruno/Ambiente$ de$ Trabalho/Projects/water-management/src/DataManagement/DataManager.cpp || cmake_object_order_depends_target_water-management
+  DEP_FILE = CMakeFiles\water-management.dir\src\DataManagement\DataManager.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/bruno/Ambiente de Trabalho/Projects/water-management/src"
+  OBJECT_DIR = CMakeFiles\water-management.dir
+  OBJECT_FILE_DIR = CMakeFiles\water-management.dir\src\DataManagement
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target water-management
@@ -127,7 +127,7 @@ build CMakeFiles/water-management.dir/src/DataManagement/DataReader.cpp.obj: CXX
 #############################################
 # Link the executable water-management.exe
 
-build water-management.exe: CXX_EXECUTABLE_LINKER__water-management_Debug CMakeFiles/water-management.dir/src/main.cpp.obj CMakeFiles/water-management.dir/src/BaseClasses/Reservoir.cpp.obj CMakeFiles/water-management.dir/src/BaseClasses/City.cpp.obj CMakeFiles/water-management.dir/src/DataProcessor.cpp.obj CMakeFiles/water-management.dir/src/BaseClasses/Pump.cpp.obj CMakeFiles/water-management.dir/src/GraphClasses/Vertex.cpp.obj CMakeFiles/water-management.dir/src/GraphClasses/Edge.cpp.obj CMakeFiles/water-management.dir/src/GraphClasses/Graph.cpp.obj CMakeFiles/water-management.dir/src/BaseClasses/Pipe.cpp.obj CMakeFiles/water-management.dir/src/DataManagement/DataReader.cpp.obj
+build water-management.exe: CXX_EXECUTABLE_LINKER__water-management_Debug CMakeFiles/water-management.dir/src/main.cpp.obj CMakeFiles/water-management.dir/src/BaseClasses/Reservoir.cpp.obj CMakeFiles/water-management.dir/src/BaseClasses/City.cpp.obj CMakeFiles/water-management.dir/src/BaseClasses/Pump.cpp.obj CMakeFiles/water-management.dir/src/GraphClasses/Vertex.cpp.obj CMakeFiles/water-management.dir/src/GraphClasses/Edge.cpp.obj CMakeFiles/water-management.dir/src/GraphClasses/Graph.cpp.obj CMakeFiles/water-management.dir/src/BaseClasses/Pipe.cpp.obj CMakeFiles/water-management.dir/src/DataManagement/DataReader.cpp.obj CMakeFiles/water-management.dir/src/DataManagement/DataManager.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\water-management.dir

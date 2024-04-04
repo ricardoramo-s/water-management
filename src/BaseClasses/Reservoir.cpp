@@ -3,11 +3,9 @@
 
 Reservoir::ReservoirsMap Reservoir::reservoirsMap;
 
-Reservoir::Reservoir(std::string name, std::string municipality, int id, std::string code, int maxDelivery) :
+Reservoir::Reservoir(std::string name, std::string municipality, int id, std::string code, double maxDelivery) :
                      name(std::move(name)), municipality(std::move(municipality)), id(id),
                      code(std::move(code)), maxDelivery(maxDelivery) {
-
-    addReservoir(this);
 }
 
 
@@ -59,9 +57,13 @@ std::string Reservoir::getcode() const
     return this->code;
 }
 
-int Reservoir::getMaxDelivery() const
+double Reservoir::getMaxDelivery() const
 {
     return this->maxDelivery;
+}
+
+Reservoir::ReservoirsMap Reservoir::getReservoirsMap() {
+    return reservoirsMap;
 }
 
 

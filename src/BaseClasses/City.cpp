@@ -3,12 +3,11 @@
 
 City::CitiesMap City::citiesMap;
 
-City::City(std::string name, int id, std::string code, int demand,
+City::City(std::string name, int id, std::string code, double demand,
            std::string population) :
            name(std::move(name)), id(id), code(std::move(code)), demand(demand),
            population(std::move(population)) {
 
-    addCity(this);
 }
 
 //TODO
@@ -52,12 +51,16 @@ std::string City::getcode() const {
     return this->code;
 }
 
-int City::getDemand() const {
+double City::getDemand() const {
     return this->demand;
 }
 
 std::string City::getPopulation() const {
     return this->population;
+}
+
+City::CitiesMap City::getCitiesMap() {
+    return citiesMap;
 }
 
 
