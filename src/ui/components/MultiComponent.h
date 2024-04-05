@@ -28,6 +28,11 @@ public:
 
     void draw() override;
     void handle_input(int ch) override;
+
+    void hide() const override;
+    void show() const override;
+
+    ~MultiComponent() override;
 };
 
 

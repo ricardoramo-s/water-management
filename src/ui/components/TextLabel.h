@@ -24,6 +24,7 @@ public:
      * @param text The text to be displayed by the label.
      */
     TextLabel(int y, int x, std::string text);
+    TextLabel(int width, int y, int x);
 
     /**
      * @brief Renders the TextLabel's content to the screen.
@@ -31,10 +32,12 @@ public:
     void draw() override;
     void draw(short color_pair_id);
 
+    void set_text(std::string text);
+
     void handle_input(int ch) override;
 
     /** @brief Destructor for the TextLabel class */
-    ~TextLabel();
+    ~TextLabel() override = default;
 };
 
 

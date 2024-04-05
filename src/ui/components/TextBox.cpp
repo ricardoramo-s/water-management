@@ -83,6 +83,8 @@ int TextBox::get_selected() const {
 }
 
 std::string TextBox::get_selected_string() const {
+    if (selected_ == -1) return "";
+
     return lines_.at(selected_);
 }
 
@@ -114,20 +116,12 @@ void TextBox::set_highlighted_color(short id) {
     highlighted_color_ = id;
 }
 
-void TextBox::on_cancel(std::function<void()> callback_function) {
-    on_cancel_ = std::move(callback_function);
-}
-
-void TextBox::on_select(std::function<void()> callback_function) {
-    on_select_ = std::move(callback_function);
-}
-
 void TextBox::draw() {
     wclear(get_win());
 
     ColorPair::activate(get_win(), get_box_color());
     box(get_win(), 0, 0);
-    if (!header_.empty()) mvwprintw(get_win(), 0, (get_width() - header_.size()) / 2 - 1, (" " + header_ + " ").c_str());
+    if (!header_.empty()) mvwprintw(get_win(), 0, (get_width() - header_.size()) / 2 - 1, "%s", (" " + header_ + " ").c_str());
 
     int relative_y = (reversed_) ? get_height() - 2 : 1; // starting point based on orientation
 
@@ -183,3 +177,4 @@ void TextBox::handle_input(int ch) {
         }
     }
 }
+

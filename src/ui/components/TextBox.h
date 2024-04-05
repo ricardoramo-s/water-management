@@ -31,9 +31,6 @@ private:
 
     short highlighted_color_ = 0;
 
-    std::function<void()> on_select_ = []() -> void {};
-    std::function<void()> on_cancel_ = []() -> void {};
-
     /** @brief Updates the minimum line index, changing the maximum line index accordingly. */
     void set_min_(int min);
 
@@ -103,9 +100,6 @@ public:
 
     void set_highlighted_color(short id);
 
-    void on_cancel(std::function<void()> callback_function);
-    void on_select(std::function<void()> callback_function);
-
     /**
      * @brief Overrides Component::draw() to render the TextBox content.
      */
@@ -117,6 +111,7 @@ public:
      */
     void handle_input(int ch) override;
 
+    ~TextBox() override = default;
 };
 
 

@@ -1,8 +1,8 @@
 #ifndef WATER_MANAGEMENT_SEARCHBOX_H
 #define WATER_MANAGEMENT_SEARCHBOX_H
 
-#include "TextBox.h"
-#include "InputBox.h"
+#include "ui/components/TextBox.h"
+#include "ui/components/InputBox.h"
 #include "vector"
 #include "components/MultiComponent.h"
 
@@ -19,9 +19,15 @@ public:
     void add_options(std::vector<std::string>& options, std::string header);
     void set_highlighted_color(short id);
 
+    std::string get_selected() const;
+
     void draw() override;
     void handle_input(int ch) override;
 
+    void hide() const override;
+    void show() const override;
+
+    ~SearchBox() override;
 };
 
 

@@ -1,5 +1,5 @@
 #include "SearchBox.h"
-#include "KeysBindings.h"
+#include "ui/components/KeysBindings.h"
 #include "colors/ColorPair.h"
 #include "pallets/gruvbox.h"
 
@@ -22,6 +22,10 @@ void SearchBox::add_options(std::vector<std::string> &options, std::string heade
 
     multi_text_box_->add_component(search_text);
     options_.push_back(std::move(options));
+}
+
+std::string SearchBox::get_selected() const {
+    return multi_text_box_->get_selected_component()->get_selected_string();
 }
 
 void SearchBox::set_highlighted_color(short id) {
@@ -82,6 +86,25 @@ void SearchBox::handle_input(int ch) {
                                          input_box_->get_input_text());
         multi_text_box_->get_selected_component()->set_lines_(lines);
     }
+}
+
+void SearchBox::hide() const {
+    input_box_->hide();
+    multi_text_box_->hide();
+
+    hide_panel(get_panel());
+}
+
+void SearchBox::show() const {
+    show_panel(get_panel());
+
+    multi_text_box_->show();
+    input_box_->show();
+}
+
+SearchBox::~SearchBox() {
+    delete multi_text_box_;
+    delete input_box_;
 }
 
 

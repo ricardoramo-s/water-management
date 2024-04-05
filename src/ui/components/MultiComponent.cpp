@@ -1,6 +1,6 @@
 #include "MultiComponent.h"
 #include "ui/components/KeysBindings.h"
-#include "ui/components/SearchBox.h"
+#include "SearchBox.h"
 
 template<typename T>
 MultiComponent<T>::MultiComponent() : Component() {}
@@ -62,6 +62,33 @@ void MultiComponent<T>::handle_input(int ch) {
         default:
             auto comp = dynamic_cast<Component*>(components_.at(selected_));
             comp->handle_input(ch);
+    }
+}
+
+template<typename T>
+void MultiComponent<T>::hide() const {
+    for (auto component : components_) {
+        Component* pComponent = dynamic_cast<Component*>(component);
+        pComponent->hide();
+    }
+
+    hide_panel(get_panel());
+}
+
+template<typename T>
+void MultiComponent<T>::show() const {
+    show_panel(get_panel());
+
+    for (auto component : components_) {
+        Component* pComponent = dynamic_cast<Component*>(component);
+        pComponent->show();
+    }
+}
+
+template<typename T>
+MultiComponent<T>::~MultiComponent() {
+    for (auto component : components_) {
+        delete component;
     }
 }
 

@@ -1,6 +1,7 @@
 #include "InputBox.h"
 
 #include <utility>
+#include "ncurses.h"
 #include "KeysBindings.h"
 #include "colors/ColorPair.h"
 #include "pallets/gruvbox.h"

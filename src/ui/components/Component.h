@@ -1,6 +1,7 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 #include "ncurses.h"
+#include "functional"
 #include "panel.h"
 
 /**
@@ -52,6 +53,10 @@ protected:
 
     PANEL* get_panel() const;
 
+    std::function<void()> on_select_ = []() -> void {};
+    std::function<void()> on_cancel_ = []() -> void {};
+    std::function<void()> on_highlight_ = []() -> void {};
+
 public:
     /**
      * @brief Renders the component (must be implemented by derived classes).
@@ -100,12 +105,17 @@ public:
 
     virtual void hide() const;
     virtual void show() const;
+    virtual void highlight() const;
 
     virtual void to_front() const;
     virtual void to_back() const;
 
     const void* get_userptr() const;
     void set_userptr(const void* ptr) const;
+
+    void on_cancel(std::function<void()> callback_function);
+    void on_select(std::function<void()> callback_function);
+    void on_highlight(std::function<void()> callback_function);
 
     /** @brief Virtual destructor (ensures cleanup when using inheritance). */
     virtual ~Component();

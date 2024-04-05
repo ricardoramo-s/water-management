@@ -40,9 +40,12 @@ Component::Component(int y, int x) : x_(x), y_(y), width_(0), height_(0), win_(n
 
 Component::~Component() {
     delwin(win_);
+    del_panel(panel_);
 }
 
 void Component::set_color(short id) {
+    ColorPair::activate(win_, id);
+    wbkgd(get_win(), COLOR_PAIR(id));
     color_id_ = id;
 }
 
@@ -94,6 +97,10 @@ void Component::show() const {
     show_panel(panel_);
 }
 
+void Component::highlight() const {
+    on_highlight_();
+}
+
 void Component::to_back() const {
     bottom_panel(panel_);
 }
@@ -108,4 +115,16 @@ void Component::set_userptr(const void* ptr) const {
 
 const void *Component::get_userptr() const {
     return panel_userptr(panel_);
+}
+
+void Component::on_cancel(std::function<void()> callback_function) {
+    on_cancel_ = std::move(callback_function);
+}
+
+void Component::on_select(std::function<void()> callback_function) {
+    on_select_ = std::move(callback_function);
+}
+
+void Component::on_highlight(std::function<void()> callback_function) {
+    on_highlight_ = std::move(callback_function);
 }

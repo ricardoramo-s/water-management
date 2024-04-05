@@ -63,6 +63,8 @@ public:
 
     void on_select(std::function<void()> callback_function);
     void on_cancel(std::function<void()> callback_function);
+
+    ~InputBox() override = default;
 };
 
 

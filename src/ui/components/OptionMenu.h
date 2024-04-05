@@ -28,6 +28,8 @@ public:
 
     void draw() override;
     void handle_input(int ch) override;
+
+    ~OptionMenu() override;
 };
 
 

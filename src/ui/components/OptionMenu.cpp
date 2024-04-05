@@ -50,3 +50,9 @@ void OptionMenu::handle_input(int ch) {
             break;
     }
 }
+
+OptionMenu::~OptionMenu() {
+    for (auto option : options_) {
+        delete option;
+    }
+}
