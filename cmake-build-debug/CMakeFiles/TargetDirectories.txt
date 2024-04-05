@@ -1,0 +1,3 @@
+C:/Users/bruno/Ambiente de Trabalho/Projects/water-management/cmake-build-debug/CMakeFiles/water-management.dir
+C:/Users/bruno/Ambiente de Trabalho/Projects/water-management/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/bruno/Ambiente de Trabalho/Projects/water-management/cmake-build-debug/CMakeFiles/rebuild_cache.dir

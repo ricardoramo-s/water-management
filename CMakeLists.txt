@@ -1,4 +1,7 @@
+# Minimal CMake version required
 cmake_minimum_required(VERSION 3.10)
+
+# Project name
 project(water-management)
 
 set (CMAKE_CXX_FLAGS "-Wall -Wextra -Wunused-variable -Wpedantic")
@@ -7,8 +10,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Require C++17 support by the compiler
 
 add_definitions(-D_DARWIN_C_SOURCE -DNCURSES_WIDECHAR)
 
-add_executable(water-management
-        src/main.cpp
+add_executable(water-management src/main.cpp
+        src/BaseClasses/Reservoir.cpp
+        src/BaseClasses/City.cpp
+        src/BaseClasses/Pump.cpp
+        src/GraphClasses/Vertex.cpp
+        src/GraphClasses/Edge.cpp
+        src/GraphClasses/Graph.cpp
+        src/BaseClasses/Pipe.cpp
+        src/DataManagement/DataReader.cpp
+        src/DataManagement/DataManager.cpp
+
         src/ui/components/Component.cpp
         src/ui/components/TextBox.cpp
         src/ui/components/TextLabel.cpp
@@ -26,8 +38,28 @@ add_executable(water-management
 find_package(Curses REQUIRED)
 target_link_libraries(water-management -lncurses -lpanel)
 
+# Include any necessary header directories
 target_include_directories(water-management PRIVATE
         /usr/local/include/ncursesw
         /usr/local/include
         src
         src/ui)
+
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+    set(BUILD_DOC_DIR "${CMAKE_SOURCE_DIR}/docs/output")
+    if(NOT EXISTS "${BUILD_DOC_DIR}")
+        file(MAKE_DIRECTORY "${BUILD_DOC_DIR}")
+    endif()
+    set(DOXYGEN_IN "${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile")
+    set(DOXYGEN_OUT "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile")
+    configure_file("${DOXYGEN_IN}" "${DOXYGEN_OUT}" @ONLY)
+    message("Doxygen build started")
+    add_custom_target(Doxygen ALL
+            COMMAND "${DOXYGEN_EXECUTABLE}" "${DOXYGEN_OUT}"
+            WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+            COMMENT "Generating API documentation with Doxygen"
+            VERBATIM)
+else(DOXYGEN_FOUND)
+    message("Doxygen needs to be installed to generate the documentation.")
+endif(DOXYGEN_FOUND)
