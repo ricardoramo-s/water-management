@@ -6,33 +6,26 @@
 
 BalanceBuffer::BalanceBuffer() : Buffer() {
     old_average_ = new TextLabel(20, 7, get_width() / 4 - 4);
-    old_average_->set_text("777");
     old_average_->set_color(ColorPair::get(light0, dark0));
 
     old_variance_ = new TextLabel(20, 9, get_width() / 4 - 3);
-    old_variance_->set_text("777");
     old_variance_->set_color(ColorPair::get(light0, dark0));
 
     old_max_diff_ = new TextLabel(10, 11, get_width() / 4 + 7);
-    old_max_diff_->set_text("777");
     old_max_diff_->set_color(ColorPair::get(light0, dark0));
 
 
     new_average_ = new TextLabel(10, 7, get_width() * (3.0 / 4));
-    new_average_->set_text("777");
     new_average_->set_color(ColorPair::get(light0, dark0));
 
     new_variance_ = new TextLabel(10, 9, get_width() * (3.0 / 4) + 1);
-    new_variance_->set_text("777");
     new_variance_->set_color(ColorPair::get(light0, dark0));
 
     new_max_diff_ = new TextLabel(10, 11, get_width() * (3.0 / 4) + 11);
-    new_max_diff_->set_text("777");
     new_max_diff_->set_color(ColorPair::get(light0, dark0));
 
 
     meets_demands_ = new TextLabel(10, 15, get_width() / 2 + 6);
-    meets_demands_->set_text("false");
     meets_demands_->set_color(ColorPair::get(bright_red, dark0));
 
     this->hide();

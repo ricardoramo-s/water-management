@@ -2,16 +2,20 @@
 #include "pallets/gruvbox.h"
 #include "components/KeysBindings.h"
 #include "BalanceBuffer.h"
+#include "BaseClasses/City.h"
 
 
 BasicMetricsBuffer::BasicMetricsBuffer() : Buffer() {
     set_color(ColorPair::get(light0, dark0));
 
     search_box_ = new SearchBox(get_height() - 8,  (get_width() - 16) / 2, 4, 8);
-    std::vector<std::string> northMunicipalities = {"Alijó","Amares","Arcos de Valdevez","Barcelos","Boticas","Braga","Bragança","Cabeceiras de Basto","Caminha","Celorico de Basto","Chaves","Espinho","Esposende","Fafe","Felgueiras","Guimarães","Lamego","Lousada","Maia","Marco de Canaveses","Matosinhos","Melgaço","Mesão Frio","Mirandela","Mogadouro","Monção","Montalegre","Murça","Oliveira de Azeméis","Paços de Ferreira","Paredes","Paredes de Coura","Penafiel","Peso da Régua","Ponte da Barca","Ponte de Lima","Póvoa de Lanhoso","Póvoa de Varzim","Ribeira de Pena","Sabrosa","Santa Maria da Feira","Santo Tirso","São João da Madeira","Terras de Bouro","Trofa","Valença","Valongo","Valpaços","Viana do Castelo","Vieira do Minho","Vila do Conde","Vila Flor","Vila Nova de Cerveira","Vila Nova de Famalicão","Vila Nova de Foz Côa","Vila Nova de Gaia","Vila Nova de Paiva","Vila Pouca de Aguiar","Vila Real","Vimioso"};
 
-    // TODO: fetch cities from graph
-    search_box_->add_options(northMunicipalities, "City:");
+    std::vector<std::string> cities;
+    for (const auto& city : City::getCitiesMap()) {
+        cities.push_back(city.second->getName() + " #" + city.first);
+    }
+
+    search_box_->add_options(cities, "City:");
     search_box_->set_color(ColorPair::get(light0, dark0));
     search_box_->set_highlighted_color(ColorPair::get(dark0, light0));
     search_box_->set_box_color(ColorPair::get(light0, dark0));

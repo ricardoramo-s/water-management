@@ -3,7 +3,7 @@
 
 DataReader::DataReader(std::string path, std::string name) {
 
-    this->path = std::move(path) += "\\";
+    this->path = std::move(path) += "/";
     this->name = std::move(name);
 
     readCities();

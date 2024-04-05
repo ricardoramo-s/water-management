@@ -21,6 +21,8 @@ add_executable(water-management src/main.cpp
         src/DataManagement/DataReader.cpp
         src/DataManagement/DataManager.cpp
 
+        src/test/StaticGraph.cpp
+
         src/ui/components/Component.cpp
         src/ui/components/TextBox.cpp
         src/ui/components/TextLabel.cpp
