@@ -38,6 +38,9 @@ public:
     void setIndegree(unsigned int indegree);
     unsigned int getIndegree() const;
 
+    void setUsing(bool Using);
+    bool isUsing() const;
+
 protected:
 
     void deleteEdge(Edge* edge);
@@ -49,6 +52,7 @@ protected:
 
     bool visited = false;
     bool processing = false;
+    bool Using = true;
     unsigned int indegree = NULL;
     double dist = NULL;
 

@@ -23,6 +23,9 @@ public:
     void setReverse(Edge* reverse);
     Edge* getReverse() const;
 
+    void setUsing(bool Using);
+    bool isUsing() const;
+
 protected:
 
     Vertex* dest;
@@ -32,6 +35,7 @@ protected:
     double weight;
     double flow = 0;
     bool selected = false;
+    bool Using = true;
 
 };
 

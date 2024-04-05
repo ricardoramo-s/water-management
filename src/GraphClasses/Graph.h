@@ -34,6 +34,9 @@ public:
     std::vector<Vertex*> getSourceSet() const;
     std::vector<Vertex*> getSinkSet() const;
 
+    bool setVertexUsing(const std::string &code, bool Using);
+    bool setEdgeUsing(const std::string &org, const std::string &dest, bool Using, bool bothDirections = 1);
+
 
 private:
 

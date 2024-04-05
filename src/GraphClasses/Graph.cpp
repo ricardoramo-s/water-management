@@ -159,3 +159,33 @@ std::vector<Vertex *> Graph::getSinkSet() const {
     return sinkSet;
 }
 
+bool Graph::setVertexUsing(const std::string &code, bool Using) {
+
+    Vertex* vertex = findVertex(code);
+    if (vertex == nullptr) return false;
+
+    vertex->setUsing(Using);
+    return true;
+}
+
+bool Graph::setEdgeUsing(const std::string &org, const std::string &dest, bool Using, bool bothDirections) {
+
+    Vertex* src = findVertex(org);
+    Vertex* trg = findVertex(dest);
+    if (src == nullptr || trg == nullptr) return false;
+
+    for (Edge* edge : src->getAdj()) {
+        if (edge->getDest() == trg) {
+            edge->setUsing(Using);
+            if (bothDirections) {
+                if (edge->getReverse() != nullptr) {
+                    edge->getReverse()->setUsing(Using);
+                }
+            }
+            return true;
+        }
+    }
+
+    return false;
+}
+

@@ -9,26 +9,26 @@ Graph DataManager::buildGraph(City::CitiesMap citiesMap, Pipe::PipesMultiMap pip
 
     for (auto reservoir : reservoirsMap) {
         if (!graph.addSource(reservoir.second->getCode(), reservoir.second->getMaxDelivery()))
-            throw std::runtime_error("error adding source vertex");
+            throw std::logic_error("error adding source vertex");
     }
 
     for (auto pump : pumpsMap) {
-        if (!graph.addVertex(pump.second->getCode())) throw std::runtime_error("error adding vertex");
+        if (!graph.addVertex(pump.second->getCode())) throw std::logic_error("error adding vertex");
     }
 
     for (auto city : citiesMap) {
         if (!graph.addSink(city.second->getCode(), city.second->getDemand()))
-            throw std::runtime_error("error adding sink vertex");
+            throw std::logic_error("error adding sink vertex");
     }
 
     for (auto pipe : pipesMultiMap.getRtPMAP()) {
 
         if (pipe.second->getDirection()) {
             if (!graph.addEdge(pipe.first.first, pipe.first.second, pipe.second->getCapacity()))
-                throw std::runtime_error("error adding RtP edge");
+                throw std::logic_error("error adding RtP edge");
         } else {
             if (!graph.addBidirectionalEdge(pipe.first.first, pipe.first.second, pipe.second->getCapacity()))
-                throw std::runtime_error("error adding RtP edge");
+                throw std::logic_error("error adding RtP edge");
         }
     }
 
@@ -36,10 +36,10 @@ Graph DataManager::buildGraph(City::CitiesMap citiesMap, Pipe::PipesMultiMap pip
 
         if (pipe.second->getDirection()) {
             if (!graph.addEdge(pipe.first.first, pipe.first.second, pipe.second->getCapacity()))
-                throw std::runtime_error("error adding RtP edge");
+                throw std::logic_error("error adding RtP edge");
         } else {
             if (!graph.addBidirectionalEdge(pipe.first.first, pipe.first.second, pipe.second->getCapacity()))
-                throw std::runtime_error("error adding RtP edge");
+                throw std::logic_error("error adding RtP edge");
         }
     }
 
@@ -47,10 +47,10 @@ Graph DataManager::buildGraph(City::CitiesMap citiesMap, Pipe::PipesMultiMap pip
 
         if (pipe.second->getDirection()) {
             if (!graph.addEdge(pipe.first.first, pipe.first.second, pipe.second->getCapacity()))
-                throw std::runtime_error("error adding RtP edge");
+                throw std::logic_error("error adding RtP edge");
         } else {
             if (!graph.addBidirectionalEdge(pipe.first.first, pipe.first.second, pipe.second->getCapacity()))
-                throw std::runtime_error("error adding RtP edge");
+                throw std::logic_error("error adding RtP edge");
         }
     }
 
@@ -62,7 +62,7 @@ Graph DataManager::buildGraph(City::CitiesMap citiesMap, Pipe::PipesMultiMap pip
 
 void DataManager::testAndVisit(std::queue<Vertex*> &q, Edge *e, Vertex *w, double residual) {
 
-    if (! w->isVisited() && residual > 0) {
+    if (!w->isVisited() && residual > 0 && w->isUsing()) {
         w->setVisited(true);
         w->setPath(e);
         q.push(w);
@@ -80,20 +80,23 @@ bool DataManager::findAugmentingPath(Graph *g, Vertex *s, Vertex *t) {
     std::queue<Vertex *> q;
     q.push(s);
 
-    while( ! q.empty() && ! t->isVisited()) {
+    while(! q.empty() && ! t->isVisited()) {
         auto v = q.front();
         q.pop();
-        for(auto e: v->getAdj()) {
-            testAndVisit(q, e, e->getDest(), e->getWeight() - e->getFlow());
+        for (auto e: v->getAdj()) {
+            if (e->isUsing())
+                testAndVisit(q, e, e->getDest(), e->getWeight() - e->getFlow());
         }
-        for(auto e: v->getIncoming()) {
-            testAndVisit(q, e, e->getOrig(), e->getFlow());
+        for (auto e: v->getIncoming()) {
+            if (e->isUsing())
+                testAndVisit(q, e, e->getOrig(), e->getFlow());
         }
     }
     return t->isVisited();
 }
 
 double DataManager::findMinResidualAlongPath(Vertex *s, Vertex *t) {
+
     double f = INF;
 
     for (auto v = t; v != s; ) {
@@ -128,9 +131,18 @@ void DataManager::augmentFlowAlongPath(Vertex *s, Vertex *t, double f) {
 }
 
 
-void DataManager::edmondsKarp(Graph *g, std::string source, std::string target) {
-    Vertex* s = g->findVertex(source);
-    Vertex* t = g->findVertex(target);
+void DataManager::edmondsKarp(Graph *g, const std::string& source, const std::string& target) {
+
+    Vertex *s = nullptr;
+    Vertex* t = nullptr;
+
+    if (source.empty()) s = g->getSuperSource();
+    else s = g->findVertex(source);
+
+    if (target.empty()) t = g->getSuperSink();
+    else t = g->findVertex(target);
+
+
     if (s == nullptr || t == nullptr || s == t)
         throw std::logic_error("Invalid source and/or target vertex");
     for (auto v : g->getVertexSet()) {
@@ -141,5 +153,16 @@ void DataManager::edmondsKarp(Graph *g, std::string source, std::string target) 
     while( findAugmentingPath(g, s, t) ) {
         double f = findMinResidualAlongPath(s, t);
         augmentFlowAlongPath(s, t, f);
+    }
+}
+
+void DataManager::resetUsing(Graph *graph) {
+
+    for (Vertex* vertex : graph->getVertexSet()) {
+        graph->setVertexUsing(vertex->getCode(), true);
+
+        for (Edge* edge : vertex->getAdj()) {
+            graph->setEdgeUsing(vertex->getCode(), edge->getDest()->getCode(), true, false);
+        }
     }
 }

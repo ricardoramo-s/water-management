@@ -22,7 +22,11 @@ public:
                             Pump::PumpsMap pumpsMap = Pump::getPumpsMap(),
                             Reservoir::ReservoirsMap reservoirsMap = Reservoir::getReservoirsMap());
 
-    static void edmondsKarp(Graph *g, std::string source, std::string target);
+    static void resetUsing(Graph* graph);
+
+    static void edmondsKarp(Graph *g, const std::string& source = "", const std::string& target = "");
+
+
 
 private:
 

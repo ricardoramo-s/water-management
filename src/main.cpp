@@ -24,8 +24,22 @@ int main() {
         std::cerr << "Exception caught: " << e.what() << std::endl;
     }
 
-    DataManager::edmondsKarp(&graph, graph.getSuperSource()->getCode(), graph.getSuperSink()->getCode());
+    graph.setEdgeUsing("PS_9", "PS_10", 0);
+    graph.setEdgeUsing("PS_4", "PS_5",  0);
+
+
+
+    DataManager::edmondsKarp(&graph);
 
     printSourceFlow(&graph);
     printSinkFlow(&graph);
+
+    DataManager::resetUsing(&graph);
+
+    DataManager::edmondsKarp(&graph);
+
+    printSourceFlow(&graph);
+    printSinkFlow(&graph);
+
+    //printFromAtoB(graph, "R_1", "C_5");
 }

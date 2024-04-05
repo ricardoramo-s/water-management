@@ -129,4 +129,12 @@ void Vertex::deleteEdge(Edge *edge) {
     delete edge;
 }
 
+void Vertex::setUsing(bool Using) {
+    this->Using = Using;
+}
+
+bool Vertex::isUsing() const {
+    return Using;
+}
+
 

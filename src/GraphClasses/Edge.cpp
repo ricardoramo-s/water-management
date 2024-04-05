@@ -42,3 +42,11 @@ Edge *Edge::getReverse() const {
     return reverse;
 }
 
+void Edge::setUsing(bool Using) {
+    this->Using = Using;
+}
+
+bool Edge::isUsing() const {
+    return Using;
+}
+

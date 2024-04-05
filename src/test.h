@@ -156,4 +156,48 @@ void printSourceFlow(Graph* graph) {
     cout << "\n\n";
 }
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void printAtoB(const vector<string>& path, const Graph& graph) {
+
+    string ret;
+
+    for (const string& str : path) {
+        auto vertex = graph.findVertex(str);
+        ret += vertex->getCode() + " -> ";
+    }
+
+    ret = ret.substr(0, ret.size() - 3);
+
+    cout << '\n' << ret;
+}
+
+void dfsAtoB(Vertex* current, vector<string> currentPath, const Graph& graph, string& a, string& b) {
+
+    string code = current->getCode();
+    currentPath.push_back(code);
+
+    for (auto edge : current->getAdj()) {
+        auto it = find(currentPath.begin(), currentPath.end(), edge->getDest()->getCode());
+        if (it == currentPath.end()) {
+            dfsAtoB(edge->getDest(), currentPath, graph, a, b);
+        }
+    }
+
+    if(currentPath[0] == a && currentPath.back() == b) printAtoB(currentPath, graph);
+}
+
+void printFromAtoB(const Graph& graph, string a, string b) {
+
+    auto current = graph.findVertex(a);
+    vector<string> path;
+
+    dfsAtoB(current, path, graph, a, b);
+
+    cout << "\n\n";
+}
+
 #endif //WATER_MANAGEMENT_TEST_H
