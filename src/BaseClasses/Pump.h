@@ -26,7 +26,7 @@ private:
 
     static PumpsMap pumpsMap;
 
-    int id = NULL;
+    int id;
     std::string code;
 };
 

@@ -16,7 +16,7 @@ public:
 
     std::string getName() const;
     int getId() const;
-    std::string getcode() const;
+    std::string getCode() const;
     double getDemand() const;
     std::string getPopulation() const;
 
@@ -30,9 +30,9 @@ private:
     static CitiesMap citiesMap;
 
     std::string name;
-    int id = NULL;
+    int id;
     std::string code;
-    double demand = NULL;
+    double demand;
     std::string population;
 
 };

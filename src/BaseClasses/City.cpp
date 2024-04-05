@@ -47,7 +47,7 @@ int City::getId() const {
     return this->id;
 }
 
-std::string City::getcode() const {
+std::string City::getCode() const {
     return this->code;
 }
 

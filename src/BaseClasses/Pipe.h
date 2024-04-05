@@ -31,8 +31,8 @@ private:
 
 public:
 
-    typedef std::unordered_map<std::pair<std::string, std::string>, Pipe*, hash_pair> PipesMap; //org->dest : pipe
     typedef std::pair<std::string, std::string> Key;
+    typedef std::unordered_map<Key, Pipe*, hash_pair> PipesMap; //org->dest : pipe
 
     struct PipesMultiMap {
 
@@ -71,8 +71,8 @@ private:
 
     std::string org;
     std::string dest;
-    int capacity = NULL;
-    bool direction = NULL;
+    int capacity;
+    bool direction; // 1-directed / 0-undirected
 
     static PipesMultiMap pipesMultiMap;
 };

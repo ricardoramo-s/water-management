@@ -52,7 +52,7 @@ int Reservoir::getID() const
     return this->id;
 }
 
-std::string Reservoir::getcode() const
+std::string Reservoir::getCode() const
 {
     return this->code;
 }

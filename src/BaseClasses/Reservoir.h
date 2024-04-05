@@ -16,7 +16,7 @@ public:
     std::string getName() const;
     std::string getMunicipality() const;
     int getID() const;
-    std::string getcode() const;
+    std::string getCode() const;
     double getMaxDelivery() const;
 
     static bool addReservoir(Reservoir* reservoir);

@@ -1,34 +1,9 @@
 #include "DataManagement/DataReader.h"
+#include "GraphClasses/Graph.h"
+#include "DataManagement/DataManager.h"
+#include "test.h"
 
-void printCity(City* city) {
-    std::cout << city->getName() << "  " << city->getId() << "  " << city->getDemand() << "  " << city->getPopulation()
-    << "  "  << city->getcode() << "\n";
-}
 
-void printReservoir(Reservoir* reservoir) {
-    std::cout << reservoir->getName() << "  " << reservoir->getcode() << "  " << reservoir->getID() << "  "
-    << reservoir->getMunicipality() << "  "  << reservoir->getMaxDelivery() << "\n";
-}
-
-void printPump(Pump* pump) {
-    std::cout << pump->getCode() << "  " << pump->getID() << "\n";
-}
-
-void printPipes() {
-
-    for (auto pipe : Pipe::getPipesMultiMap().getRtPMAP()) {
-        std::cout << pipe.second->getOrg() << "  " << pipe.second->getDest() << "  " << pipe.second->getDirection() << "  "
-        << pipe.second->getCapacity() << "\n";
-    }
-    for (auto pipe : Pipe::getPipesMultiMap().getPtPMAP()) {
-        std::cout << pipe.second->getOrg() << "  " << pipe.second->getDest() << "  " << pipe.second->getDirection() << "  "
-                  << pipe.second->getCapacity() << "\n";
-    }
-    for (auto pipe : Pipe::getPipesMultiMap().getPtCMAP()) {
-        std::cout << pipe.second->getOrg() << "  " << pipe.second->getDest() << "  " << pipe.second->getDirection() << "  "
-                  << pipe.second->getCapacity() << "\n";
-    }
-}
 
 int main() {
 
@@ -36,25 +11,21 @@ int main() {
 
     City::CitiesMap citiesMap = City::getCitiesMap();
 
-    for (auto city : citiesMap) {
-        printCity(city.second);
+    //printCities();
+    //printReservoirs();
+    //printPumps();
+    //printPipes();
+
+    Graph graph;
+
+    try {
+        graph = DataManager::buildGraph();
+    } catch (const std::runtime_error& e) {
+        std::cerr << "Exception caught: " << e.what() << std::endl;
     }
 
-    std::cout << "\n\n";
+    DataManager::edmondsKarp(&graph, graph.getSuperSource()->getCode(), graph.getSuperSink()->getCode());
 
-    for (auto reservoir : Reservoir::getReservoirsMap()) {
-        printReservoir(reservoir.second);
-    }
-
-    std::cout << "\n\n";
-
-    for (auto pump : Pump::getPumpsMap()) {
-        printPump(pump.second);
-    }
-
-    std::cout << "\n\n";
-
-    printPipes();
-
-    std::cout << Pipe::getPipesMultiMap().getRtPMAP().size();
+    printSourceFlow(&graph);
+    printSinkFlow(&graph);
 }

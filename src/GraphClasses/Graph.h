@@ -23,14 +23,16 @@ public:
     bool removeEdge(const std::string &src, const std::string &dest);
     bool addBidirectionalEdge(const std::string &src, const std::string &dest, double w);
 
-    bool addSource(const std::string &code);
+    bool addSource(const std::string &code, double weight);
     bool removeSource(const std::string &code);
-    bool addSink(const std::string &code);
+    bool addSink(const std::string &code, double weight);
     bool removeSink(const std::string &code);
 
     int getNumVertex() const;
 
     std::vector<Vertex*> getVertexSet() const;
+    std::vector<Vertex*> getSourceSet() const;
+    std::vector<Vertex*> getSinkSet() const;
 
 
 private:

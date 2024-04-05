@@ -2,6 +2,11 @@
 
 Graph::Graph() {
 
+    addVertex("super_source");
+    addVertex("super_sink");
+
+    superSource = findVertex("super_source");
+    superSink = findVertex("super_sink");
 }
 
 Graph::~Graph() {
@@ -91,12 +96,15 @@ bool Graph::addBidirectionalEdge(const std::string &src, const std::string &dest
     return true;
 }
 
-bool Graph::addSource(const std::string &code) {
+
+bool Graph::addSource(const std::string &code, double weight) {
 
     if (!addVertex(code)) return false;
 
     Vertex* vertex = findVertex(code);
     sourceSet.push_back(vertex);
+
+    if (!addEdge("super_source", code, weight)) return false;
 
     return true;
 }
@@ -112,12 +120,14 @@ bool Graph::removeSource(const std::string &code) {
     return true;
 }
 
-bool Graph::addSink(const std::string &code) {
+bool Graph::addSink(const std::string &code, double weight) {
 
     if (!addVertex(code)) return false;
 
     Vertex* vertex = findVertex(code);
     sinkSet.push_back(vertex);
+
+    if (!addEdge(code, superSink->getCode(), weight)) return false;
 
     return true;
 }
@@ -139,5 +149,13 @@ int Graph::getNumVertex() const {
 
 std::vector<Vertex *> Graph::getVertexSet() const {
     return vertexSet;
+}
+
+std::vector<Vertex *> Graph::getSourceSet() const {
+    return sourceSet;
+}
+
+std::vector<Vertex *> Graph::getSinkSet() const {
+    return sinkSet;
 }
 
