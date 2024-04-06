@@ -3,6 +3,7 @@
 #include "BasicMetricsBuffer.h"
 #include "components/KeysBindings.h"
 #include "pallets/gruvbox.h"
+#include "test/StaticGraph.h"
 
 BalanceBuffer::BalanceBuffer() : Buffer() {
     old_average_ = new TextLabel(20, 7, get_width() / 4 - 4);
@@ -30,6 +31,18 @@ BalanceBuffer::BalanceBuffer() : Buffer() {
 
     this->hide();
     this->set_color(ColorPair::get(light0, dark0));
+    this->on_select([&] {
+       // TODO: balance
+
+       if (meets_demand()) {
+           meets_demands_->set_text("true");
+           meets_demands_->set_color(ColorPair::get(bright_green, dark0));
+       }
+       else {
+           meets_demands_->set_text("false");
+           meets_demands_->set_color(ColorPair::get(bright_red, dark0));
+       }
+    });
 }
 
 void BalanceBuffer::draw() {
@@ -74,6 +87,18 @@ void BalanceBuffer::handle_input(int ch) {
             }
     }
 
+}
+
+bool BalanceBuffer::meets_demand() {
+    for (const auto& pair : City::getCitiesMap()) {
+        City* city = pair.second;
+
+        if (city->getDemand() - city->getFlow() != 0) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void BalanceBuffer::show() const {

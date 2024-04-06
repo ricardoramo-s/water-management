@@ -32,7 +32,7 @@ int main() {
     ESCDELAY = 15;
     start_color();
 
-    DataReader dataReader = DataReader("/Users/ricardoramos/CLionProjects/water-management/Data", "");
+    DataReader dataReader = DataReader("/Users/ricardoramos/CLionProjects/water-management/SmallDataSet", "_Madeira");
 
     City::CitiesMap citiesMap = City::getCitiesMap();
 

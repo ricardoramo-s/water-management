@@ -61,8 +61,6 @@ void InputBox::handle_input(int ch) {
                 input_flag_ = true;
             }
     }
-
-    refreshwin();
 }
 
 bool InputBox::get_input_flag() const {

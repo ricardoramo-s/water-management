@@ -1,5 +1,6 @@
 #include "City.h"
 #include <utility>
+#include "test/StaticGraph.h"
 
 City::CitiesMap City::citiesMap;
 
@@ -53,6 +54,17 @@ std::string City::getCode() const {
 
 double City::getDemand() const {
     return this->demand;
+}
+
+double City::getFlow() const {
+    Vertex* vertex = StaticGraph::graph_->findVertex(code);
+    double flow = 0;
+
+    for (auto edge : vertex->getIncoming()) {
+        flow += edge->getFlow();
+    }
+
+    return flow;
 }
 
 std::string City::getPopulation() const {

@@ -3,11 +3,15 @@
 
 #include "Buffer.h"
 #include "components/InputBox.h"
+#include "components/TextLabel.h"
 
 class ExportBuffer : public Buffer {
 private:
     InputBox *input_box_;
+    TextLabel *export_output_;
 
+    std::string export_data();
+    void create_output(std::string string);
 public:
     ExportBuffer();
 

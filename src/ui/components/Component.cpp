@@ -39,12 +39,12 @@ Component::Component() : x_(0), y_(0), width_(0), height_(0), win_(nullptr), pan
 Component::Component(int y, int x) : x_(x), y_(y), width_(0), height_(0), win_(nullptr), panel_(nullptr) {}
 
 Component::~Component() {
-    if (win_) {
-        delwin(win_);
-    }
-
     if (panel_) {
         del_panel(panel_);
+    }
+
+    if (win_) {
+        delwin(win_);
     }
 }
 
@@ -68,16 +68,16 @@ short Component::get_box_color() const {
     return box_color_id;
 }
 
-void Component::movewin(int y, int x) {
-    if (win_ == nullptr) return;
+void Component::move(int y, int x) {
+    if (panel_ == nullptr) return;
 
-    mvwin(win_, y, x);
+    move_panel(panel_, y, x);
 
     y_ = y;
     x_ = x;
 }
 
-void Component::resizewin(int height, int width) {
+void Component::resize(int height, int width) {
     if (win_ == nullptr) return;
 
     wresize(win_, height, width);

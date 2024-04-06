@@ -19,6 +19,7 @@ public:
     std::string getCode() const;
     double getDemand() const;
     std::string getPopulation() const;
+    double getFlow() const;
 
     static bool addCity(City* city);
     static bool removeCity(City* city);

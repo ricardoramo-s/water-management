@@ -93,7 +93,7 @@ public:
      * @param y New vertical position (in characters).
      * @param x New horizontal position (in characters).
      */
-    virtual void movewin(int y, int x);
+    virtual void move(int y, int x);
 
     /** @brief Refreshes the component's window display. */
     void refreshwin() const;
@@ -103,7 +103,7 @@ public:
      * @param height New window height (in characters).
      * @param width New window width (in characters).
      */
-    virtual void resizewin(int height, int width);
+    virtual void resize(int height, int width);
 
     virtual void hide() const;
     virtual void show() const;

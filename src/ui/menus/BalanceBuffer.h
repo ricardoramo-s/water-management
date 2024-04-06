@@ -12,6 +12,8 @@ private:
 
     TextLabel *meets_demands_;
 
+    bool meets_demand();
+
 public:
     BalanceBuffer();
 
