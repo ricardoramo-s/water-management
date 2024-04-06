@@ -32,6 +32,13 @@ MainBuffer::MainBuffer() : Buffer() {
 
     select_component(basic_metrics_);
     basic_metrics_->highlight();
+
+    this->set_color(ColorPair::get(light0, dark0));
+    this->hide();
+    this->on_select([&] {
+        basic_metrics_->highlight();
+        select_component(basic_metrics_);
+    });
 }
 
 void MainBuffer::handle_input(int ch) {

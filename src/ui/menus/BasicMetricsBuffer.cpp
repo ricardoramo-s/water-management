@@ -6,8 +6,6 @@
 
 
 BasicMetricsBuffer::BasicMetricsBuffer() : Buffer() {
-    set_color(ColorPair::get(light0, dark0));
-
     search_box_ = new SearchBox(get_height() - 8,  (get_width() - 16) / 2, 4, 8);
 
     std::vector<std::string> cities;
@@ -20,7 +18,7 @@ BasicMetricsBuffer::BasicMetricsBuffer() : Buffer() {
     search_box_->set_highlighted_color(ColorPair::get(dark0, light0));
     search_box_->set_box_color(ColorPair::get(light0, dark0));
     search_box_->on_highlight([&] {
-        balance_->set_color(ColorPair::get(light0, dark0));
+        export_->set_color(ColorPair::get(light0, dark0));
         search_box_->set_box_color(ColorPair::get(bright_aqua, dark0));
     });
 
@@ -39,25 +37,50 @@ BasicMetricsBuffer::BasicMetricsBuffer() : Buffer() {
     balance_ = new TextLabel(11, get_height() * (2.5 / 4), get_width() * (3.0 / 4) - 4);
     balance_->set_text("> Balance <");
     balance_->set_color(ColorPair::get(light0, dark0));
-    balance_->on_select([&] {
-        next_buffer_ = balance_buffer_;
-        next_buffer_->previous_buffer(this);
-    });
     balance_->on_highlight([&] {
-        balance_->set_color(ColorPair::get(dark0, light0));
         search_box_->set_box_color(ColorPair::get(light0, dark0));
+        balance_->set_color(ColorPair::get(dark0, light0));
+    });
+    balance_->on_select([&] {
+        if (balance_buffer_ == nullptr) {
+            balance_buffer_ = new BalanceBuffer();
+            balance_buffer_->previous_buffer(this);
+        }
+
+        next_buffer_ = balance_buffer_;
     });
 
-    search_box_->set_userptr(balance_);
-    balance_->set_userptr(search_box_);
+    export_ = new TextLabel(18, get_height() * (2.5 / 4) + 2, get_width() * (3.0 / 4) - 7);
+    export_->set_text("> Export to file <");
+    export_->set_color(ColorPair::get(light0, dark0));
+    export_->on_highlight([&] {
+        balance_->set_color(ColorPair::get(light0, dark0));
+        export_->set_color(ColorPair::get(dark0, light0));
+    });
+    export_->on_select([&] {
+        if (export_buffer_ == nullptr) {
+            export_buffer_ = new ExportBuffer();
+            export_buffer_->previous_buffer(this);
+        }
+
+        next_buffer_ = export_buffer_;
+    });
+
+    search_box_->set_next_component(balance_);
+    balance_->set_next_component(export_);
+    export_->set_next_component(search_box_);
 
     currently_selected_component_ = search_box_;
     search_box_->highlight();
 
-    balance_buffer_ = new BalanceBuffer();
-
     this->hide();
     this->set_color(ColorPair::get(light0, dark0));
+    this->on_select([&] {
+        export_->on_highlight();
+        search_box_->on_highlight();
+
+        select_component(search_box_);
+    });
 }
 
 void BasicMetricsBuffer::draw() {
@@ -67,11 +90,13 @@ void BasicMetricsBuffer::draw() {
     mvwprintw(get_win(), population_->get_y(), population_->get_x() - 12, "%s", "Population:");
 
     search_box_->draw();
+    export_->draw();
+    balance_->draw();
+
     id_->draw();
     code_->draw();
     demand_->draw();
     population_->draw();
-    balance_->draw();
 }
 
 void BasicMetricsBuffer::handle_input(int ch) {
@@ -82,7 +107,7 @@ void BasicMetricsBuffer::handle_input(int ch) {
             }
             break;
         case TAB:
-            select_component((Component*) currently_selected_component_->get_userptr());
+            select_component(currently_selected_component_->get_next_component());
             currently_selected_component_->highlight();
             break;
         default:
@@ -98,8 +123,21 @@ void BasicMetricsBuffer::handle_input(int ch) {
         population_->set_text("");
     }
     else {
-        id_->set_text(current_city);
-        // TODO: get information from graph
+        std::string code;
+
+        auto hashPosition = current_city.find('#');
+        if (hashPosition != std::string::npos) {
+            code = current_city.substr(hashPosition + 1); // Extract the part after '#'
+        }
+
+        City* city = City::getCity(code);
+
+        if (city) {
+            id_->set_text(std::to_string(city->getId()));
+            code_->set_text(city->getCode());
+            demand_->set_text(std::to_string((int) std::round(city->getDemand())));
+            population_->set_text(city->getPopulation());
+        }
     }
 }
 
@@ -108,7 +146,9 @@ void BasicMetricsBuffer::hide() const {
     code_->hide();
     demand_->hide();
     population_->hide();
+
     search_box_->hide();
+    export_->hide();
     balance_->hide();
 
     hide_panel(get_panel());
@@ -121,7 +161,9 @@ void BasicMetricsBuffer::show() const {
     code_->show();
     demand_->show();
     population_->show();
+
     search_box_->show();
+    export_->show();
     balance_->show();
 }
 
@@ -130,6 +172,11 @@ BasicMetricsBuffer::~BasicMetricsBuffer() {
     delete code_;
     delete demand_;
     delete population_;
+
     delete search_box_;
     delete balance_;
+    delete export_;
+
+    delete balance_buffer_;
+    delete export_buffer_;
 }

@@ -34,18 +34,25 @@ Component::Component(int height, int width, int y, int x) {
     keypad(win_, true);
 }
 
-Component::Component() : x_(0), y_(0), width_(0), height_(0), win_(nullptr) {}
+Component::Component() : x_(0), y_(0), width_(0), height_(0), win_(nullptr), panel_(nullptr) {}
 
-Component::Component(int y, int x) : x_(x), y_(y), width_(0), height_(0), win_(nullptr) {}
+Component::Component(int y, int x) : x_(x), y_(y), width_(0), height_(0), win_(nullptr), panel_(nullptr) {}
 
 Component::~Component() {
-    delwin(win_);
-    del_panel(panel_);
+    if (win_) {
+        delwin(win_);
+    }
+
+    if (panel_) {
+        del_panel(panel_);
+    }
 }
 
 void Component::set_color(short id) {
-    ColorPair::activate(win_, id);
-    wbkgd(get_win(), COLOR_PAIR(id));
+    if (win_) {
+        ColorPair::activate(win_, id);
+        wbkgd(win_, COLOR_PAIR(id));
+    }
     color_id_ = id;
 }
 
@@ -90,10 +97,13 @@ void Component::refreshwin() const {
 }
 
 void Component::hide() const {
+    if (panel_ == nullptr) return;
     hide_panel(panel_);
 }
 
 void Component::show() const {
+    if (panel_ == nullptr) return;
+
     show_panel(panel_);
 }
 
@@ -102,19 +112,35 @@ void Component::highlight() const {
 }
 
 void Component::to_back() const {
+    if (panel_ == nullptr) return;
+
     bottom_panel(panel_);
 }
 
 void Component::to_front() const {
+    if (panel_ == nullptr) return;
+
     top_panel(panel_);
 }
 
 void Component::set_userptr(const void* ptr) const {
+    if (panel_ == nullptr) return;
+
     set_panel_userptr(panel_, ptr);
 }
 
 const void *Component::get_userptr() const {
+    if (panel_ == nullptr) return nullptr;
+
     return panel_userptr(panel_);
+}
+
+void Component::set_next_component(Component *component) {
+    next_component_ = component;
+}
+
+Component *Component::get_next_component() const {
+    return next_component_;
 }
 
 void Component::on_cancel(std::function<void()> callback_function) {
@@ -127,4 +153,12 @@ void Component::on_select(std::function<void()> callback_function) {
 
 void Component::on_highlight(std::function<void()> callback_function) {
     on_highlight_ = std::move(callback_function);
+}
+
+void Component::on_select() const {
+    on_select_();
+}
+
+void Component::on_highlight() const {
+    on_highlight_();
 }

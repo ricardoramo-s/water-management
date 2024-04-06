@@ -6,9 +6,11 @@
 #include "KeysBindings.h"
 #include "pallets/gruvbox.h"
 
-OptionMenu::OptionMenu(int y, int x, std::vector<TextLabel *> &options) : Component(y,x), options_(std::move(options)) {}
+OptionMenu::OptionMenu(int y, int x, std::vector<TextLabel *> &options) : Component(0,0,0,0), options_(std::move(options)) {}
 
-OptionMenu::OptionMenu(int y, int x) : Component(y,x), options_(std::vector<TextLabel*>()) {}
+OptionMenu::OptionMenu(int y, int x) : Component(0,0,0,0), options_(std::vector<TextLabel*>()) {}
+
+OptionMenu::OptionMenu() : Component(), options_(std::vector<TextLabel*>()) {}
 
 void OptionMenu::add_option(TextLabel *option) {
     options_.push_back(option);
@@ -30,10 +32,22 @@ void OptionMenu::shift_selected_down() {
     if (selected_ >= static_cast<int>(options_.size())) selected_ = static_cast<int>(options_.size()) - 1;
 }
 
+void OptionMenu::select(int i) {
+    if (i < -1 || i >= (int) options_.size()) return;
+
+    selected_ = i;
+}
+
 void OptionMenu::draw() {
-    for (size_t i = 0; i < options_.size(); i++) {
-        if (static_cast<int>(i) == selected_) options_.at(i)->draw(ColorPair::get(dark0, light0));
-        else options_.at(i)->draw(ColorPair::get(light0, dark0));
+    for (int i = 0; i < (int) options_.size(); i++) {
+        if (i == selected_) {
+            options_.at(i)->set_color(ColorPair::get(dark0, light0));
+        }
+        else {
+            options_.at(i)->set_color(ColorPair::get(light0, dark0));
+        }
+
+        options_.at(i)->draw();
     }
 }
 
@@ -42,12 +56,27 @@ void OptionMenu::handle_input(int ch) {
         case ESC:
             selected_ = -1;
             break;
+        case ENTER:
+            options_.at(selected_)->on_select();
+            break;
         case ARROW_UP:
             shift_selected_up();
             break;
         case ARROW_DOWN:
             shift_selected_down();
             break;
+    }
+}
+
+void OptionMenu::hide() const {
+    for (auto option : options_) {
+        option->hide();
+    }
+}
+
+void OptionMenu::show() const {
+    for (auto option : options_) {
+        option->show();
     }
 }
 

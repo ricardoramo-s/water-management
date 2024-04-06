@@ -23,9 +23,6 @@ protected:
 
     std::string header_;
 
-    std::function<void()> on_cancel_ = []() -> void {};
-    std::function<void()> on_select_ = []() -> void {};
-
 public:
     /**
      * @brief Constructs an InputBox with specified dimensions, position, and default text.
@@ -35,8 +32,6 @@ public:
      * @param default_text Text displayed when the input field is empty.
      */
     InputBox(int width, int y, int x, std::string default_text);
-
-    InputBox(int width, int y, int x, std::string default_text, std::string header, short text_color_id, short box_color_id, std::function<void()> on_select, std::function<void()> on_cancel);
 
     /**
      * @brief Renders the InputBox with label and current input.
@@ -60,9 +55,6 @@ public:
     void set_header_(std::string header);
 
     void clear();
-
-    void on_select(std::function<void()> callback_function);
-    void on_cancel(std::function<void()> callback_function);
 
     ~InputBox() override = default;
 };

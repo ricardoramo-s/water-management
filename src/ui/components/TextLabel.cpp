@@ -14,11 +14,6 @@ void TextLabel::draw() {
     refreshwin();
 }
 
-void TextLabel::draw(short color_pair_id) {
-    ColorPair::activate(get_win(), color_pair_id);
-    draw();
-}
-
 void TextLabel::set_text(std::string text) {
     text_ = std::move(text);
 }

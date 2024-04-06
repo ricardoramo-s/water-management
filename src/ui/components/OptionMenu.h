@@ -22,12 +22,18 @@ private:
 public:
     OptionMenu(int y, int x, std::vector<TextLabel*>& options);
     OptionMenu(int y, int x);
+    OptionMenu();
 
     void add_option(TextLabel* option);
     void add_option(int y, std::string text);
 
+    void select(int i);
+
     void draw() override;
     void handle_input(int ch) override;
+
+    void show() const override;
+    void hide() const override;
 
     ~OptionMenu() override;
 };

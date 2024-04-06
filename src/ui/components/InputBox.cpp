@@ -6,16 +6,8 @@
 #include "colors/ColorPair.h"
 #include "pallets/gruvbox.h"
 
-InputBox::InputBox(int width, int y, int x, std::string default_text) : Component(3, width, y, x), input_text_(std::string{}), default_text_(std::string{std::move(default_text)}) {}
-
-InputBox::InputBox(int width, int y, int x, std::string default_text, std::string header, short text_color_id,
-                   short box_color_id, std::function<void()> on_select, std::function<void()> on_cancel) : Component(3, width, y, x) {
-    default_text_ = std::move(default_text);
-    header_ = std::move(header);
-    set_color(text_color_id);
-    on_select_ = std::move(on_select);
-    on_cancel_ = std::move(on_cancel);
-}
+InputBox::InputBox(int width, int y, int x, std::string default_text) : Component(3, width, y, x),
+input_text_(std::string{}), default_text_(std::string{std::move(default_text)}) {}
 
 void InputBox::draw() {
     ColorPair::activate(get_win(), get_box_color());
@@ -87,12 +79,4 @@ void InputBox::set_header_(std::string header) {
 
 void InputBox::clear() {
     input_text_.clear();
-}
-
-void InputBox::on_select(std::function<void()> callback_function) {
-    on_select_ = std::move(callback_function);
-}
-
-void InputBox::on_cancel(std::function<void()> callback_function) {
-    on_cancel_ = std::move(callback_function);
 }

@@ -30,6 +30,8 @@ private:
     short color_id_ = 0;
     short box_color_id = 0;
 
+    Component* next_component_ = nullptr;
+
 protected:
     /**
      * @brief Constructor for component initialization.
@@ -113,9 +115,15 @@ public:
     const void* get_userptr() const;
     void set_userptr(const void* ptr) const;
 
+    Component* get_next_component() const;
+    void set_next_component(Component* component);
+
     void on_cancel(std::function<void()> callback_function);
     void on_select(std::function<void()> callback_function);
     void on_highlight(std::function<void()> callback_function);
+
+    void on_select() const;
+    void on_highlight() const;
 
     /** @brief Virtual destructor (ensures cleanup when using inheritance). */
     virtual ~Component();

@@ -35,7 +35,8 @@ add_executable(water-management src/main.cpp
         src/ui/menus/Buffer.cpp
         src/ui/menus/BasicMetricsBuffer.cpp
         src/ui/menus/BalanceBuffer.cpp
-        src/ui/menus/MainBuffer.cpp)
+        src/ui/menus/MainBuffer.cpp
+        src/ui/menus/ExportBuffer.cpp)
 
 find_package(Curses REQUIRED)
 target_link_libraries(water-management -lncurses -lpanel)

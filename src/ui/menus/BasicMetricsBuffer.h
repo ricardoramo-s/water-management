@@ -5,15 +5,18 @@
 #include "ui/components/SearchBox.h"
 #include "components/TextLabel.h"
 #include "BalanceBuffer.h"
+#include "components/OptionMenu.h"
+#include "ExportBuffer.h"
 
 
 class BasicMetricsBuffer : public Buffer {
 private:
     SearchBox *search_box_;
     TextLabel *id_, *code_, *demand_, *population_;
-    TextLabel *balance_;
+    TextLabel *balance_, *export_;
 
     BalanceBuffer *balance_buffer_;
+    ExportBuffer *export_buffer_;
 
 public:
     BasicMetricsBuffer();

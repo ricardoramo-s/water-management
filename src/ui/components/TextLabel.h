@@ -30,7 +30,6 @@ public:
      * @brief Renders the TextLabel's content to the screen.
      */
     void draw() override;
-    void draw(short color_pair_id);
 
     void set_text(std::string text);
 
