@@ -91,7 +91,6 @@ int main()
     echo();
     noraw();
     keypad(stdscr, false);
-    reset_color_pairs();
     curs_set(1);
     endwin();
     return 0;

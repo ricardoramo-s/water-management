@@ -1,6 +1,7 @@
 # Minimal CMake version required
 cmake_minimum_required(VERSION 3.10)
-
+set(CMAKE_C_COMPILER "gcc")
+set(CMAKE_CXX_COMPILER "g++")
 # Project name
 project(water-management)
 
@@ -50,7 +51,7 @@ else()
                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) 
 
     # Configure
-    execute_process(COMMAND ./configure --with-widec --enable-ext-colors WORKING_DIRECTORY 
+    execute_process(COMMAND ./configure --enable-widec --enable-ext-colors WORKING_DIRECTORY 
         ${CMAKE_CURRENT_SOURCE_DIR}/ncurses-6.4 
         RESULT_VARIABLE build_result)
 
@@ -88,11 +89,9 @@ else(DOXYGEN_FOUND)
     message("Doxygen needs to be installed to generate the documentation.")
 endif(DOXYGEN_FOUND)
 
-target_link_libraries(water-management -I ./ncurses-6.4/include -I ./ncurses-6.4/include/ncurses -L ./ncurses-6.4/lib -lpanel -lncursesw)
+target_link_libraries(water-management ${CMAKE_SOURCE_DIR}/ncurses-6.4/lib/libpanelw.a ${CMAKE_SOURCE_DIR}/ncurses-6.4/lib/libncursesw.a)
 
 # Include any necessary header directories
 target_include_directories(water-management PRIVATE
         src
         src/ui)
-
-
