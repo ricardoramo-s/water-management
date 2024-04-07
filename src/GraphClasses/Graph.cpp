@@ -63,7 +63,9 @@ bool Graph::addEdge(const std::string &src, const std::string &dest, double w) {
 
     if ((vertex1 == nullptr) || (vertex2 == nullptr)) return false;
 
-    vertex1->addEdge(vertex2, w);
+    Edge* edge = vertex1->addEdge(vertex2, w);
+
+    edgeSet.push_back(edge);
 
     return true;
 }
@@ -75,7 +77,14 @@ bool Graph::removeEdge(const std::string &src, const std::string &dest) {
 
     if ((vertex1 == nullptr) || (vertex2 == nullptr)) return false;
 
-    vertex1->removeEdge(vertex2);
+    for (auto it = edgeSet.begin(); it != edgeSet.end(); it++) {
+        if ((*it)->getOrig()->getCode() == src && (*it)->getDest()->getCode() == dest) {
+            edgeSet.erase(it);
+        }
+
+    }
+
+    if (!vertex1->removeEdge(vertex2)) return false;
 
     return true;
 }
@@ -92,6 +101,9 @@ bool Graph::addBidirectionalEdge(const std::string &src, const std::string &dest
 
     edge1->setReverse(edge2);
     edge2->setReverse(edge1);
+
+    edgeSet.push_back(edge1);
+    edgeSet.push_back(edge2);
 
     return true;
 }
@@ -187,5 +199,9 @@ bool Graph::setEdgeUsing(const std::string &org, const std::string &dest, bool U
     }
 
     return false;
+}
+
+std::vector<Edge*> Graph::getEdgeSet() const {
+    return edgeSet;
 }
 

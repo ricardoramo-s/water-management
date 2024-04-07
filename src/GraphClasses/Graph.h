@@ -31,6 +31,7 @@ public:
     int getNumVertex() const;
 
     std::vector<Vertex*> getVertexSet() const;
+    std::vector<Edge*> getEdgeSet() const;
     std::vector<Vertex*> getSourceSet() const;
     std::vector<Vertex*> getSinkSet() const;
 
@@ -41,6 +42,7 @@ public:
 private:
 
     std::vector<Vertex*> vertexSet;
+    std::vector<Edge*> edgeSet;
 
     std::vector<Vertex*> sourceSet;
     std::vector<Vertex*> sinkSet;

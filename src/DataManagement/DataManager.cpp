@@ -1,6 +1,6 @@
+#include <iostream>
 #include "DataManager.h"
-
-
+using namespace std;
 
 Graph DataManager::buildGraph(City::CitiesMap citiesMap, Pipe::PipesMultiMap pipesMultiMap, Pump::PumpsMap pumpsMap,
                               Reservoir::ReservoirsMap reservoirsMap) {
@@ -59,102 +59,106 @@ Graph DataManager::buildGraph(City::CitiesMap citiesMap, Pipe::PipesMultiMap pip
 }
 
 
-
-void DataManager::testAndVisit(std::queue<Vertex*> &q, Edge *e, Vertex *w, double residual) {
+void DataManager::testAndVisit(std::queue<Vertex*> &q, Edge *edge, Vertex *w, double residual) {
 
     if (!w->isVisited() && residual > 0 && w->isUsing()) {
         w->setVisited(true);
-        w->setPath(e);
+        w->setPath(edge);
         q.push(w);
     }
 }
 
 
-bool DataManager::findAugmentingPath(Graph *g, Vertex *s, Vertex *t) {
+bool DataManager::findAugmentingPath(Graph *graph, Vertex *src, Vertex *dest) {
 
-    for(auto v : g->getVertexSet()) {
-        v->setVisited(false);
+    for(Vertex* vertex : graph->getVertexSet()) {
+        vertex->setVisited(false);
     }
 
-    s->setVisited(true);
+    src->setVisited(true);
     std::queue<Vertex *> q;
-    q.push(s);
+    q.push(src);
 
-    while(! q.empty() && ! t->isVisited()) {
-        auto v = q.front();
+    while(! q.empty() && ! dest->isVisited()) {
+        Vertex* vertex = q.front();
         q.pop();
-        for (auto e: v->getAdj()) {
-            if (e->isUsing())
-                testAndVisit(q, e, e->getDest(), e->getWeight() - e->getFlow());
+        for (Edge* edge: vertex->getAdj()) {
+            if (edge->isUsing())
+                testAndVisit(q, edge, edge->getDest(), edge->getWeight() - edge->getFlow());
         }
-        for (auto e: v->getIncoming()) {
-            if (e->isUsing())
-                testAndVisit(q, e, e->getOrig(), e->getFlow());
+        for (Edge* edge: vertex->getIncoming()) {
+            if (edge->isUsing())
+                testAndVisit(q, edge, edge->getOrig(), edge->getFlow());
         }
     }
-    return t->isVisited();
+    return dest->isVisited();
 }
 
-double DataManager::findMinResidualAlongPath(Vertex *s, Vertex *t) {
+
+double DataManager::findMinResidualAlongPath(Vertex *src, Vertex *dest) {
 
     double f = INF;
 
-    for (auto v = t; v != s; ) {
-        auto e = v->getPath();
-        if (e->getDest() == v) {
-            f = std::min(f, e->getWeight() - e->getFlow());
-            v = e->getOrig();
-        }
-        else {
-            f = std::min(f, e->getFlow());
-            v = e->getDest();
+    for (Vertex* vertex = dest; vertex != src;) {
+
+        Edge* edge = vertex->getPath();
+
+        if (edge->getDest() == vertex) {
+            f = std::min(f, edge->getWeight() - edge->getFlow());
+            vertex = edge->getOrig();
+        } else {
+            f = std::min(f, edge->getFlow());
+            vertex = edge->getDest();
         }
     }
+
     return f;
 }
 
 
-void DataManager::augmentFlowAlongPath(Vertex *s, Vertex *t, double f) {
+void DataManager::augmentFlowAlongPath(Vertex *src, Vertex *dest, double f) {
 
-    for (auto v = t; v != s; ) {
-        auto e = v->getPath();
-        double flow = e->getFlow();
-        if (e->getDest() == v) {
-            e->setFlow(flow + f);
-            v = e->getOrig();
-        }
-        else {
-            e->setFlow(flow - f);
-            v = e->getDest();
+    for (Vertex* vertex = dest; vertex != src; ) {
+        Edge* edge = vertex->getPath();
+        double flow = edge->getFlow();
+        if (edge->getDest() == vertex) {
+            edge->setFlow(flow + f);
+            vertex = edge->getOrig();
+        } else {
+            edge->setFlow(flow - f);
+            vertex = edge->getDest();
         }
     }
 }
 
 
-void DataManager::edmondsKarp(Graph *g, const std::string& source, const std::string& target) {
+void DataManager::edmondsKarp(Graph *graph, const std::string& source, const std::string& target) {
 
-    Vertex *s = nullptr;
-    Vertex* t = nullptr;
+    Vertex* src= nullptr;
+    Vertex* dest= nullptr;
 
-    if (source.empty()) s = g->getSuperSource();
-    else s = g->findVertex(source);
+    if (source.empty()) src = graph->getSuperSource();
+    else src = graph->findVertex(source);
 
-    if (target.empty()) t = g->getSuperSink();
-    else t = g->findVertex(target);
+    if (target.empty()) dest= graph->getSuperSink();
+    else dest= graph->findVertex(target);
 
 
-    if (s == nullptr || t == nullptr || s == t)
+    if (src == nullptr || dest== nullptr || src == dest)
         throw std::logic_error("Invalid source and/or target vertex");
-    for (auto v : g->getVertexSet()) {
-        for (auto e: v->getAdj()) {
-            e->setFlow(0);
+
+    for (Vertex* vertex : graph->getVertexSet()) {
+        for (Edge* edge: vertex->getAdj()) {
+            edge->setFlow(0);
         }
     }
-    while( findAugmentingPath(g, s, t) ) {
-        double f = findMinResidualAlongPath(s, t);
-        augmentFlowAlongPath(s, t, f);
+
+    while( findAugmentingPath(graph, src, dest) ) {
+        double f = findMinResidualAlongPath(src, dest);
+        augmentFlowAlongPath(src, dest, f);
     }
 }
+
 
 void DataManager::resetUsing(Graph *graph) {
 
@@ -166,3 +170,202 @@ void DataManager::resetUsing(Graph *graph) {
         }
     }
 }
+
+double DataManager::getMaxFlow(Graph *graph) {
+
+    double ret = 0;
+    for (Edge* edge : graph->getSuperSink()->getIncoming()) ret += edge->getFlow();
+
+    return ret;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+double DataManager::getAvgFlow(const double& flow, const std::vector<Edge*>& edgeSet) {
+    return flow/edgeSet.size();
+}
+
+double DataManager::addAvgToEdges(const double& maxFlow, double& usedFlow, std::vector<Edge*>& edgeSet) {
+
+    int avgFlow = getAvgFlow(maxFlow - usedFlow, edgeSet);
+
+    for (Edge* edge : edgeSet) {
+
+        if (edge->getFlow() + avgFlow > edge->getWeight()) {
+            int n = edge->getWeight() - edge->getFlow();
+            edge->setFlow(edge->getWeight());
+            //usedFlow += n;
+        } else {
+            edge->setFlow(edge->getFlow() + avgFlow);
+            //usedFlow += avgFlow;
+        }
+    }
+
+    return 0;
+}
+
+void DataManager::processVertex(Vertex* vertex, std::set<Vertex*>& processing, std::vector<Edge*>& edgeSet, Graph* graph) {
+
+    int input = 0;
+    int output = 0;
+
+    for (Edge* edge : vertex->getIncoming()) {
+        input += edge->getFlow();
+    }
+
+    for (Edge* edge : vertex->getAdj()) {
+        output += edge->getFlow();
+    }
+
+    cout << vertex->getCode() << " " << input << " " << output << "\n";
+
+    if (input == output) return;
+
+    if (vertex->getAdj().empty()) return;
+    if (vertex->getIncoming().empty()) return;
+
+
+    while (input > output) {
+
+        int remain = input - output;
+        int outN = 0; //number of not full outgoing edges
+
+        for (Edge *edge: vertex->getAdj()) {
+            if (edge->getFlow() < edge->getWeight()) {
+                edge->setUsing(true);
+                outN++;
+            } else edge->setUsing(false);
+        }
+
+        if (outN == 0 && remain > 0) {
+
+            //remove from input
+            while (remain > 0) {
+                for (Edge* edge : vertex->getIncoming()) {
+                    if (std::find(edgeSet.begin(), edgeSet.end(), edge) == edgeSet.end()) continue;
+
+                    if (remain <= 0) {
+                        for (Edge* edge : vertex->getIncoming()) {
+                            edgeSet.erase(std::find(edgeSet.begin(), edgeSet.end(), edge));
+                        }
+                        return;
+                    }
+                    edge->setFlow(edge->getFlow() - 1);
+                    remain--;
+                    processing.insert(edge->getOrig());
+                }
+            }
+        }
+
+        int avg = remain / outN;
+        if (avg == 0) avg = 1;
+
+        for (Edge *edge: vertex->getAdj()) {
+            if (output >= input) break;
+
+            if (!edge->isUsing()) continue;
+            int toAdd = std::min(avg, (int) (edge->getWeight() - edge->getFlow()));
+            edge->setFlow(edge->getFlow() + toAdd);
+            output += toAdd;
+            processing.insert(edge->getDest());
+        }
+    }
+
+
+    while (output > input) {
+
+        int remain = output - input;
+        int inN = 0; //number of not full incoming edges
+
+        for (Edge *edge: vertex->getIncoming()) {
+
+            if (edge->getFlow() < edge->getWeight()) {
+                edge->setUsing(true);
+                inN++;
+            } else edge->setUsing(false);
+        }
+
+        if (inN == 0 && remain > 0) {
+            //remove from output
+            while (remain > 0) {
+
+                for (Edge* edge : vertex->getAdj()) {
+                    if (std::find(edgeSet.begin(), edgeSet.end(), edge) == edgeSet.end()) continue;
+
+                    if (remain <= 0) {
+                        for (Edge* edge : vertex->getAdj()) {
+                            edgeSet.erase(std::find(edgeSet.begin(), edgeSet.end(), edge));
+                        }
+                        return;
+                    }
+                    edge->setFlow(edge->getFlow() - 1);
+                    remain--;
+                    processing.insert(edge->getDest());
+                }
+            }
+        }
+
+        int avg = remain / inN;
+
+        if (avg == 0) avg = 1;
+
+        for (Edge *edge: vertex->getIncoming()) {
+            if (input >= output) break;
+
+            if (!edge->isUsing()) continue;
+            int toAdd = std::min(avg, (int) (edge->getWeight() - edge->getFlow()));
+            edge->setFlow(edge->getFlow() + toAdd);
+            input += toAdd;
+            processing.insert(edge->getOrig());
+        }
+    }
+}
+
+void DataManager::balanceFlow(Graph* graph, std::vector<Edge*>& edgeSet) {
+
+    std::set<Vertex*> processing;
+
+    for (Vertex* vertex : graph->getVertexSet()) processing.insert(vertex);
+
+    while (!processing.empty()) {
+        Vertex* vertex = *processing.begin();
+        processing.erase(processing.begin());
+        processVertex(vertex, processing, edgeSet, graph);
+        for (Edge* edge : edgeSet) edge->setUsing(false);
+    }
+}
+
+void DataManager::removeFullEdges(std::vector<Edge*>& edgeSet) {
+
+    auto it = edgeSet.begin();
+
+    while (it != edgeSet.end()) {
+        if ((*it)->getFlow() == (*it)->getWeight()) it = edgeSet.erase(it);
+        else it++;
+    }
+}
+
+void DataManager::balanceGraph(Graph* graph, int maxFlow) {
+
+    DataManager::resetUsing(graph);
+
+    double usedFlow = 0;
+    std::vector<Edge*> edgeSet = graph->getEdgeSet();
+
+    //while (usedFlow < maxFlow - 10) {
+    for (int i = 0; i < 1; i++) {
+
+        addAvgToEdges(maxFlow, usedFlow, edgeSet);
+        balanceFlow(graph, edgeSet);
+        removeFullEdges(edgeSet);
+
+    }
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
