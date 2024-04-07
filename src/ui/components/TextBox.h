@@ -111,6 +111,9 @@ public:
      */
     void handle_input(int ch) override;
 
+    void remove();
+    void add(std::string string);
+
     ~TextBox() override = default;
 };
 

@@ -25,6 +25,7 @@ public:
 
     int get_selected() const;
     T* get_selected_component() const;
+    T* get_component(int i) const;
 
     void draw() override;
     void handle_input(int ch) override;

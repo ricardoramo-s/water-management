@@ -77,4 +77,5 @@ void InputBox::set_header_(std::string header) {
 
 void InputBox::clear() {
     input_text_.clear();
+    input_flag_ = true;
 }

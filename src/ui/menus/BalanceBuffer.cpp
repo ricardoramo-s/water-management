@@ -3,7 +3,7 @@
 #include "BasicMetricsBuffer.h"
 #include "components/KeysBindings.h"
 #include "pallets/gruvbox.h"
-#include "test/StaticGraph.h"
+#include "GraphClasses/StaticGraph.h"
 
 BalanceBuffer::BalanceBuffer() : Buffer() {
     old_average_ = new TextLabel(20, 7, get_width() / 4 - 4);

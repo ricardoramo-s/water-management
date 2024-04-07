@@ -123,18 +123,6 @@ void Component::to_front() const {
     top_panel(panel_);
 }
 
-void Component::set_userptr(const void* ptr) const {
-    if (panel_ == nullptr) return;
-
-    set_panel_userptr(panel_, ptr);
-}
-
-const void *Component::get_userptr() const {
-    if (panel_ == nullptr) return nullptr;
-
-    return panel_userptr(panel_);
-}
-
 void Component::set_next_component(Component *component) {
     next_component_ = component;
 }

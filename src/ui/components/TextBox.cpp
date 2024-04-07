@@ -116,8 +116,26 @@ void TextBox::set_highlighted_color(short id) {
     highlighted_color_ = id;
 }
 
+void TextBox::remove() {
+    if (selected_ == -1) return;
+
+    lines_.erase(lines_.begin() + selected_);
+
+    if (lines_.empty()) select(-1);
+    else if (selected_ == lines_.size()) {
+        shift_selected_down();
+    }
+    else {
+        max_++;
+    }
+}
+
+void TextBox::add(std::string string) {
+    lines_.push_back(string);
+}
+
 void TextBox::draw() {
-    wclear(get_win());
+    //wclear(get_win());
 
     ColorPair::activate(get_win(), get_box_color());
     box(get_win(), 0, 0);
@@ -140,7 +158,7 @@ void TextBox::draw() {
         relative_y += (reversed_) ? -1 : 1; // incrementing or decrementing based on orientation
     }
 
-    refreshwin();
+    // refreshwin();
 }
 
 void TextBox::handle_input(int ch) {

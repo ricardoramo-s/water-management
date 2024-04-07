@@ -26,9 +26,17 @@ MainBuffer::MainBuffer() : Buffer() {
         basic_metrics_->set_color(ColorPair::get(light0, dark0));
         failure_->set_color(ColorPair::get(dark0, light0));
     });
+    failure_->on_select([&] {
+       if (!failure_buffer_) {
+           failure_buffer_ = new FailureBuffer();
+           failure_buffer_->previous_buffer(this);
+       }
 
-    basic_metrics_->set_userptr(failure_);
-    failure_->set_userptr(basic_metrics_);
+       next_buffer_ = failure_buffer_;
+    });
+
+    basic_metrics_->set_next_component(failure_);
+    failure_->set_next_component(basic_metrics_);
 
     select_component(basic_metrics_);
     basic_metrics_->highlight();
@@ -36,8 +44,7 @@ MainBuffer::MainBuffer() : Buffer() {
     this->set_color(ColorPair::get(light0, dark0));
     this->hide();
     this->on_select([&] {
-        basic_metrics_->highlight();
-        select_component(basic_metrics_);
+
     });
 }
 
@@ -47,7 +54,7 @@ void MainBuffer::handle_input(int ch) {
             exit(0);
             break;
         case TAB:
-            select_component((Component*) currently_selected_component_->get_userptr());
+            select_component(currently_selected_component_->get_next_component());
             currently_selected_component_->highlight();
             break;
         default:

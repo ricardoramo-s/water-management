@@ -136,7 +136,7 @@ void BasicMetricsBuffer::handle_input(int ch) {
 }
 
 void BasicMetricsBuffer::read_city_data() {
-    std::string current_city = search_box_->get_selected();
+    std::string current_city = search_box_->get_selected_string();
 
     if (current_city.empty()) {
         id_->set_text("");

@@ -1,6 +1,6 @@
 #include "City.h"
 #include <utility>
-#include "test/StaticGraph.h"
+#include "GraphClasses/StaticGraph.h"
 
 City::CitiesMap City::citiesMap;
 

@@ -17,11 +17,10 @@ add_executable(water-management src/main.cpp
         src/GraphClasses/Vertex.cpp
         src/GraphClasses/Edge.cpp
         src/GraphClasses/Graph.cpp
+        src/GraphClasses/StaticGraph.cpp
         src/BaseClasses/Pipe.cpp
         src/DataManagement/DataReader.cpp
         src/DataManagement/DataManager.cpp
-
-        src/test/StaticGraph.cpp
 
         src/ui/components/Component.cpp
         src/ui/components/TextBox.cpp
@@ -36,15 +35,14 @@ add_executable(water-management src/main.cpp
         src/ui/menus/BasicMetricsBuffer.cpp
         src/ui/menus/BalanceBuffer.cpp
         src/ui/menus/MainBuffer.cpp
-        src/ui/menus/ExportBuffer.cpp)
+        src/ui/menus/ExportBuffer.cpp
+        src/ui/menus/FailureBuffer.cpp)
 
 find_package(Curses REQUIRED)
 target_link_libraries(water-management -lncurses -lpanel)
 
 # Include any necessary header directories
 target_include_directories(water-management PRIVATE
-        /usr/local/include/ncursesw
-        /usr/local/include
         src
         src/ui)
 

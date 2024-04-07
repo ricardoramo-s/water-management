@@ -23,5 +23,8 @@ void TextLabel::handle_input(int ch) {
         case ENTER:
             on_select_();
             break;
+        case ESC:
+            on_cancel_();
+            break;
     }
 }

@@ -112,9 +112,6 @@ public:
     virtual void to_front() const;
     virtual void to_back() const;
 
-    const void* get_userptr() const;
-    void set_userptr(const void* ptr) const;
-
     Component* get_next_component() const;
     void set_next_component(Component* component);
 

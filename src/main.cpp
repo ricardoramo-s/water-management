@@ -17,7 +17,7 @@
 #include "GraphClasses/Graph.h"
 #include "DataManagement/DataManager.h"
 #include "test.h"
-#include "test/StaticGraph.h"
+#include "GraphClasses/StaticGraph.h"
 
 
 
@@ -32,15 +32,7 @@ int main() {
     ESCDELAY = 15;
     start_color();
 
-    DataReader dataReader = DataReader("/Users/ricardoramos/CLionProjects/water-management/SmallDataSet", "_Madeira");
-
-    City::CitiesMap citiesMap = City::getCitiesMap();
-
-    //printCities();
-    //printReservoirs();
-    //printPumps();
-    //printPipes();
-
+    DataReader dataReader = DataReader("./Data", "");
     Graph graph;
 
     try {
@@ -50,23 +42,8 @@ int main() {
     }
 
     StaticGraph::graph_ = &graph;
-
-    graph.setEdgeUsing("PS_9", "PS_10", 0);
-    graph.setEdgeUsing("PS_4", "PS_5",  0);
-
-
-
-    DataManager::edmondsKarp(&graph);
-
-    //printSourceFlow(&graph);
-    //printSinkFlow(&graph);
-
     DataManager::resetUsing(&graph);
-
     DataManager::edmondsKarp(&graph);
-
-    //printSourceFlow(&graph);
-    //printSinkFlow(&graph);
 
     Buffer* buffer;
 
@@ -91,9 +68,4 @@ int main() {
             buffer->on_select();
         }
     }
-
-    clear();
-
-    endwin();
-    return 0;
 }
