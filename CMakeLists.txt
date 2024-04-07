@@ -1,33 +1,74 @@
 # Minimal CMake version required
 cmake_minimum_required(VERSION 3.10)
-
+set(CMAKE_C_COMPILER "gcc")
+set(CMAKE_CXX_COMPILER "g++")
 # Project name
 project(water-management)
 
-# Find ncurses
-find_package(Curses REQUIRED)
+set (CMAKE_CXX_FLAGS "-Wall -Wextra -Wunused-variable -Wpedantic")
+set(CMAKE_CXX_STANDARD 17) # Enable C++17
+set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Require C++17 support by the compiler
 
-# Create an executable target named "water-management"
+add_definitions(-D_DARWIN_C_SOURCE -DNCURSES_WIDECHAR)
+
 add_executable(water-management src/main.cpp
-        src/Reservoir.h
-        src/Reservoir.cpp
-        src/Graph.h
-        src/Graph.cpp
-        src/minHeap.h
-        src/City.h
-        src/City.cpp
-        src/DataProcessor.h
-        src/DataProcessor.cpp
-)
+        src/BaseClasses/Reservoir.cpp
+        src/BaseClasses/City.cpp
+        src/BaseClasses/Pump.cpp
+        src/GraphClasses/Vertex.cpp
+        src/GraphClasses/Edge.cpp
+        src/GraphClasses/Graph.cpp
+        src/GraphClasses/StaticGraph.cpp
+        src/BaseClasses/Pipe.cpp
+        src/DataManagement/DataReader.cpp
+        src/DataManagement/DataManager.cpp
 
-# Link ncurses library
-target_link_libraries(water-management ${CURSES_LIBRARIES})
+        src/ui/components/Component.cpp
+        src/ui/components/TextBox.cpp
+        src/ui/components/TextLabel.cpp
+        src/ui/components/InputBox.cpp
+        src/ui/colors/ColorPair.cpp
+        src/ui/colors/Color.cpp
+        src/ui/components/SearchBox.cpp
+        src/ui/components/OptionMenu.cpp
+        src/ui/components/MultiComponent.cpp
+        src/ui/menus/Buffer.cpp
+        src/ui/menus/BasicMetricsBuffer.cpp
+        src/ui/menus/BalanceBuffer.cpp
+        src/ui/menus/MainBuffer.cpp
+        src/ui/menus/ExportBuffer.cpp
+        src/ui/menus/FailureBuffer.cpp)
 
-# Include ncurses headers
-target_include_directories(water-management PRIVATE ${CURSES_INCLUDE_DIR})
+# Check if the ncurses6.4 folder is present
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/ncurses-6.4")
+    message(STATUS "ncurses-6.4 folder found. Using existing installation.")
+else()
+    message(STATUS "Downloading ncurses-6.4.")
+    file(DOWNLOAD https://ftp.gnu.org/gnu/ncurses/ncurses-6.4.tar.gz ${CMAKE_CURRENT_SOURCE_DIR}/ncurses.tar.gz)
+    
+    # Unpack
+    execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_CURRENT_SOURCE_DIR}/ncurses.tar.gz
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) 
 
-# Include any necessary header directories
-include_directories(src)
+    # Configure
+    execute_process(COMMAND ./configure --enable-widec --enable-ext-colors WORKING_DIRECTORY 
+        ${CMAKE_CURRENT_SOURCE_DIR}/ncurses-6.4 
+        RESULT_VARIABLE build_result)
+
+    if(NOT build_result EQUAL 0)
+        execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/ncurses-6.4/)
+        message(FATAL_ERROR "ncurses was not configured!")
+    endif()
+
+    # Make
+    execute_process(COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ncurses-6.4 RESULT_VARIABLE build_result)
+    if(NOT build_result EQUAL 0)
+        execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/ncurses-6.4/)
+        message(FATAL_ERROR "error ncurses make!")
+    endif()
+
+    execute_process(COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_CURRENT_SOURCE_DIR}/ncurses.tar.gz)
+endif()
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
@@ -47,3 +88,10 @@ if(DOXYGEN_FOUND)
 else(DOXYGEN_FOUND)
     message("Doxygen needs to be installed to generate the documentation.")
 endif(DOXYGEN_FOUND)
+
+target_link_libraries(water-management ${CMAKE_SOURCE_DIR}/ncurses-6.4/lib/libpanelw.a ${CMAKE_SOURCE_DIR}/ncurses-6.4/lib/libncursesw.a)
+
+# Include any necessary header directories
+target_include_directories(water-management PRIVATE
+        src
+        src/ui)
