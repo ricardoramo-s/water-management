@@ -25,11 +25,16 @@ private:
     /** @brief The underlying ncurses window object. */
     WINDOW *win_;
 
+    /** @brief The underlying ncurses panel object. */
     PANEL *panel_;
 
+    /** @brief The color id of the component. */
     short color_id_ = 0;
+
+    /** @brief The color id of the box. */
     short box_color_id = 0;
 
+    /** @brief Pointer to the next component. */
     Component* next_component_ = nullptr;
 
 protected:
@@ -42,6 +47,11 @@ protected:
      */
     Component(int height, int width, int y, int x);
 
+    /**
+     * @brief Constructor for component initialization.
+     * @param y Vertical position (in characters).
+     * @param x Horizontal position (in characters).
+     */
     Component(int y, int x);
 
     /** @brief Default constructor. */
@@ -53,10 +63,19 @@ protected:
      */
     WINDOW* get_win() const;
 
+    /**
+     * @brief Gets the component's ncurses panel.
+     * @return Pointer to the underlying PANEL object.
+     */
     PANEL* get_panel() const;
 
+    /** @brief Callback function to be called when the component is selected. */
     std::function<void()> on_select_ = []() -> void {};
+
+    /** @brief Callback function to be called when the component is cancelled. */
     std::function<void()> on_cancel_ = []() -> void {};
+
+    /** @brief Callback function to be called when the component is highlighted. */
     std::function<void()> on_highlight_ = []() -> void {};
 
 public:
@@ -82,10 +101,22 @@ public:
     /** @brief Gets the vertical position of the component (in characters). */
     int get_y() const;
 
+    /**
+     * @brief Sets the color of the component.
+     * @param id The color id.
+     */
     void set_color(short id);
+
+    /** @brief Gets the color of the component. */
     short get_color() const;
 
+    /**
+     * @brief Sets the color of the box.
+     * @param id The color id.
+     */
     void set_box_color(short id);
+
+    /** @brief Gets the color of the box. */
     short get_box_color() const;
 
     /**
@@ -105,26 +136,56 @@ public:
      */
     virtual void resize(int height, int width);
 
+    /** @brief Hides the component. */
     virtual void hide() const;
+
+    /** @brief Shows the component. */
     virtual void show() const;
+
+    /** @brief Highlights the component. */
     virtual void highlight() const;
 
+    /** @brief Brings the component to the front. */
     virtual void to_front() const;
+
+    /** @brief Sends the component to the back. */
     virtual void to_back() const;
 
+    /** @brief Gets the next component. */
     Component* get_next_component() const;
+
+    /**
+     * @brief Sets the next component.
+     * @param component Pointer to the next component.
+     */
     void set_next_component(Component* component);
 
+    /**
+     * @brief Sets the callback function to be called when the component is cancelled.
+     * @param callback_function The callback function.
+     */
     void on_cancel(std::function<void()> callback_function);
+
+    /**
+     * @brief Sets the callback function to be called when the component is selected.
+     * @param callback_function The callback function.
+     */
     void on_select(std::function<void()> callback_function);
+
+    /**
+     * @brief Sets the callback function to be called when the component is highlighted.
+     * @param callback_function The callback function.
+     */
     void on_highlight(std::function<void()> callback_function);
 
+    /** @brief Calls the on_select callback function. */
     void on_select() const;
+
+    /** @brief Calls the on_highlight callback function. */
     void on_highlight() const;
 
     /** @brief Virtual destructor (ensures cleanup when using inheritance). */
     virtual ~Component();
 };
-
 
 #endif //COMPONENT_H

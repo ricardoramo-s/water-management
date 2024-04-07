@@ -9,12 +9,17 @@
 /**
  * @class TextBox
  * @brief A Component subclass that displays multiple lines of text, with scrolling and selection capabilities.
+ *
+ * The TextBox class is a user interface element that allows the management of a text box.
+ * It is a subclass of the Component class. The text box is composed of multiple lines of text,
+ * with scrolling and selection capabilities.
  */
 class TextBox : public Component {
 private:
     /** @brief Vector of text lines displayed by the TextBox */
     std::vector<std::string> lines_;
 
+    /** @brief Header of the TextBox */
     std::string header_{};
 
     /** @brief Index of the currently selected line (-1 indicates no selection) */
@@ -29,6 +34,7 @@ private:
     /** @brief Controls whether lines are displayed in standard or reversed order */
     bool reversed_ = false;
 
+    /** @brief Color id of the highlighted line */
     short highlighted_color_ = 0;
 
     /** @brief Updates the minimum line index, changing the maximum line index accordingly. */
@@ -72,6 +78,10 @@ public:
      */
     void set_lines_(std::vector<std::string>& lines);
 
+    /**
+     * @brief Sets the header of the TextBox.
+     * @param header The header to be set.
+     */
     void set_header_(std::string header);
 
     /**
@@ -98,6 +108,10 @@ public:
      */
     void select(std::string& text);
 
+    /**
+     * @brief Sets the color id of the highlighted line.
+     * @param id The color id to set.
+     */
     void set_highlighted_color(short id);
 
     /**
@@ -111,11 +125,21 @@ public:
      */
     void handle_input(int ch) override;
 
+    /**
+     * @brief Removes the selected line from the TextBox.
+     */
     void remove();
+
+    /**
+     * @brief Adds a string to the TextBox.
+     * @param string The string to add.
+     */
     void add(std::string string);
 
+    /**
+     * @brief Destructor for the TextBox.
+     */
     ~TextBox() override = default;
 };
-
 
 #endif //WATER_MANAGEMENT_TEXTBOX_H
