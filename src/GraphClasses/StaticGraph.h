@@ -3,7 +3,9 @@
 
 #include "GraphClasses/Graph.h"
 
-
+/**
+ * @brief class used for manipulating a "global" graph
+ */
 class StaticGraph {
 public:
     static Graph* graph_;

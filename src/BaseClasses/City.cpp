@@ -11,7 +11,6 @@ City::City(std::string name, int id, std::string code, double demand,
 
 }
 
-//TODO
 City::~City() = default;
 
 bool City::addCity(City* city) {
@@ -24,7 +23,6 @@ bool City::addCity(City* city) {
     return true;
 }
 
-//TODO
 bool City::removeCity(City *city) {
     delete city;
     return true;
@@ -38,7 +36,6 @@ City* City::getCity(const std::string& code) {
 
     return it->second;
 }
-
 
 std::string City::getName() const {
     return this->name;
