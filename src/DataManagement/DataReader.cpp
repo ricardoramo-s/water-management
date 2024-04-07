@@ -19,7 +19,7 @@ void DataReader::readCities() {
     std::ifstream file(filePath);
 
     if (!file.is_open()) {
-        std::cout << "Unable to open file: " << filePath << std::endl;
+        throw std::runtime_error("Unable to open file!");
     }
 
     std::string line;
@@ -83,7 +83,7 @@ void DataReader::readPipes() {
     std::ifstream file(filePath);
 
     if (!file.is_open()) {
-        std::cout << "Unable to open file: " << filePath << std::endl;
+        throw std::runtime_error("Unable to open file!");
     }
 
     std::string line;
@@ -141,7 +141,7 @@ void DataReader::readReservoirs() {
     std::ifstream file(filePath);
 
     if (!file.is_open()) {
-        std::cout << "Unable to open file: " << filePath << std::endl;
+        throw std::runtime_error("Unable to open file!");
     }
 
     std::string line;
@@ -205,7 +205,7 @@ void DataReader::readStations() {
     std::ifstream file(filePath);
 
     if (!file.is_open()) {
-        std::cout << "Unable to open file: " << filePath << std::endl;
+        throw std::runtime_error("Unable to open file!");
     }
 
     std::string line;

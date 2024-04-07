@@ -1,7 +1,7 @@
 #include "Color.h"
 
 short Color::last_color_ = 255;
-auto Color::colors_ = std::vector<Color*>();
+std::vector<Color*> Color::colors_ = std::vector<Color*>();
 
 Color::Color(short r, short g, short b) : _r(r), g_(g), b_(b), id_(last_color_--) {
     init_color(id_, r, g, b);

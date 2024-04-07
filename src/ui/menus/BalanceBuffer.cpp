@@ -30,6 +30,7 @@ BalanceBuffer::BalanceBuffer() : Buffer() {
     meets_demands_->set_color(ColorPair::get(bright_red, dark0));
 
     this->hide();
+    wbkgd(get_win(), COLOR_PAIR(ColorPair::get(light0, dark0)));
     this->set_color(ColorPair::get(light0, dark0));
     this->on_select([&] {
        // TODO: balance

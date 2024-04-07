@@ -1,4 +1,6 @@
-#!/bin/zsh
+#!/bin/bash
 
-./build
-cmake-build-debug/water-management
+cmake -S . -B ./build
+cmake --build ./build --target all -j 6
+
+build/water-management

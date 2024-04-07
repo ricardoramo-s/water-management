@@ -1,43 +1,59 @@
-#include <ncurses.h>
-#include "components/TextBox.h"
-#include "components/TextLabel.h"
-#include "components/InputBox.h"
-#include "ui/components/SearchBox.h"
-#include "components/OptionMenu.h"
-#include "components/KeysBindings.h"
-#include "pallets/gruvbox.h"
 #include "colors/ColorPair.h"
 #include "menus/Buffer.h"
-#include "menus/BasicMetricsBuffer.h"
-#include "menus/BalanceBuffer.h"
-#include "clocale"
-#include <string>
 #include "menus/MainBuffer.h"
+
 #include "DataManagement/DataReader.h"
-#include "GraphClasses/Graph.h"
 #include "DataManagement/DataManager.h"
-#include "test.h"
+#include "GraphClasses/Graph.h"
 #include "GraphClasses/StaticGraph.h"
 
+#include <ncurses.h>
+#include <clocale>
+#include <string>
 
-
-int main() {
+int main()
+{
     setlocale(LC_ALL, "");
 
     initscr();
-    cbreak();
+    start_color();
     curs_set(0);
     keypad(stdscr, true);
     noecho();
     ESCDELAY = 15;
-    start_color();
 
-    DataReader dataReader = DataReader("./Data", "");
+    bool sucess = true;
+
+    try
+    {
+        DataReader dataReader = DataReader("../Data", "");
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+        sucess = false;
+    }
+
+    if (!sucess)
+    {
+        try
+        {
+            DataReader dataReader = DataReader("./Data", "");
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+    }
+
     Graph graph;
 
-    try {
+    try
+    {
         graph = DataManager::buildGraph();
-    } catch (const std::runtime_error& e) {
+    }
+    catch (const std::runtime_error &e)
+    {
         std::cerr << "Exception caught: " << e.what() << std::endl;
     }
 
@@ -45,13 +61,13 @@ int main() {
     DataManager::resetUsing(&graph);
     DataManager::edmondsKarp(&graph);
 
-    Buffer* buffer;
+    Buffer *buffer;
 
     buffer = new MainBuffer();
     buffer->show();
-    buffer->set_color(ColorPair::get(light0, dark0));
 
-    while (true) {
+    while (!buffer->to_quit())
+    {
         clear();
 
         buffer->draw();
@@ -59,13 +75,24 @@ int main() {
         doupdate();
 
         buffer->handle_input(getch());
-        Buffer* next_buffer = buffer->get_next_buffer();
+        Buffer *next_buffer = buffer->get_next_buffer();
 
-        if (next_buffer != nullptr) {
+        if (next_buffer != nullptr)
+        {
             buffer->hide();
             buffer = next_buffer;
             buffer->show();
             buffer->on_select();
         }
     }
+
+    delete buffer;
+
+    echo();
+    noraw();
+    keypad(stdscr, false);
+    reset_color_pairs();
+    curs_set(1);
+    endwin();
+    return 0;
 }

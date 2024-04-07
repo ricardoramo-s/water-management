@@ -38,13 +38,36 @@ add_executable(water-management src/main.cpp
         src/ui/menus/ExportBuffer.cpp
         src/ui/menus/FailureBuffer.cpp)
 
-find_package(Curses REQUIRED)
-target_link_libraries(water-management -lncurses -lpanel)
+# Check if the ncurses6.4 folder is present
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/ncurses-6.4")
+    message(STATUS "ncurses-6.4 folder found. Using existing installation.")
+else()
+    message(STATUS "Downloading ncurses-6.4.")
+    file(DOWNLOAD https://ftp.gnu.org/gnu/ncurses/ncurses-6.4.tar.gz ${CMAKE_CURRENT_SOURCE_DIR}/ncurses.tar.gz)
+    
+    # Unpack
+    execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_CURRENT_SOURCE_DIR}/ncurses.tar.gz
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) 
 
-# Include any necessary header directories
-target_include_directories(water-management PRIVATE
-        src
-        src/ui)
+    # Configure
+    execute_process(COMMAND ./configure --with-widec --enable-ext-colors WORKING_DIRECTORY 
+        ${CMAKE_CURRENT_SOURCE_DIR}/ncurses-6.4 
+        RESULT_VARIABLE build_result)
+
+    if(NOT build_result EQUAL 0)
+        execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/ncurses-6.4/)
+        message(FATAL_ERROR "ncurses was not configured!")
+    endif()
+
+    # Make
+    execute_process(COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ncurses-6.4 RESULT_VARIABLE build_result)
+    if(NOT build_result EQUAL 0)
+        execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_CURRENT_SOURCE_DIR}/ncurses-6.4/)
+        message(FATAL_ERROR "error ncurses make!")
+    endif()
+
+    execute_process(COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_CURRENT_SOURCE_DIR}/ncurses.tar.gz)
+endif()
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
@@ -64,3 +87,12 @@ if(DOXYGEN_FOUND)
 else(DOXYGEN_FOUND)
     message("Doxygen needs to be installed to generate the documentation.")
 endif(DOXYGEN_FOUND)
+
+target_link_libraries(water-management -I ./ncurses-6.4/include -I ./ncurses-6.4/include/ncurses -L ./ncurses-6.4/lib -lpanel -lncursesw)
+
+# Include any necessary header directories
+target_include_directories(water-management PRIVATE
+        src
+        src/ui)
+
+

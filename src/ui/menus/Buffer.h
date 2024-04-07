@@ -9,6 +9,8 @@
 class Cmdline;
 
 class Buffer : public Component {
+private:
+    bool quit_ = false;
 protected:
     Component *currently_selected_component_ = nullptr, *previously_selected_component_ = nullptr;
 
@@ -21,6 +23,9 @@ public:
     void select_component(Component* component);
     void swap_selected_component();
     void select_previous_component();
+
+    void quit();
+    bool to_quit() const;
 
     Buffer* get_next_buffer();
     void previous_buffer(Buffer* buffer);

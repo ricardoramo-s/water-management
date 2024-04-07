@@ -30,3 +30,11 @@ Buffer *Buffer::get_next_buffer() {
 void Buffer::previous_buffer(Buffer *buffer) {
     previous_buffer_ = buffer;
 }
+
+void Buffer::quit() {
+    quit_ = true;
+}
+
+bool Buffer::to_quit() const {
+    return quit_;
+}

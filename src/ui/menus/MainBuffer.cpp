@@ -41,6 +41,7 @@ MainBuffer::MainBuffer() : Buffer() {
     select_component(basic_metrics_);
     basic_metrics_->highlight();
 
+    wbkgd(get_win(), COLOR_PAIR(ColorPair::get(light0, dark0)));
     this->set_color(ColorPair::get(light0, dark0));
     this->hide();
     this->on_select([&] {
@@ -51,7 +52,7 @@ MainBuffer::MainBuffer() : Buffer() {
 void MainBuffer::handle_input(int ch) {
     switch (ch) {
         case ESC:
-            exit(0);
+            quit();
             break;
         case TAB:
             select_component(currently_selected_component_->get_next_component());

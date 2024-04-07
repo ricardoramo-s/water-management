@@ -35,3 +35,9 @@ debug/
 cmake-build-debug/
 .idea/
 /cmake-build-debug/
+build/
+lib/
+ncurses-6.4/
+.vscode/settings.json
+.gitignore
+ncurses.tar.gz
