@@ -72,7 +72,7 @@ std::string ExportBuffer::export_data()
     // Write data rows
     for (const auto &[code, city] : City::getCitiesMap())
     {
-        outfile << city->getName() << "," << city->getCode() << std::to_string((int)std::round(city->getFlow())) << "\n";
+        outfile << city->getName() << "," << city->getCode() << "," << std::to_string((int)std::round(city->getFlow())) << "\n";
     }
 
     outfile.close(); // Close the file
