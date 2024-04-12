@@ -31,15 +31,13 @@ public:
 
     static void balanceGraph(Graph* graph, int); //not working
 
-    static double findMinResidualAlongPath(Vertex *s, Vertex *t);
-
-
 
 private:
 
     static void testAndVisit(std::queue<Vertex*> &q, Edge *e, Vertex *w, double residual);
     static bool findAugmentingPath(Graph *g, Vertex *s, Vertex *t);
     static void augmentFlowAlongPath(Vertex *s, Vertex *t, double f);
+    static double findMinResidualAlongPath(Vertex *s, Vertex *t);
 
     ///not working///
     static double getAvgFlow(const double& flow, const std::vector<Edge*>& edgeSet);

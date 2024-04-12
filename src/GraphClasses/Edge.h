@@ -26,6 +26,9 @@ public:
     void setUsing(bool Using);
     bool isUsing() const;
 
+    void setTWeight(double tWeight) {this->tWeight = tWeight;}
+    double getTWeight() {return tWeight;}
+
 protected:
 
     Vertex* dest;
@@ -33,6 +36,7 @@ protected:
     Edge* reverse = nullptr;
 
     double weight;
+    double tWeight;
     double flow = 0;
     bool selected = false;
     bool Using = true;

@@ -450,8 +450,7 @@ void balanceFlow(Graph* graph) {
 
 
         // If deviation increases, revert the flow adjustment
-        if (false) {
-        //if (newDeviation >= currentDeviation) {
+        if (newDeviation >= currentDeviation) {
             maxFlowPipe->setFlow(maxFlowPipe->getFlow() + transferAmount);
             minFlowPipe->setFlow(minFlowPipe->getFlow() -transferAmount);
             cout << "habibi";

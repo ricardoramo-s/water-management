@@ -104,14 +104,14 @@ void Vertex::setProcessing(bool processing) {
     this->processing = processing;
 }
 
-//TODO
-void Vertex::setIndegree(unsigned int indegree) {
 
+void Vertex::setIndegree(unsigned int indegree) {
+    this->indegree = indegree;
 }
 
-//TODO
+
 unsigned int Vertex::getIndegree() const {
-    return 0;
+    return indegree;
 }
 
 

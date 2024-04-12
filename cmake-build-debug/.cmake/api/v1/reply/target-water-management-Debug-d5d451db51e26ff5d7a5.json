@@ -188,7 +188,7 @@
 		},
 		{
 			"backtrace" : 1,
-			"path" : "src/test.h",
+			"path" : "src/balanceTest.h",
 			"sourceGroupIndex" : 1
 		}
 	],

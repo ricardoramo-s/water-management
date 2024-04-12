@@ -2,12 +2,12 @@
 #include "GraphClasses/Graph.h"
 #include "DataManagement/DataManager.h"
 
-#include "test.h"
+#include "balanceTest.h"
 
 
 int main() {
 
-    DataReader dataReader = DataReader(R"(C:\Users\bruno\Ambiente de Trabalho\Projects\water-management\SmallDataSet)", "_Madeira");
+    DataReader dataReader = DataReader(R"(C:\Users\bruno\Ambiente de Trabalho\Projects\water-management\Data)", "");
 
     City::CitiesMap citiesMap = City::getCitiesMap();
 
@@ -26,6 +26,8 @@ int main() {
 
     DataManager::edmondsKarp(&graph);
 
+    printEdges(&graph);
+
     //printSourceFlow(&graph);
     //printSinkFlow(&graph);
     //graph.setEdgeUsing("PS_9", "PS_10", 1);
@@ -40,11 +42,10 @@ int main() {
     //PathsVector pathsVector = exploreAllPaths(&graph);
     //printAllPaths(pathsVector);
 
-    printEdges(&graph);
 
-    balanceFlow(&graph);
-    cout << "\n---------------------\n\n";
+    balanceGraph(&graph);
 
     printEdges(&graph);
+
 
 }

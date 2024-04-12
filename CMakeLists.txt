@@ -18,7 +18,7 @@ add_executable(water-management src/main.cpp
         src/BaseClasses/Pipe.cpp
         src/DataManagement/DataReader.cpp
         src/DataManagement/DataManager.cpp
-        src/test.h
+        src/balanceTest.h
 )
 
 # Link ncurses library

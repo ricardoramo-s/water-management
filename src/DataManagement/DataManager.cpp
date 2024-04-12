@@ -36,10 +36,10 @@ Graph DataManager::buildGraph(City::CitiesMap citiesMap, Pipe::PipesMultiMap pip
 
         if (pipe.second->getDirection()) {
             if (!graph.addEdge(pipe.first.first, pipe.first.second, pipe.second->getCapacity()))
-                throw std::logic_error("error adding RtP edge");
+                throw std::logic_error("error adding PtP edge");
         } else {
             if (!graph.addBidirectionalEdge(pipe.first.first, pipe.first.second, pipe.second->getCapacity()))
-                throw std::logic_error("error adding RtP edge");
+                throw std::logic_error("error adding PtP edge");
         }
     }
 
@@ -47,10 +47,10 @@ Graph DataManager::buildGraph(City::CitiesMap citiesMap, Pipe::PipesMultiMap pip
 
         if (pipe.second->getDirection()) {
             if (!graph.addEdge(pipe.first.first, pipe.first.second, pipe.second->getCapacity()))
-                throw std::logic_error("error adding RtP edge");
+                throw std::logic_error("error adding PtC edge");
         } else {
             if (!graph.addBidirectionalEdge(pipe.first.first, pipe.first.second, pipe.second->getCapacity()))
-                throw std::logic_error("error adding RtP edge");
+                throw std::logic_error("error adding PtC edge");
         }
     }
 
