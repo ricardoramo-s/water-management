@@ -8,7 +8,7 @@
 
 #include "unordered_set"
 #include "Color.h"
-#include <ncurses.h>
+#include <curses.h>
 #include <functional>
 
 // Forward declare the Color class
@@ -20,14 +20,15 @@ class Color;
  *
  * This class is used to manage pairs of colors in the application. It provides methods to apply, get, activate, and deactivate color pairs.
  */
-class ColorPair {
+class ColorPair
+{
 private:
-    short _id; ///< ID of the color pair
-    Color* _foreground; ///< Pointer to the foreground color
-    Color* _background; ///< Pointer to the background color
+    short _id;          ///< ID of the color pair
+    Color *_foreground; ///< Pointer to the foreground color
+    Color *_background; ///< Pointer to the background color
 
-    static short last_pair_; ///< Static variable to keep track of the last color pair used
-    static std::vector<ColorPair*> pairs_; ///< Static vector to store all the color pair objects
+    static short last_pair_;                ///< Static variable to keep track of the last color pair used
+    static std::vector<ColorPair *> pairs_; ///< Static vector to store all the color pair objects
 
     /**
      * @brief Private constructor for the ColorPair class.
@@ -37,7 +38,8 @@ private:
      * @param foreground Pointer to the foreground color
      * @param background Pointer to the background color
      */
-    ColorPair(Color* foreground, Color* background);
+    ColorPair(Color *foreground, Color *background);
+
 public:
     /**
      * @brief Static method to apply a color pair.
@@ -53,7 +55,7 @@ public:
      * @param bb Blue component of the background color
      * @return ID of the applied color pair
      */
-    static short apply(WINDOW* win, short fr, short fg, short fb, short br, short bg, short bb);
+    static short apply(WINDOW *win, short fr, short fg, short fb, short br, short bg, short bb);
 
     /**
      * @brief Static method to get a color pair.
@@ -79,7 +81,7 @@ public:
      * @param id ID of the color pair to activate
      * @return ID of the activated color pair
      */
-    static short activate(WINDOW* win, short id);
+    static short activate(WINDOW *win, short id);
 
     /**
      * @brief Static method to deactivate a color pair.
@@ -90,7 +92,7 @@ public:
      * @param id ID of the color pair to deactivate
      * @return ID of the deactivated color pair
      */
-    static short deactivate(WINDOW* win, short id);
+    static short deactivate(WINDOW *win, short id);
 };
 
-#endif //WATER_MANAGEMENT_COLORPAIR_H
+#endif // WATER_MANAGEMENT_COLORPAIR_H

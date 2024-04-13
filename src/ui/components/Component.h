@@ -1,6 +1,6 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
-#include "ncurses.h"
+#include "curses.h"
 #include "functional"
 #include "panel.h"
 
@@ -8,7 +8,8 @@
  * @class Component
  * @brief Base class for reusable user interface components within an ncurses application.
  */
-class Component {
+class Component
+{
 private:
     /** @brief Horizontal position (in characters). */
     int x_;
@@ -35,7 +36,7 @@ private:
     short box_color_id = 0;
 
     /** @brief Pointer to the next component. */
-    Component* next_component_ = nullptr;
+    Component *next_component_ = nullptr;
 
 protected:
     /**
@@ -61,13 +62,13 @@ protected:
      * @brief Gets the component's ncurses window.
      * @return Pointer to the underlying WINDOW object.
      */
-    WINDOW* get_win() const;
+    WINDOW *get_win() const;
 
     /**
      * @brief Gets the component's ncurses panel.
      * @return Pointer to the underlying PANEL object.
      */
-    PANEL* get_panel() const;
+    PANEL *get_panel() const;
 
     /** @brief Callback function to be called when the component is selected. */
     std::function<void()> on_select_ = []() -> void {};
@@ -152,13 +153,13 @@ public:
     virtual void to_back() const;
 
     /** @brief Gets the next component. */
-    Component* get_next_component() const;
+    Component *get_next_component() const;
 
     /**
      * @brief Sets the next component.
      * @param component Pointer to the next component.
      */
-    void set_next_component(Component* component);
+    void set_next_component(Component *component);
 
     /**
      * @brief Sets the callback function to be called when the component is cancelled.
@@ -188,4 +189,4 @@ public:
     virtual ~Component();
 };
 
-#endif //COMPONENT_H
+#endif // COMPONENT_H

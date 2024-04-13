@@ -5,7 +5,7 @@
 #include "BaseClasses/City.h"
 #include "cmath"
 
-BasicMetricsBuffer::BasicMetricsBuffer() : Buffer()
+BasicMetricsBuffer::BasicMetricsBuffer() : Buffer(), balance_buffer_(nullptr), export_buffer_(nullptr)
 {
     search_box_ = new SearchBox(get_height() - 8, (get_width() - 16) / 2, 4, 8);
 
@@ -53,7 +53,12 @@ BasicMetricsBuffer::BasicMetricsBuffer() : Buffer()
         search_box_->set_box_color(ColorPair::get(light0, dark0));
         balance_->set_color(ColorPair::get(dark0, light0)); });
     balance_->on_select([&]
-                        { next_buffer_ = balance_buffer_; });
+                        { 
+                            if (balance_buffer_ == nullptr) {
+                                balance_buffer_ = new BalanceBuffer();
+                                balance_buffer_->previous_buffer(this);
+                            }
+                            next_buffer_ = balance_buffer_; });
 
     balance_buffer_ = new BalanceBuffer();
     balance_buffer_->previous_buffer(this);
@@ -66,10 +71,12 @@ BasicMetricsBuffer::BasicMetricsBuffer() : Buffer()
         balance_->set_color(ColorPair::get(light0, dark0));
         export_->set_color(ColorPair::get(dark0, light0)); });
     export_->on_select([&]
-                       { next_buffer_ = export_buffer_; });
-
-    export_buffer_ = new ExportBuffer();
-    export_buffer_->previous_buffer(this);
+                       { 
+                        if (export_buffer_ == nullptr) {
+                            export_buffer_ = new ExportBuffer();
+                            export_buffer_->previous_buffer(this);
+                        }
+                        next_buffer_ = export_buffer_; });
 
     search_box_->set_next_component(balance_);
     balance_->set_next_component(export_);

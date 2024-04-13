@@ -7,7 +7,7 @@
 #include "GraphClasses/Graph.h"
 #include "GraphClasses/StaticGraph.h"
 
-#include <ncurses.h>
+#include <curses.h>
 #include <clocale>
 #include <string>
 
@@ -80,7 +80,7 @@ int main()
         if (next_buffer != nullptr)
         {
             buffer->hide();
-            buffer = next_buffer;
+            buffer = (Buffer *)next_buffer;
             buffer->show();
             buffer->on_select();
         }

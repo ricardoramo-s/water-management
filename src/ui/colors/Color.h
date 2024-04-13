@@ -8,7 +8,7 @@
 
 #include "vector"
 #include "ColorPair.h"
-#include "ncurses.h"
+#include "curses.h"
 
 /**
  * @class Color
@@ -16,11 +16,12 @@
  *
  * This class is used to manage colors in the application. It provides a method to get a color object given its RGB values.
  */
-class Color {
+class Color
+{
 private:
-    short _r, g_, b_, id_; ///< RGB values and id of the color
-    static short last_color_; ///< Static variable to keep track of the last color used
-    static std::vector<Color*> colors_; ///< Static vector to store all the color objects
+    short _r, g_, b_, id_;               ///< RGB values and id of the color
+    static short last_color_;            ///< Static variable to keep track of the last color used
+    static std::vector<Color *> colors_; ///< Static vector to store all the color objects
 
     /**
      * @brief Private constructor for the Color class.
@@ -32,6 +33,7 @@ private:
      * @param b Blue component of the color
      */
     Color(short r, short g, short b);
+
 public:
     friend class ColorPair; ///< ColorPair class has access to private members of Color
 
@@ -45,8 +47,7 @@ public:
      * @param blue Blue component of the color
      * @return Pointer to the Color object with the given RGB values
      */
-    static Color* get(short red, short green, short blue);
+    static Color *get(short red, short green, short blue);
 };
 
-
-#endif //WATER_MANAGEMENT_COLOR_H
+#endif // WATER_MANAGEMENT_COLOR_H

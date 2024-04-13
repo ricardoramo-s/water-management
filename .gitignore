@@ -40,7 +40,7 @@ cmake-build-debug/
 build/
 lib/
 ncurses-6.4/
-.vscode/settings.json
+.vscode/
 .gitignore
 ncurses.tar.gz
 .DS_Store

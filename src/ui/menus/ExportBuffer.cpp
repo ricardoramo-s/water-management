@@ -44,6 +44,9 @@ ExportBuffer::ExportBuffer() : Buffer()
         export_output_->hide(); });
 
     select_component(input_box_);
+
+    next_buffer_ = nullptr;
+    previous_buffer_ = nullptr;
 }
 
 void ExportBuffer::handle_input(int ch)

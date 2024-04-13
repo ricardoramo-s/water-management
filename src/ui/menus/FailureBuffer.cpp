@@ -127,6 +127,7 @@ FailureBuffer::FailureBuffer() : Buffer()
     this->on_select([&]
                     {
         select_component(search_box_);
+        on_maintenance_->set_box_color(ColorPair::get(light0, dark0));
         search_box_->highlight();
         search_box_->clear(); });
 }
