@@ -7,7 +7,7 @@
 
 int main() {
 
-    DataReader dataReader = DataReader(R"(C:\Users\bruno\Ambiente de Trabalho\Projects\water-management\Data)", "");
+    DataReader dataReader = DataReader(R"(C:\Users\bruno\Ambiente de Trabalho\Projects\water-management\SmallDataSet)", "_madeira");
 
     City::CitiesMap citiesMap = City::getCitiesMap();
 
