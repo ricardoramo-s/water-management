@@ -26,7 +26,7 @@ int main()
 
     try
     {
-        DataReader dataReader = DataReader("../Data", "");
+        DataReader dataReader = DataReader("../data", "");
     }
     catch (const std::exception &e)
     {
@@ -38,7 +38,7 @@ int main()
     {
         try
         {
-            DataReader dataReader = DataReader("./Data", "");
+            DataReader dataReader = DataReader("./data", "");
         }
         catch (const std::exception &e)
         {
