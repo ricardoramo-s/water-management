@@ -6,7 +6,7 @@ The application constructs an internal **directed flow network** (with the optio
 
 Below is an overview of the project’s structure, followed by build instructions and usage hints.
 
-<div style="text-align: center;">
+<div align="center">
     <img src="media/title.png" alt="Title Image" width="600">
 </div>
 
@@ -166,7 +166,7 @@ If for some reason there are issues with the installation or configuration of nc
     - Press **ENTER** to select the highlighted item.
     - Press **ESC** to cancel or go back in certain contexts.
 
-<div style="text-align: center;">
+<div align="center">
     <img src="media/navigation.gif" alt="Title Image" width="500">
 </div>
 
@@ -174,7 +174,7 @@ If for some reason there are issues with the installation or configuration of nc
     - Contains two primary options: **Basic Service Metrics** and **Reliability and Sensitivity to Failures**.
     - Press ENTER on either option to jump to that screen.
 
-<div style="text-align: center;">
+<div align="center">
     <img src="media/main_menu.gif" alt="Title Image" width="500">
 </div>
 
@@ -187,7 +187,7 @@ If for some reason there are issues with the installation or configuration of nc
         - Enter a filename to export city flow data to CSV.
         - Press ENTER to confirm, or ESC to return.
 
-<div style="text-align: center;">
+<div align="center">
     <img src="media/basic_metrics.gif" alt="Title Image" width="500">
 </div>
 
@@ -195,7 +195,7 @@ If for some reason there are issues with the installation or configuration of nc
     - Lets you place pipes/pumps/reservoirs on maintenance. The flow is recalculated, and the screen shows “affected” cities.
     - You can remove items from the maintenance list to restore original flows.
 
-<div style="text-align: center;">
+<div align="center">
     <img src="media/failure.gif" alt="Title Image" width="500">
 </div>
 
