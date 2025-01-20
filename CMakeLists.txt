@@ -50,7 +50,7 @@ else()
                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}) 
 
     # Configure
-    execute_process(COMMAND ./configure --enable-widec --enable-ext-colors  --without-termlib WORKING_DIRECTORY
+    execute_process(COMMAND ./configure --enable-widec --enable-ext-colors WORKING_DIRECTORY
         ${CMAKE_CURRENT_SOURCE_DIR}/ncurses-6.4 
         RESULT_VARIABLE build_result)
 
@@ -88,17 +88,12 @@ else(DOXYGEN_FOUND)
     message("Doxygen needs to be installed to generate the documentation.")
 endif(DOXYGEN_FOUND)
 
-add_library(libncursesw STATIC IMPORTED)
-set_target_properties(libncursesw PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/ncurses-6.4/lib/libncursesw.a)
-set_target_properties(libncursesw PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/ncurses-6.4/include)
-
-add_library(libpanelw STATIC IMPORTED)
-set_target_properties(libpanelw PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/ncurses-6.4/lib/libpanelw.a)
-set_target_properties(libpanelw PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/ncurses-6.4/include)
-
-target_link_libraries(water-management libncursesw libpanelw)
+target_link_libraries(water-management
+        ${CMAKE_SOURCE_DIR}/ncurses-6.4/lib/libpanelw.a
+        ${CMAKE_SOURCE_DIR}/ncurses-6.4/lib/libncursesw.a)
 
 # Include any necessary header directories
 target_include_directories(water-management PUBLIC
         src
-        src/ui)
+        src/ui
+        ncurses-6.4/include)

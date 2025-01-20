@@ -50,6 +50,8 @@ void InputBox::handle_input(int ch)
     switch (ch)
     {
     case BACKSPACE:
+    case KEY_BACKSPACE:
+    case '\b':
         if (!input_text_.empty())
         {
             input_text_.pop_back();
