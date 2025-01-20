@@ -3,6 +3,8 @@
 #include "colors/ColorPair.h"
 #include "pallets/gruvbox.h"
 
+#include <algorithm>
+
 SearchBox::SearchBox(int height, int width, int y, int x) : Component(height, width, y, x), options_(std::vector<std::unordered_set<std::string>>()) {
     input_box_ = new InputBox(width,y + height -3, x,"❯ ");
     input_box_->set_header_("Search");

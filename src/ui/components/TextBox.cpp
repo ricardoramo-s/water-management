@@ -4,6 +4,8 @@
 #include "colors/ColorPair.h"
 #include "pallets/gruvbox.h"
 
+#include <algorithm>
+
 TextBox::TextBox(int height, int width, int y, int x, bool reversed)
     : Component(height, width, y, x), lines_(std::vector<std::string>()), reversed_(reversed) {
     min_ = 0;
