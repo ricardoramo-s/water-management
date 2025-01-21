@@ -2,13 +2,13 @@
 
 This repository contains a **Water Management System** written in C++ using the [ncurses](https://invisible-island.net/ncurses/) library. The system provides a text-based user interface for modeling, simulating, and managing the flow of water through reservoirs, pumps, pipes, and cities.
 
-The application constructs an internal **directed flow network** (with the option for bidirectional edges) by reading data from CSV files, building a graph (using `DataManager::buildGraph()`), and computing maximum flows via the **Edmonds-Karp** algorithm. Various UI components, built on ncurses panels, enable interactions such as searching, exporting flow data to file, simulating failures, and so on.
-
-Below is an overview of the project’s structure, followed by build instructions and usage hints.
-
 <div align="center">
     <img src="media/title.png" alt="Title Image" width="600">
 </div>
+
+The application constructs an internal **directed flow network** (with the option for bidirectional edges) by reading data from CSV files, building a graph (using `DataManager::buildGraph()`), and computing maximum flows via the **Edmonds-Karp** algorithm. Various UI components, built on ncurses panels, enable interactions such as searching, exporting flow data to file, simulating failures, and so on.
+
+Below is an overview of the project’s structure, followed by build instructions and usage hints.
 
 ---
 
